@@ -126,7 +126,7 @@ export default function OceanInfoPage() {
                       {activeTab === 'craft' ? (
                         <>
                           <th>최소가</th>
-                          <th>최대가</th>
+                          <th>최고가</th>
                         </>
                       ) : (
                         <th>가격</th>
