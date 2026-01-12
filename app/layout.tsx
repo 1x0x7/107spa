@@ -2,6 +2,7 @@ import './styles/globals.css'
 import Header from '@/components/Header'
 import SubHeader from '@/components/SubHeader'
 import Footer from '@/components/Footer'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata = {
   title: '띵타이쿤 계산기 - 채광 · 재배 · 해양 효율 계산기',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SubHeader />
         <main className="page">{children}</main>
         <Footer />
+        <SpeedInsights />
       </body>
     </html>
   )
