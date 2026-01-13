@@ -1,0 +1,18 @@
+/* =========================
+   다크 모드 전용 CSS 변수
+========================= */
+:root[data-theme="dark"] {
+  --color-text: #f0f0f0;
+  --color-text-secondary: #ccc;
+  --color-text-muted: #999;
+  --color-text-light: #888;
+
+  --color-bg: #1a1a1a;
+  --color-bg-white: #242424;
+  --color-bg-card: #2a2a2a;
+  --color-bg-secondary: #2a2a2a;
+  --color-bg-hover: #333;
+
+  --color-border: #444;
+  --color-border-light: #333;
+}
