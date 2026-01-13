@@ -8,7 +8,14 @@ import './styles/dark.css';
 export const metadata = {
   title: '띵타이쿤 계산기',
   description: '채광 · 재배 · 해양 효율 계산기',
+  icons: {
+    icon: '/img/1x0x7_.png',         // 기본 파비콘
+    shortcut: '/img/1x0x7_.png',     // 브라우저 바로가기용
+    apple: '/img/1x0x7_.png',  // iOS용 (선택)
+  },
 };
+
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
