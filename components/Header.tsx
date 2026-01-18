@@ -57,13 +57,13 @@ export default function Header() {
             <Link href="/" className={isActive('/') ? 'active' : ''}>
               홈
             </Link>
-            <Link href="/mining" className={isActive('/mining') ? 'active' : ''}>
+            <Link href="/mining/info" className={isActive('/mining') ? 'active' : ''}>
               채광
             </Link>
-            <Link href="/farming" className={isActive('/farming') ? 'active' : ''}>
+            <Link href="/farming/info" className={isActive('/farming') ? 'active' : ''}>
               재배
             </Link>
-            <Link href="/ocean" className={isActive('/ocean') ? 'active' : ''}>
+            <Link href="/ocean/info" className={isActive('/ocean') ? 'active' : ''}>
               해양
             </Link>
           </nav>

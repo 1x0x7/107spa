@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { memo } from 'react';
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { memo } from 'react'
 
 const tabs: Record<string, { href: string; label: string }[]> = {
   mining: [
@@ -21,18 +21,18 @@ const tabs: Record<string, { href: string; label: string }[]> = {
     { href: '/ocean/stamina', label: '스태미나' },
     { href: '/ocean/gold', label: '골드 최적화' },
   ],
-};
+}
 
 function SubHeader() {
-  const pathname = usePathname();
-  const section = pathname.split('/')[1];
-  const currentTabs = tabs[section];
+  const pathname = usePathname()
+  const section = pathname.split('/')[1]
+  const currentTabs = tabs[section]
 
-  if (!currentTabs) return null;
+  if (!currentTabs) return null
 
   return (
     <div className="sub-header">
-      <div className="sub-header-inner">
+      <nav className="main-nav sub-nav">
         {currentTabs.map(tab => (
           <Link
             key={tab.href}
@@ -42,9 +42,9 @@ function SubHeader() {
             {tab.label}
           </Link>
         ))}
-      </div>
+      </nav>
     </div>
-  );
+  )
 }
 
-export default memo(SubHeader);
+export default memo(SubHeader)

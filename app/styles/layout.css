@@ -6,6 +6,9 @@
 *::after {
   box-sizing: border-box;
 }
+html{
+  overflow-y: scroll;
+}
 
 html,
 body {
@@ -136,6 +139,56 @@ a {
   transform-origin: left;
 }
 
+/* =========================
+   2차 네비게이션 (서브 헤더)
+   - 메인 네비(main-nav) 디자인 재사용
+========================= */
+
+.sub-header {
+  width: 100%;
+  background-color: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-border);
+  top: 54px; /* 상단 헤더 높이 */
+  z-index: 90;
+}
+
+.sub-header .main-nav a {
+  padding: 12px 0;
+  color: var(--color-text-light);
+}
+
+
+/* main-nav를 그대로 쓰되,
+   서브 헤더용 레이아웃만 보정 */
+.sub-header .main-nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px 4px;
+  min-height: 44px;
+
+  /* 모바일 대응 */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-x: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* 모바일 스크롤바 숨김 */
+.sub-header .main-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.sub-header .main-nav a {
+  padding: 12px 0;
+  color: var(--color-text-light);
+}
+
+.sub-header .main-nav a:hover,
+.sub-header .main-nav a.active {
+  color: var(--color-primary);
+}
 
 
 /* =========================
@@ -188,4 +241,38 @@ a {
   min-height: 60px;           /* 최소 높이 지정 */
   max-height: 100px;          /* 최대 높이 지정 */
 }
+
+/* ===== 스크롤바 스타일 ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-light);
+  border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+
 

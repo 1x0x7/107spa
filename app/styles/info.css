@@ -1,0 +1,834 @@
+/* =========================
+   정보 페이지 공통 스타일 (채광/재배/해양 공용)
+========================= */
+
+/* 콘텐츠 영역 너비 - 반응형 */
+.content-area {
+  max-width: 1160px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  min-height: auto;
+}
+
+.content-title {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .content-title {
+    font-size: 1.15rem;
+  }
+}
+
+
+/* =========================
+   2단 그리드 레이아웃
+========================= */
+.info-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 350px) 1fr;
+  gap: 20px;
+  align-items: start;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  margin-top: 16px;
+}
+
+/* 왼쪽 영역 */
+.info-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 20px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* 오른쪽 영역 */
+.info-right {
+  min-height: auto;
+  width: 100%;
+  min-width: 0;
+}
+
+/* =========================
+   카드 스타일
+========================= */
+.compact-card {
+  margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.compact-card .card-header {
+  padding: 12px 16px;
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0); /* ← 이게 핵심 */
+}
+
+
+.compact-card .card-title {
+  font-size: clamp(14px, 3.5vw, 16px);
+}
+
+.compact-card .card-body {
+  padding: 12px 16px;
+}
+
+/* 오른쪽 카드 */
+.info-right .card {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-right .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   설정 행 스타일
+========================= */
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+
+/* 도구 스펙 강조 행 (곡괭이/괭이/낚싯대) */
+.tool-spec-row {
+  background-color: rgba(74, 145, 226, 0.137);
+  padding: 10px 12px;
+  margin: -8px -12px 8px -12px;
+  border-radius: 6px;
+  border-bottom: none;
+}
+
+.tool-spec-label {
+  font-weight: 700;
+  font-size: clamp(12px, 3vw, 14px);
+  color: var(--color-primary, #4a90e2);
+}
+
+/* 설정 레이블 */
+.setting-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(11px, 3vw, 13px);
+  color: var(--color-text-primary, #333);
+  flex: 1;
+  min-width: 0;
+}
+
+/* 스킬 이름 */
+.skill-name {
+  font-weight: 600;
+  word-break: keep-all;
+}
+
+/* 설정 입력 필드 */
+.setting-input {
+  min-width: 60px;
+  max-width: 80px;
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  font-size: 12px;
+  background-color: white;
+  text-align: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.setting-input:focus {
+  outline: none;
+  border-color: var(--color-primary, #4a90e2);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.setting-input::placeholder {
+  color: var(--color-text-muted, #999);
+  font-size: 11px;
+}
+
+
+
+/* =========================
+   정보 버튼 (ⓘ)
+========================= */
+.info-btn-inline {
+  padding: 2px 6px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, #999);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+  border-radius: 50%;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.info-btn-inline:hover {
+  color: var(--color-primary, #4a90e2);
+}
+
+/* =========================
+   전문가 설명 박스
+========================= */
+.expert-desc {
+  padding: 8px 10px;
+  margin: 6px 0 8px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  font-size: clamp(10px, 2.5vw, 11px);
+  color: var(--color-text-secondary, #666);
+  line-height: 1.6;
+}
+
+
+
+.expert-desc strong {
+  color: var(--color-text-primary, #333);
+  font-weight: 600;
+}
+
+/* 슬라이드 다운 애니메이션 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 300px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 6px;
+    margin-bottom: 8px;
+  }
+}
+
+/* =========================
+   조합법 탭 스타일
+========================= */
+.recipe-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--color-border, #e0e0e0);
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.recipe-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-tab {
+  flex: 1;
+  min-width: 70px;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  font-size: clamp(12px, 3vw, 14px);
+  font-weight: 500;
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.recipe-tab:hover {
+  background-color: var(--color-bg-hover, #f0f2f5);
+  color: var(--color-text-primary, #333);
+}
+
+.recipe-tab.active {
+  color: var(--color-primary, #4a90e2);
+  background-color: white;
+  border-bottom-color: var(--color-primary, #4a90e2);
+}
+
+/* =========================
+   조합법 콘텐츠
+========================= */
+
+
+.recipe-content-inner {
+  padding: 16px;
+}
+
+/* =========================
+   검색/정렬 컨트롤
+========================= */
+.table-controls-compact {
+  display: flex;
+  gap: 10px;
+  margin: 16px 16px 5px; /* 위 | 좌우 | 아래 */
+  flex-wrap: wrap;
+}
+
+
+.search-input-compact {
+  flex: 1;
+  min-width: 150px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  font-size: 13px;
+  transition: border-color 0.2s;
+}
+
+.search-input-compact:focus {
+  outline: none;
+  border-color: var(--color-primary, #4a90e2);
+}
+
+.sort-select-compact {
+  padding: 8px 24px 8px 12px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  font-size: 13px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.sort-select-compact:focus {
+  outline: none;
+  border-color: var(--color-primary, #4a90e2);
+}
+
+/* =========================
+   테이블 래퍼
+========================= */
+.table-wrapper-compact {
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 6px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  max-height: 500px;
+  max-width: 100%;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 스크롤바 스타일링 */
+.table-wrapper-compact::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table-wrapper-compact::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary, #f8f9fa);
+}
+
+.table-wrapper-compact::-webkit-scrollbar-thumb {
+  background: var(--color-border, #e0e0e0);
+  border-radius: 4px;
+}
+
+.table-wrapper-compact::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* =========================
+   조합법 테이블
+========================= */
+.recipe-table-compact {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(11px, 2.5vw, 13px);
+  table-layout: auto;
+  min-width: 400px;
+}
+
+.recipe-table-compact thead {
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 1px 0 var(--color-border, #e0e0e0);
+}
+
+.recipe-table-compact th {
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+  font-size: clamp(11px, 2.5vw, 12px);
+  white-space: nowrap;
+}
+
+.recipe-table-compact th:first-child {
+  min-width: 120px;
+  text-align: left;
+}
+
+.recipe-table-compact th:nth-child(2) {
+  text-align: left;
+}
+
+.recipe-table-compact th:nth-child(3),
+.recipe-table-compact th:nth-child(4) {
+  min-width: 80px;
+  text-align: right;
+}
+
+.recipe-table-compact tbody tr {
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
+  transition: background-color 0.15s;
+}
+
+.recipe-table-compact tbody tr:hover {
+  background-color: var(--color-bg-hover, #f8f9fa);
+}
+
+.recipe-table-compact tbody tr:last-child {
+  border-bottom: none;
+}
+
+.recipe-table-compact td {
+  padding: 10px 12px;
+  color: var(--color-text-secondary, #666);
+  font-size: clamp(11px, 2.5vw, 13px);
+  vertical-align: middle;
+}
+
+.recipe-table-compact td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--color-text-primary, #333);
+}
+
+.recipe-table-compact td:nth-child(2) {
+  text-align: left;
+  word-break: break-word;
+}
+
+.recipe-table-compact td:nth-child(3),
+.recipe-table-compact td:nth-child(4) {
+  text-align: right;
+}
+
+.recipe-table-compact td:nth-child(3) {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.recipe-table-compact td:nth-child(4) {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* 요리 이름 + 아이콘 */
+.recipe-table-compact .recipe-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--color-text-primary, #333);
+  white-space: nowrap;
+}
+
+.recipe-table-compact .recipe-name img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.recipe-table-compact .recipe-name span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.recipe-table-compact .recipe-ingredients {
+  font-size: clamp(10px, 2.5vw, 12px);
+  line-height: 1.5;
+  color: var(--color-text-secondary, #666);
+}
+
+/* 가격 스타일 */
+.recipe-table-compact .price-value {
+  color: var(--color-primary, #2563eb) !important;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* =========================
+   가공 테이블
+========================= */
+.processing-table-compact {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(11px, 2.5vw, 13px);
+  table-layout: auto;
+  min-width: 400px;
+}
+
+.processing-table-compact thead {
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 1px 0 var(--color-border, #e0e0e0);
+}
+
+.processing-table-compact th {
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+  font-size: clamp(11px, 2.5vw, 12px);
+}
+
+.processing-table-compact th:first-child {
+  min-width: 120px;
+  text-align: left;
+}
+
+.processing-table-compact th:nth-child(2) {
+  text-align: left;
+}
+
+.processing-table-compact tbody tr {
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
+  transition: background-color 0.15s;
+}
+
+.processing-table-compact tbody tr:hover {
+  background-color: var(--color-bg-hover, #f8f9fa);
+}
+
+.processing-table-compact tbody tr:last-child {
+  border-bottom: none;
+}
+
+.processing-table-compact td {
+  padding: 10px 12px;
+  color: var(--color-text-secondary, #666);
+  font-size: clamp(11px, 2.5vw, 13px);
+  vertical-align: middle;
+}
+
+.processing-table-compact td:first-child {
+  text-align: left;
+}
+
+.processing-table-compact td:nth-child(2) {
+  text-align: left;
+  word-break: break-word;
+}
+
+.processing-table-compact .processing-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--color-text-primary, #333);
+  white-space: nowrap;
+}
+
+.processing-table-compact .processing-name img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.processing-table-compact .processing-name span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.processing-table-compact .processing-materials {
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: var(--color-text-secondary, #666);
+}
+
+/* =========================
+   토글 버튼 (기본 재료 가격)
+========================= */
+.toggle-materials-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 12px;
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toggle-materials-btn:hover {
+  background-color: var(--color-bg-hover, #f0f2f5);
+  border-color: var(--color-primary, #4a90e2);
+  color: var(--color-primary, #4a90e2);
+}
+
+.toggle-icon {
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+
+.toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+/* 기본 재료 가격 토글 영역 */
+.basic-materials-toggle {
+  padding: 12px 16px;
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  border-top: 1px solid var(--color-border, #e0e0e0);
+  border-bottom: 1px solid var(--color-border, #e0e0e0);
+}
+
+.basic-materials-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+}
+
+.material-inline {
+  color: var(--color-text-secondary, #666);
+}
+
+.material-inline strong {
+  color: var(--color-primary, #4a90e2);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.price-value {
+  color: var(--color-primary, #2563eb);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* =========================
+   빈 상태
+========================= */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-text-muted, #999);
+}
+
+.empty-state-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.empty-state-text {
+  font-size: 14px;
+}
+
+/* =========================
+   유틸리티
+========================= */
+.text-muted {
+  color: var(--color-text-muted, #999);
+}
+
+.text-small {
+  font-size: 12px;
+}
+
+/* =========================
+   반응형 - 1024px
+========================= */
+@media (max-width: 1024px) {
+  .info-grid {
+    grid-template-columns: minmax(250px, 300px) 1fr;
+    gap: 16px;
+  }
+}
+
+/* =========================
+   반응형 - 768px
+========================= */
+@media (max-width: 768px) {
+  .content-area {
+    padding: var(--spacing-md) !important;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .info-left {
+    position: static;
+  }
+
+  .info-right .card {
+    min-height: auto;
+  }
+
+  .setting-row {
+    padding: 8px 0;
+  }
+
+  .setting-label {
+    font-size: 12px;
+  }
+
+  .setting-input {
+    min-width: 60px;
+    max-width: 70px;
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  .tool-spec-row {
+    padding: 8px 10px;
+    margin: -6px -10px 6px -10px;
+  }
+
+  .recipe-tab {
+    font-size: 12px;
+    padding: 10px 12px;
+    min-width: 60px;
+  }
+
+  .recipe-content-inner {
+    padding: 12px;
+  }
+
+  .toggle-materials-btn {
+    position: static;
+    transform: none;
+    margin-top: 8px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .basic-materials-inline {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .table-wrapper-compact {
+    max-height: 400px;
+  }
+
+  .recipe-table-compact,
+  .processing-table-compact {
+    min-width: 350px;
+  }
+
+  .recipe-table-compact th,
+  .recipe-table-compact td,
+  .processing-table-compact th,
+  .processing-table-compact td {
+    padding: 8px 10px;
+  }
+
+  .recipe-table-compact .recipe-name img,
+  .processing-table-compact .processing-name img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* =========================
+   반응형 - 480px
+========================= */
+@media (max-width: 480px) {
+  .content-area {
+    padding: var(--spacing-sm) !important;
+  }
+
+  .compact-card .card-header,
+  .compact-card .card-body {
+    padding: 10px 12px;
+  }
+
+  .setting-row {
+    padding: 6px 0;
+  }
+
+  .setting-input {
+    min-width: 55px;
+    max-width: 65px;
+    font-size: 11px;
+    padding: 5px 6px;
+  }
+
+  .tool-spec-row {
+    margin: -4px -8px 4px -8px;
+    padding: 6px 8px;
+  }
+
+  .table-controls-compact {
+    flex-direction: column;
+  }
+
+  .search-input-compact,
+  .sort-select-compact {
+    width: 100%;
+  }
+
+  .recipe-content-inner {
+    padding: 10px;
+  }
+
+  .table-wrapper-compact {
+    max-height: 350px;
+  }
+
+  .recipe-table-compact,
+  .processing-table-compact {
+    min-width: 300px;
+  }
+
+  .recipe-table-compact th,
+  .recipe-table-compact td,
+  .processing-table-compact th,
+  .processing-table-compact td {
+    padding: 6px 8px;
+  }
+}
