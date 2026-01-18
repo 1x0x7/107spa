@@ -2,12 +2,38 @@
 
 import { useState } from 'react'
 import { useExpert } from '@/hooks/useExpert'
-import { MINING_STAMINA_PER_MINE, PICKAXE_STATS, EXPERT_COBI, EXPERT_LUCKY, EXPERT_FIRE_PICK, EXPERT_GEM_START, ORE_DATA } from '@/data/mining'
+import { 
+  MINING_STAMINA_PER_MINE, 
+  PICKAXE_STATS, 
+  EXPERT_COBI, 
+  EXPERT_LUCKY, 
+  EXPERT_FIRE_PICK, 
+  EXPERT_GEM_START, 
+  ORE_DATA 
+} from '@/data/mining'
 
-interface Input { id: number; stamina: string; oreType: string }
+type OreType = keyof typeof ORE_DATA
+
+interface Input { id: number; stamina: string; oreType: OreType }
 interface Result {
-  oreName: string; gemName: string; baseOre: number; luckyOre: number; totalOre: number;
-  totalIngot: number; totalGem: number; relicProcs: number; cobiProcs: number; total: number; mineCount: number;
+  oreName: string
+  gemName: string
+  mineCount: number
+  baseOre: number
+  luckyOre: number
+  totalOre: number
+  totalIngot: number
+  totalGem: number
+  relicProcs: number
+  cobiProcs: number
+  total: number
+  // 보너스 정보
+  luckyRate: number
+  fireRate: number
+  gemRate: number
+  cobiBaseRate: number
+  cobiExpertRate: number
+  relicRate: number
 }
 
 export default function MiningStaminaPage() {
@@ -20,7 +46,11 @@ export default function MiningStaminaPage() {
   const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', oreType: 'corum' }])
   const removeInput = (id: number) => inputs.length > 1 && setInputs(inputs.filter(i => i.id !== id))
   const updateInput = (id: number, field: 'stamina' | 'oreType', value: string) => {
-    setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
+    if (field === 'oreType') {
+      setInputs(inputs.map(i => i.id === id ? { ...i, oreType: value as OreType } : i))
+    } else {
+      setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
+    }
   }
 
   const calculate = () => {
@@ -31,31 +61,60 @@ export default function MiningStaminaPage() {
       const stamina = parseInt(input.stamina)
       if (!stamina || stamina <= 0) continue
 
-      const stats = PICKAXE_STATS[mining.pickaxeLevel] || PICKAXE_STATS[1]
+      const pickaxeStats = PICKAXE_STATS[mining.pickaxeLevel] || PICKAXE_STATS[1]
       const mineCount = Math.floor(stamina / MINING_STAMINA_PER_MINE)
-      const baseOre = mineCount * stats.drops
+      
+      // 기본 광물 드롭
+      const baseOre = mineCount * pickaxeStats.drops
 
-      const lucky = EXPERT_LUCKY[mining.lucky] || { rate: 0, count: 0 }
-      const luckyOre = Math.floor(mineCount * lucky.rate) * lucky.count
-
-      const fire = EXPERT_FIRE_PICK[mining.firePick] || { rate: 0, count: 0 }
-      const totalIngot = Math.floor(mineCount * fire.rate) * fire.count
-
-      const gem = EXPERT_GEM_START[mining.gemStart] || { rate: 0, count: 0 }
-      const totalGem = Math.floor(mineCount * gem.rate) * gem.count
-
-      const relicProcs = Math.floor(mineCount * stats.relic)
-      const cobiRate = stats.cobi + (EXPERT_COBI[mining.cobi] || 0)
-      const cobiProcs = Math.floor(mineCount * cobiRate)
-
+      // 럭키 히트 (광석 추가)
+      const luckyData = EXPERT_LUCKY[mining.lucky] || { rate: 0, count: 0 }
+      const luckyProcs = Math.floor(mineCount * luckyData.rate)
+      const luckyOre = luckyProcs * luckyData.count
       const totalOre = baseOre + luckyOre
+
+      // 불붙은 곡괭이 (주괴 드롭)
+      const fireData = EXPERT_FIRE_PICK[mining.firePick] || { rate: 0, count: 0 }
+      const fireProcs = Math.floor(mineCount * fireData.rate)
+      const totalIngot = fireProcs * fireData.count
+
+      // 반짝임의 시작 (보석 드롭)
+      const gemData = EXPERT_GEM_START[mining.gemStart] || { rate: 0, count: 0 }
+      const gemProcs = Math.floor(mineCount * gemData.rate)
+      const totalGem = gemProcs * gemData.count
+
+      // 유물 (곡괭이 기본 확률)
+      const relicProcs = Math.floor(mineCount * pickaxeStats.relic)
+
+      // 코비 (곡괭이 기본 + 코비타임)
+      const cobiBaseRate = pickaxeStats.cobi
+      const cobiExpertRate = EXPERT_COBI[mining.cobi] || 0
+      const totalCobiRate = cobiBaseRate + cobiExpertRate
+      const cobiProcs = Math.floor(mineCount * totalCobiRate)
+
+      // 총합 (광물 + 주괴 + 보석)
       const itemTotal = totalOre + totalIngot + totalGem
       total += itemTotal
 
       const ore = ORE_DATA[input.oreType]
       newResults.push({
-        oreName: ore.name, gemName: ore.gemName, baseOre, luckyOre, totalOre,
-        totalIngot, totalGem, relicProcs, cobiProcs, total: itemTotal, mineCount
+        oreName: ore.name,
+        gemName: ore.gemName,
+        mineCount,
+        baseOre,
+        luckyOre,
+        totalOre,
+        totalIngot,
+        totalGem,
+        relicProcs,
+        cobiProcs,
+        total: itemTotal,
+        luckyRate: Math.round(luckyData.rate * 100),
+        fireRate: Math.round(fireData.rate * 100),
+        gemRate: Math.round(gemData.rate * 100),
+        cobiBaseRate: Math.round(cobiBaseRate * 100),
+        cobiExpertRate: Math.round(cobiExpertRate * 100),
+        relicRate: Math.round(pickaxeStats.relic * 100)
       })
     }
 
@@ -68,14 +127,14 @@ export default function MiningStaminaPage() {
   const fmt = (n: number) => n.toLocaleString()
 
   return (
-    <section className="content-area">
+    <section className="mining-page">
       <h2 className="content-title">스태미나 계산</h2>
 
       <div className="stamina-container">
         <div className="card">
           <div className="card-body">
             <div className="expert-info-text">
-              곡괭이 {mining.pickaxeLevel}강 · 코비타임 LV{mining.cobi} · 럭키 히트 LV{mining.lucky} · 불붙은 곡괭이 LV{mining.firePick}
+              곡괭이 {mining.pickaxeLevel}강 · 코비타임 LV{mining.cobi} · 럭키 히트 LV{mining.lucky} · 불붙은 곡괭이 LV{mining.firePick} · 반짝임의 시작 LV{mining.gemStart}
             </div>
 
             <div className="stamina-inputs-container">
@@ -109,7 +168,7 @@ export default function MiningStaminaPage() {
         {showResult && results.length > 0 && (
           <div className="result-card">
             <div className="result-section-title">
-              <span>⛏️ 예상 획득량</span>
+              <span>예상 획득량</span>
               <span>총 {fmt(grandTotal)}개</span>
             </div>
             <div className="result-body">
@@ -118,29 +177,43 @@ export default function MiningStaminaPage() {
                   <div key={i} className="result-section">
                     <div className="result-section-header">
                       {r.oreName}
-                      <span style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 400, color: 'var(--color-text-muted)' }}>{r.mineCount}회 채광</span>
                     </div>
                     <div className="result-row">
                       <span className="result-label">광물</span>
-                      <span className="result-value">{fmt(r.baseOre)}{r.luckyOre > 0 && <span className="result-detail bonus">+{r.luckyOre}</span>}</span>
+                      <span className="result-value">
+                        {fmt(r.baseOre)}
+                        {r.luckyOre > 0 && <span className="result-detail bonus">+{r.luckyOre}</span>}
+                      </span>
                     </div>
                     {r.totalIngot > 0 && (
                       <div className="result-row">
                         <span className="result-label">주괴</span>
-                        <span className="result-value primary">{fmt(r.totalIngot)}</span>
+                        <span className="result-value primary">
+                          {fmt(r.totalIngot)}
+                          <span className="result-detail">+{r.fireRate}%</span>
+                        </span>
                       </div>
                     )}
                     <div className="result-row">
                       <span className="result-label">{r.gemName}</span>
-                      <span className="result-value" style={{ color: '#9b59b6' }}>{fmt(r.totalGem)}</span>
+                      <span className="result-value">
+                        {fmt(r.totalGem)}
+                        {r.gemRate > 0 && <span className="result-detail">+{r.gemRate}%</span>}
+                      </span>
                     </div>
                     <div className="result-row">
                       <span className="result-label">유물</span>
-                      <span className="result-value" style={{ color: '#e67e22' }}>{fmt(r.relicProcs)}</span>
+                      <span className="result-value">
+                        {fmt(r.relicProcs)}
+                        {r.relicRate > 0 && <span className="result-detail">+{r.relicRate}%</span>}
+                      </span>
                     </div>
                     <div className="result-row">
                       <span className="result-label">코비</span>
-                      <span className="result-value" style={{ color: '#f39c12' }}>{fmt(r.cobiProcs)}</span>
+                      <span className="result-value">
+                        {fmt(r.cobiProcs)}
+                        {(r.cobiBaseRate + r.cobiExpertRate) > 0 && <span className="result-detail">+{r.cobiBaseRate + r.cobiExpertRate}%</span>}
+                      </span>
                     </div>
                     <div className="result-row total">
                       <span className="result-label">합계</span>
@@ -153,6 +226,21 @@ export default function MiningStaminaPage() {
                   </div>
                 ))}
               </div>
+
+              {/* 보너스 요약 */}
+              {results[0] && (results[0].luckyRate > 0 || results[0].fireRate > 0 || results[0].gemRate > 0 || results[0].cobiExpertRate > 0) && (
+                <div className="bonus-summary">
+                  <div className="bonus-summary-title">적용 보너스</div>
+                  {[
+                    results[0].luckyRate > 0 && `광물 추가 0% → <strong>${results[0].luckyRate}%</strong> (럭키 히트 +${results[0].luckyRate}%)`,
+                    results[0].fireRate > 0 && `주괴 추가 0% → <strong>${results[0].fireRate}%</strong> (불붙은 곡괭이 +${results[0].fireRate}%)`,
+                    results[0].gemRate > 0 && `보석 추가 0% → <strong>${results[0].gemRate}%</strong> (반짝임의 시작 +${results[0].gemRate}%)`,
+                    results[0].cobiExpertRate > 0 && `코비 확률 ${results[0].cobiBaseRate}% → <strong>${results[0].cobiBaseRate + results[0].cobiExpertRate}%</strong> (코비타임 +${results[0].cobiExpertRate}%)`
+                  ].filter(Boolean).map((text, i, arr) => (
+                    <span key={i} dangerouslySetInnerHTML={{ __html: text + (i < arr.length - 1 ? ' · ' : '') }} />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -8,6 +8,7 @@ import './styles/globals.css'
 import './styles/layout.css'
 import './styles/dark.css'
 import './styles/info.css'
+import './styles/stamina.css'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

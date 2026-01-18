@@ -2,24 +2,35 @@
 
 import { useState } from 'react'
 import { useExpert } from '@/hooks/useExpert'
-import { OCEAN_STAMINA_PER_GATHER, ROD_DATA, EXPERT_DEEP_SEA, EXPERT_STAR, EXPERT_CLAM_REFILL, FISH_DATA, FISH_IMAGES } from '@/data/ocean'
+import { 
+  OCEAN_STAMINA_PER_GATHER, 
+  ROD_DATA,
+  EXPERT_DEEP_SEA, 
+  EXPERT_STAR, 
+  EXPERT_CLAM_REFILL, 
+  FISH_DATA, 
+  FISH_IMAGES 
+} from '@/data/ocean'
 
-interface Input { id: number; stamina: string; fishType: string }
+type FishType = keyof typeof FISH_DATA
+
+interface Input { id: number; stamina: string; fishType: FishType }
 interface Result {
-  fishType: string
+  fishType: FishType
   fishName: string
+  gatherCount: number
   star1: number
   star2: number
   star3: number
-  clam: number
+  clamCount: number
   totalDrops: number
-  gatherCount: number
   starBonus: number
   clamBonusPercent: number
   deepSeaBonusPercent: number
+  baseClamRate: number
 }
 
-// 등급별 분배 함수 (기존 JS와 동일)
+// 등급별 분배 함수 (원본 JS와 동일)
 function distributeByRarity(totalDrops: number, starLevel: number) {
   const starBonus = EXPERT_STAR[starLevel] || 0
 
@@ -28,7 +39,7 @@ function distributeByRarity(totalDrops: number, starLevel: number) {
   const base2 = 30
   const base3 = 10
 
-  // 3성 보너스는 "가중치"로 더함
+  // 3성 보너스는 가중치로 추가
   const bonusWeight = starBonus * 100
 
   const weight1 = base1
@@ -76,7 +87,11 @@ export default function OceanStaminaPage() {
   const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', fishType: 'oyster' }])
   const removeInput = (id: number) => inputs.length > 1 && setInputs(inputs.filter(i => i.id !== id))
   const updateInput = (id: number, field: 'stamina' | 'fishType', value: string) => {
-    setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
+    if (field === 'fishType') {
+      setInputs(inputs.map(i => i.id === id ? { ...i, fishType: value as FishType } : i))
+    } else {
+      setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
+    }
   }
 
   const calculate = () => {
@@ -87,11 +102,11 @@ export default function OceanStaminaPage() {
       const stamina = parseInt(input.stamina)
       if (!stamina || stamina <= 0) continue
 
-      const rod = ROD_DATA[ocean.rodLevel] || ROD_DATA[1]
       const gatherCount = Math.floor(stamina / OCEAN_STAMINA_PER_GATHER)
       
-      // 기본 드롭
-      const dropsPerGather = rod.drop
+      // ROD_DATA 사용 (기존 데이터)
+      const rodStats = ROD_DATA[ocean.rodLevel] || ROD_DATA[1]
+      const dropsPerGather = rodStats.drop
       let totalDrops = gatherCount * dropsPerGather
       
       // 심해 채집꾼 보너스 (추가 드롭)
@@ -102,11 +117,11 @@ export default function OceanStaminaPage() {
       // 등급별 분배
       const { count1, count2, count3, starBonus } = distributeByRarity(totalDrops, ocean.star)
       
-      // 조개 계산
-      const baseClamRate = rod.clamRate
-      const clamRefillBonus = EXPERT_CLAM_REFILL[ocean.clamRefill] || 0
-      const totalClamRate = baseClamRate + clamRefillBonus
-      const clam = Math.floor(gatherCount * totalClamRate)
+      // 조개 계산 (ROD_DATA.clamRate 사용)
+      const baseClamRate = rodStats.clamRate
+      const clamBonus = EXPERT_CLAM_REFILL[ocean.clamRefill] || 0
+      const totalClamRate = baseClamRate + clamBonus
+      const clamCount = Math.floor(gatherCount * totalClamRate)
       
       total += totalDrops
 
@@ -114,15 +129,16 @@ export default function OceanStaminaPage() {
       newResults.push({
         fishType: input.fishType, 
         fishName: fish.name,
+        gatherCount,
         star1: count1,
         star2: count2,
         star3: count3,
-        clam,
+        clamCount,
         totalDrops,
-        gatherCount,
         starBonus,
-        clamBonusPercent: Math.round(clamRefillBonus * 100),
-        deepSeaBonusPercent: Math.round(deepSeaBonus * 100)
+        clamBonusPercent: Math.round(clamBonus * 100),
+        deepSeaBonusPercent: Math.round(deepSeaBonus * 100),
+        baseClamRate: Math.round(baseClamRate * 100)
       })
     }
 
@@ -133,12 +149,18 @@ export default function OceanStaminaPage() {
   }
 
   const fmt = (n: number) => n.toLocaleString()
-  
-  // 조개 기본 확률 표시용
-  const baseClamRate = Math.round((ROD_DATA[ocean.rodLevel]?.clamRate || 0.01) * 100)
+
+  // 보너스 텍스트 생성
+  const getBonusTexts = (r: Result): string[] => {
+    const texts: string[] = []
+    if (r.starBonus > 0) texts.push(`3성 확률 10% → <strong>${10 + r.starBonus}%</strong> (별별별 +${r.starBonus}%)`)
+    if (r.clamBonusPercent > 0) texts.push(`조개 확률 ${r.baseClamRate}% → <strong>${r.baseClamRate + r.clamBonusPercent}%</strong> (리필 +${r.clamBonusPercent}%)`)
+    if (r.deepSeaBonusPercent > 0) texts.push(`추가 드롭 <strong>+${r.deepSeaBonusPercent}%</strong>`)
+    return texts
+  }
 
   return (
-    <section className="content-area">
+    <section className="ocean-page">
       <h2 className="content-title">스태미나 계산</h2>
 
       <div className="stamina-container">
@@ -206,11 +228,17 @@ export default function OceanStaminaPage() {
                     </div>
                     <div className="result-row">
                       <span className="result-label">★★★</span>
-                      <span className="result-value primary">{fmt(r.star3)}{r.starBonus > 0 && <span className="result-detail">+{r.starBonus}%</span>}</span>
+                      <span className="result-value primary">
+                        {fmt(r.star3)}
+                        {r.starBonus > 0 && <span className="result-detail">+{r.starBonus}%</span>}
+                      </span>
                     </div>
                     <div className="result-row">
                       <span className="result-label">조개</span>
-                      <span className="result-value">{fmt(r.clam)}{r.clamBonusPercent > 0 && <span className="result-detail">+{r.clamBonusPercent}%</span>}</span>
+                      <span className="result-value">
+                        {fmt(r.clamCount)}
+                        {r.clamBonusPercent > 0 && <span className="result-detail">+{r.clamBonusPercent}%</span>}
+                      </span>
                     </div>
                     <div className="result-row total">
                       <span className="result-label">합계</span>
@@ -219,14 +247,13 @@ export default function OceanStaminaPage() {
                   </div>
                 ))}
               </div>
-              {results[0] && (results[0].starBonus > 0 || results[0].clamBonusPercent > 0 || results[0].deepSeaBonusPercent > 0) && (
+
+              {results[0] && getBonusTexts(results[0]).length > 0 && (
                 <div className="bonus-summary">
                   <div className="bonus-summary-title">적용 보너스</div>
-                  {results[0].starBonus > 0 && <>3성 확률 10% → <strong>{10 + results[0].starBonus}%</strong> (별별별 +{results[0].starBonus}%)</>}
-                  {results[0].starBonus > 0 && results[0].clamBonusPercent > 0 && ' · '}
-                  {results[0].clamBonusPercent > 0 && <>조개 확률 {baseClamRate}% → <strong>{baseClamRate + results[0].clamBonusPercent}%</strong> (리필 +{results[0].clamBonusPercent}%)</>}
-                  {(results[0].starBonus > 0 || results[0].clamBonusPercent > 0) && results[0].deepSeaBonusPercent > 0 && ' · '}
-                  {results[0].deepSeaBonusPercent > 0 && <>추가 드롭 <strong>+{results[0].deepSeaBonusPercent}%</strong></>}
+                  {getBonusTexts(results[0]).map((text, i, arr) => (
+                    <span key={i} dangerouslySetInnerHTML={{ __html: text + (i < arr.length - 1 ? ' · ' : '') }} />
+                  ))}
                 </div>
               )}
             </div>

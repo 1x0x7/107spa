@@ -2,14 +2,33 @@
 
 export const FARMING_STAMINA_PER_HARVEST = 7
 
-export const HOE_STATS: Record<number, { drops: number; seed: number }> = {
-  1: { drops: 2, seed: 0 }, 2: { drops: 2, seed: 0.01 }, 3: { drops: 3, seed: 0.01 },
-  4: { drops: 3, seed: 0.02 }, 5: { drops: 3, seed: 0.02 }, 6: { drops: 4, seed: 0.03 },
-  7: { drops: 4, seed: 0.03 }, 8: { drops: 4, seed: 0.04 }, 9: { drops: 5, seed: 0.05 },
-  10: { drops: 5, seed: 0.05 }, 11: { drops: 5, seed: 0.07 }, 12: { drops: 6, seed: 0.07 },
-  13: { drops: 6, seed: 0.09 }, 14: { drops: 7, seed: 0.09 }, 15: { drops: 10, seed: 0.15 }
+// 괭이 레벨별 씨앗 드롭 수 (아일랜드 채집용) - 원본 JS 기준
+export const HOE_DROPS: Record<number, number> = {
+  0: 1, 1: 1, 2: 2, 3: 2, 4: 2, 5: 3,
+  6: 3, 7: 3, 8: 4, 9: 4, 10: 4,
+  11: 5, 12: 5, 13: 6, 14: 6, 15: 10
 }
 
+// 괭이 강화 스펙 (위키 기준 - 마을 수확용)
+export const HOE_STATS: Record<number, { drops: number; seed: number }> = {
+  1: { drops: 2, seed: 0 }, 
+  2: { drops: 3, seed: 0.01 },
+  3: { drops: 3, seed: 0.01 },
+  4: { drops: 3, seed: 0.02 }, 
+  5: { drops: 4, seed: 0.02 },
+  6: { drops: 4, seed: 0.03 },
+  7: { drops: 4, seed: 0.03 }, 
+  8: { drops: 5, seed: 0.04 },
+  9: { drops: 5, seed: 0.05 },
+  10: { drops: 5, seed: 0.05 }, 
+  11: { drops: 6, seed: 0.07 },
+  12: { drops: 6, seed: 0.07 },
+  13: { drops: 7, seed: 0.09 },
+  14: { drops: 7, seed: 0.09 }, 
+  15: { drops: 12, seed: 0.15 }
+}
+
+// 전문가: 자연이 주는 선물 (아일랜드 채집 시 씨앗 추가)
 export const EXPERT_GIFT: Record<number, { rate: number; count: number }> = {
   0: { rate: 0, count: 0 }, 1: { rate: 0.01, count: 1 }, 2: { rate: 0.02, count: 1 },
   3: { rate: 0.03, count: 1 }, 4: { rate: 0.04, count: 1 }, 5: { rate: 0.05, count: 2 },
@@ -17,12 +36,14 @@ export const EXPERT_GIFT: Record<number, { rate: number; count: number }> = {
   9: { rate: 0.09, count: 5 }, 10: { rate: 0.10, count: 8 }
 }
 
+// 전문가: 오늘도 풍년이다! (마을 수확 시 농작물 추가)
 export const EXPERT_HARVEST: Record<number, { rate: number; count: number }> = {
   0: { rate: 0, count: 0 }, 1: { rate: 0.01, count: 1 }, 2: { rate: 0.02, count: 1 },
   3: { rate: 0.03, count: 1 }, 4: { rate: 0.04, count: 1 }, 5: { rate: 0.05, count: 2 },
   6: { rate: 0.07, count: 2 }, 7: { rate: 0.10, count: 3 }
 }
 
+// 전문가: 불붙은 괭이 (아일랜드 채집 시 베이스 추가)
 export const EXPERT_FIRE_HOE: Record<number, { rate: number; count: number }> = {
   0: { rate: 0, count: 0 }, 1: { rate: 0.01, count: 1 }, 2: { rate: 0.02, count: 1 },
   3: { rate: 0.03, count: 2 }, 4: { rate: 0.04, count: 2 }, 5: { rate: 0.05, count: 2 },

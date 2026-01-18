@@ -2,28 +2,42 @@
 
 import { useState } from 'react'
 import { useExpert } from '@/hooks/useExpert'
-import { MINING_STAMINA_PER_MINE, PICKAXE_STATS, EXPERT_COBI, EXPERT_LUCKY, EXPERT_FIRE_PICK, EXPERT_GEM_START, ORE_DATA } from '@/data/mining'
+import { 
+  FARMING_STAMINA_PER_HARVEST, 
+  HOE_DROPS,
+  EXPERT_GIFT, 
+  EXPERT_FIRE_HOE, 
+  CROP_DATA 
+} from '@/data/farming'
 
-type OreType = keyof typeof ORE_DATA
+type CropType = keyof typeof CROP_DATA
 
-interface Input { id: number; stamina: string; oreType: OreType }
+interface Input { id: number; stamina: string; cropType: CropType }
 interface Result {
-  oreName: string; gemName: string; baseOre: number; luckyOre: number; totalOre: number;
-  totalIngot: number; totalGem: number; relicProcs: number; cobiProcs: number; total: number; mineCount: number;
+  cropName: string
+  gatherCount: number
+  baseSeeds: number
+  giftSeeds: number
+  totalSeeds: number
+  totalBase: number
+  giftRate: number
+  giftCount: number
+  fireRate: number
+  fireCount: number
 }
 
-export default function MiningStaminaPage() {
-  const { mining } = useExpert()
-  const [inputs, setInputs] = useState<Input[]>([{ id: 1, stamina: '', oreType: 'corum' }])
+export default function FarmingStaminaPage() {
+  const { farming } = useExpert()
+  const [inputs, setInputs] = useState<Input[]>([{ id: 1, stamina: '', cropType: 'tomato' }])
   const [results, setResults] = useState<Result[]>([])
   const [grandTotal, setGrandTotal] = useState(0)
   const [showResult, setShowResult] = useState(false)
 
-  const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', oreType: 'corum' }])
+  const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', cropType: 'tomato' }])
   const removeInput = (id: number) => inputs.length > 1 && setInputs(inputs.filter(i => i.id !== id))
-  const updateInput = (id: number, field: 'stamina' | 'oreType', value: string) => {
-    if (field === 'oreType') {
-      setInputs(inputs.map(i => i.id === id ? { ...i, oreType: value as OreType } : i))
+  const updateInput = (id: number, field: 'stamina' | 'cropType', value: string) => {
+    if (field === 'cropType') {
+      setInputs(inputs.map(i => i.id === id ? { ...i, cropType: value as CropType } : i))
     } else {
       setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
     }
@@ -37,31 +51,40 @@ export default function MiningStaminaPage() {
       const stamina = parseInt(input.stamina)
       if (!stamina || stamina <= 0) continue
 
-      const stats = PICKAXE_STATS[mining.pickaxeLevel] || PICKAXE_STATS[1]
-      const mineCount = Math.floor(stamina / MINING_STAMINA_PER_MINE)
-      const baseOre = mineCount * stats.drops
+      // 채집 횟수
+      const gatherCount = Math.floor(stamina / FARMING_STAMINA_PER_HARVEST)
+      
+      // 괭이 레벨별 기본 씨앗 드롭
+      const dropsPerGather = HOE_DROPS[farming.hoeLevel] || 1
+      const baseSeeds = gatherCount * dropsPerGather
 
-      const lucky = EXPERT_LUCKY[mining.lucky] || { rate: 0, count: 0 }
-      const luckyOre = Math.floor(mineCount * lucky.rate) * lucky.count
+      // 자연이 주는 선물 (씨앗 추가)
+      const giftData = EXPERT_GIFT[farming.gift] || { rate: 0, count: 0 }
+      const giftProcs = Math.floor(gatherCount * giftData.rate)
+      const giftSeeds = giftProcs * giftData.count
+      
+      const totalSeeds = baseSeeds + giftSeeds
 
-      const fire = EXPERT_FIRE_PICK[mining.firePick] || { rate: 0, count: 0 }
-      const totalIngot = Math.floor(mineCount * fire.rate) * fire.count
+      // 불붙은 괭이 (베이스 추가)
+      const fireData = EXPERT_FIRE_HOE[farming.fire] || { rate: 0, count: 0 }
+      const fireProcs = Math.floor(gatherCount * fireData.rate)
+      const totalBase = fireProcs * fireData.count
 
-      const gem = EXPERT_GEM_START[mining.gemStart] || { rate: 0, count: 0 }
-      const totalGem = Math.floor(mineCount * gem.rate) * gem.count
+      // 총합 = 씨앗 + 베이스
+      total += totalSeeds + totalBase
 
-      const relicProcs = Math.floor(mineCount * stats.relic)
-      const cobiRate = stats.cobi + (EXPERT_COBI[mining.cobi] || 0)
-      const cobiProcs = Math.floor(mineCount * cobiRate)
-
-      const totalOre = baseOre + luckyOre
-      const itemTotal = totalOre + totalIngot + totalGem
-      total += itemTotal
-
-      const ore = ORE_DATA[input.oreType]
+      const crop = CROP_DATA[input.cropType]
       newResults.push({
-        oreName: ore.name, gemName: ore.gemName, baseOre, luckyOre, totalOre,
-        totalIngot, totalGem, relicProcs, cobiProcs, total: itemTotal, mineCount
+        cropName: crop.name,
+        gatherCount,
+        baseSeeds,
+        giftSeeds,
+        totalSeeds,
+        totalBase,
+        giftRate: Math.round(giftData.rate * 100),
+        giftCount: giftData.count,
+        fireRate: Math.round(fireData.rate * 100),
+        fireCount: fireData.count
       })
     }
 
@@ -74,14 +97,14 @@ export default function MiningStaminaPage() {
   const fmt = (n: number) => n.toLocaleString()
 
   return (
-    <section className="content-area">
+    <section className="farming-area">
       <h2 className="content-title">스태미나 계산</h2>
 
       <div className="stamina-container">
         <div className="card">
           <div className="card-body">
             <div className="expert-info-text">
-              곡괭이 {mining.pickaxeLevel}강 · 코비타임 LV{mining.cobi} · 럭키 히트 LV{mining.lucky} · 불붙은 곡괭이 LV{mining.firePick}
+              괭이 {farming.hoeLevel}강 · 자연이 주는 선물 LV{farming.gift} · 불붙은 괭이 LV{farming.fire}
             </div>
 
             <div className="stamina-inputs-container">
@@ -89,15 +112,15 @@ export default function MiningStaminaPage() {
                 <div key={input.id} className="stamina-input-row">
                   <div className="stamina-input-group">
                     <span className="stamina-label">스태미나</span>
-                    <input type="number" className="stamina-input" placeholder="3300" value={input.stamina}
+                    <input type="number" className="stamina-input" placeholder="3000" value={input.stamina}
                       onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && calculate()} />
-                    <span className="stamina-label">광물</span>
-                    <select className="stamina-select" value={input.oreType}
-                      onChange={(e) => updateInput(input.id, 'oreType', e.target.value)}>
-                      <option value="corum">코룸</option>
-                      <option value="lifton">리프톤</option>
-                      <option value="serent">세렌트</option>
+                    <span className="stamina-label">작물</span>
+                    <select className="stamina-select" value={input.cropType}
+                      onChange={(e) => updateInput(input.id, 'cropType', e.target.value)}>
+                      <option value="tomato">토마토</option>
+                      <option value="onion">양파</option>
+                      <option value="garlic">마늘</option>
                     </select>
                   </div>
                   {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
@@ -115,7 +138,7 @@ export default function MiningStaminaPage() {
         {showResult && results.length > 0 && (
           <div className="result-card">
             <div className="result-section-title">
-              <span>⛏️ 예상 획득량</span>
+              <span>예상 획득량</span>
               <span>총 {fmt(grandTotal)}개</span>
             </div>
             <div className="result-body">
@@ -123,42 +146,45 @@ export default function MiningStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
-                      {r.oreName}
-                      <span style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 400, color: 'var(--color-text-muted)' }}>{r.mineCount}회 채광</span>
+                      {r.cropName}
                     </div>
                     <div className="result-row">
-                      <span className="result-label">광물</span>
-                      <span className="result-value">{fmt(r.baseOre)}{r.luckyOre > 0 && <span className="result-detail bonus">+{r.luckyOre}</span>}</span>
+                      <span className="result-label">씨앗</span>
+                      <span className="result-value">
+                        {fmt(r.baseSeeds)}
+                        {r.giftSeeds > 0 && <span className="result-detail bonus">+{r.giftSeeds}</span>}
+                      </span>
                     </div>
-                    {r.totalIngot > 0 && (
+                    {r.totalBase > 0 && (
                       <div className="result-row">
-                        <span className="result-label">주괴</span>
-                        <span className="result-value primary">{fmt(r.totalIngot)}</span>
+                        <span className="result-label">베이스</span>
+                        <span className="result-value primary">
+                          {fmt(r.totalBase)}
+                          <span className="result-detail">+{r.fireRate}%</span>
+                        </span>
                       </div>
                     )}
-                    <div className="result-row">
-                      <span className="result-label">{r.gemName}</span>
-                      <span className="result-value" style={{ color: '#9b59b6' }}>{fmt(r.totalGem)}</span>
-                    </div>
-                    <div className="result-row">
-                      <span className="result-label">유물</span>
-                      <span className="result-value" style={{ color: '#e67e22' }}>{fmt(r.relicProcs)}</span>
-                    </div>
-                    <div className="result-row">
-                      <span className="result-label">코비</span>
-                      <span className="result-value" style={{ color: '#f39c12' }}>{fmt(r.cobiProcs)}</span>
-                    </div>
                     <div className="result-row total">
                       <span className="result-label">합계</span>
-                      <span className="result-value primary">{fmt(r.total)}</span>
-                    </div>
-                    <div className="result-row" style={{ fontSize: 11, marginTop: 4 }}>
-                      <span className="result-label" style={{ color: 'var(--color-text-muted)' }}>주괴 환산</span>
-                      <span className="result-value" style={{ fontWeight: 400, color: 'var(--color-text-muted)' }}>{fmt(Math.floor(r.totalOre / 16))}개</span>
+                      <span className="result-value primary">{fmt(r.totalSeeds + r.totalBase)}</span>
                     </div>
                   </div>
                 ))}
               </div>
+              
+              {/* 보너스 요약 */}
+              {results[0] && (results[0].giftRate > 0 || results[0].fireRate > 0) && (
+                <div className="bonus-summary">
+                  <div className="bonus-summary-title">적용 전문가</div>
+                  {results[0].giftRate > 0 && (
+                    <>씨앗 추가 0% → <strong>{results[0].giftRate}%</strong> (자연이 주는 선물 +{results[0].giftRate}%)</>
+                  )}
+                  {results[0].giftRate > 0 && results[0].fireRate > 0 && ' · '}
+                  {results[0].fireRate > 0 && (
+                    <>베이스 드롭 0% → <strong>{results[0].fireRate}%</strong> (불붙은 괭이 +{results[0].fireRate}%)</>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
