@@ -1,0 +1,909 @@
+/* =========================
+   해양 연금품 계산기 스타일
+   - 이미지 있는 재료 / 없는 재료 구분
+   - 토글 on/off 버튼
+========================= */
+
+/* ===== 컨테이너 ===== */
+.gold-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* ===== 성급 선택 토글 ===== */
+.gold-star-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background-color: var(--color-bg-secondary, #f8f9fa);
+  border-radius: var(--border-radius-md, 8px);
+  flex-wrap: wrap;
+}
+
+.gold-star-toggle label {
+  padding: 8px 20px;
+  border-radius: var(--border-radius-full, 999px);
+  border: 1px solid var(--color-border-light, #e0e0e0);
+  cursor: pointer;
+  font-size: clamp(12px, 3vw, 14px);
+  background: white;
+  color: var(--color-text-secondary, #666);
+  font-weight: 500;
+  transition: background-color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.gold-star-toggle label:hover {
+  background: var(--color-bg-hover, #f1f3f5);
+}
+
+.gold-star-toggle label.active {
+  background: var(--color-primary, #4a90e2);
+  color: white;
+  border-color: var(--color-primary, #4a90e2);
+}
+
+.gold-star-toggle label input {
+  display: none;
+}
+
+
+
+/* ===== 계산기 카드 ===== */
+.gold-card {
+  background-color: white;
+  border-radius: var(--border-radius-lg, 12px);
+  padding: 24px;
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.08));
+  margin-bottom: 24px;
+}
+
+.gold-card-header {
+  font-size: clamp(0.9rem, 3vw, 1rem);
+  margin-bottom: 14px;
+  color: #333;
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-border, #e0e0e0);
+  padding-bottom: 8px;
+}
+
+.gold-card-body {
+  /* 내부 컨텐츠 래퍼 */
+}
+
+/* ===== 입력 그리드 ===== */
+.gold-input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.gold-input-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: var(--color-text-secondary, #666);
+  font-weight: 500;
+  text-align: left;
+}
+
+.gold-input-label input {
+  padding: 8px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #e0e0e0);
+  text-align: center;
+  font-size: clamp(11px, 3vw, 13px);
+  background-color: white;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.gold-input-label input:focus {
+  outline: none;
+  border-color: var(--color-primary, #4a90e2);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* ===== 고급 입력 섹션 ===== */
+.gold-advanced-section {
+  margin-bottom: 20px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #d0d0d0;
+}
+
+.gold-advanced-section h4 {
+  color: var(--color-primary, #4a90e2);
+  margin-bottom: 12px;
+  font-size: clamp(11px, 3vw, 13px);
+  font-weight: 600;
+}
+
+/* ===== 계산 버튼 ===== */
+.gold-btn-calculate {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 16px 0 0 0;
+  padding: 10px 18px;
+  background: var(--color-primary, #4a90e2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: clamp(12px, 3vw, 13px);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.gold-btn-calculate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+}
+
+/* ===== 결과 카드 ===== */
+.gold-result-card {
+  background: white;
+  border-radius: var(--border-radius-2xl, 16px);
+  padding: 20px;
+  box-shadow: var(--shadow-xl, 0 8px 24px rgba(0,0,0,0.12));
+  margin-top: 20px;
+}
+
+/* 결과 헤더 */
+.gold-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border, #e0e0e0);
+  padding-bottom: 11px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: var(--spacing-md, 12px);
+}
+
+.gold-result-header h4 {
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-weight: 600;
+  color: var(--color-text, #333);
+  margin: 0;
+}
+
+.gold-result-gold {
+  font-size: clamp(1rem, 4vw, 1.17rem);
+  font-weight: 700;
+  color: var(--color-danger, #e74c3c);
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.gold-result-gold small {
+  font-size: clamp(12px, 3vw, 15px);
+  font-weight: 600;
+  color: #888;
+}
+
+/* ===== 결과 제품 (상단 3개) ===== */
+.gold-result-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 11px;
+  margin-bottom: 18px;
+}
+
+.gold-result-products > div {
+  background: var(--color-bg-card, #f8f9fa);
+  border-radius: 11px;
+  padding: 13px 9px;
+  text-align: center;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.gold-result-products .product-name {
+  font-size: clamp(0.65rem, 2.5vw, 0.77rem);
+  color: var(--color-text, #333);
+  font-weight: 500;
+}
+
+.gold-result-products .product-count {
+  margin-top: 7px;
+  font-size: clamp(1rem, 4vw, 1.17rem);
+  font-weight: 700;
+  color: var(--color-primary, #4a90e2);
+}
+
+/* ===== 결과 섹션 ===== */
+.gold-result-section {
+  margin-bottom: 18px;
+}
+
+.gold-result-section:last-child {
+  margin-bottom: 0;
+}
+
+.gold-result-section h5 {
+  font-size: clamp(0.75rem, 3vw, 0.86rem);
+  font-weight: 600;
+  color: var(--color-text, #333);
+  margin-bottom: 11px;
+}
+
+/* ===========================================
+   이미지가 있는 재료 (에센스, 핵, 결정, 엘릭서, 영약)
+   - 카드 형태로 표시
+=========================================== */
+.gold-material-tags.with-image {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 9px;
+}
+
+.gold-material-tag.with-image {
+  background: var(--color-bg-card, #f8f9fa);
+  border-radius: 9px;
+  padding: 10px 6px;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+}
+
+.gold-material-tag.with-image .mat-icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gold-material-tag.with-image .mat-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.gold-material-tag.with-image .mat-name {
+  font-size: clamp(0.6rem, 2vw, 0.7rem);
+  color: #333;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  font-weight: 500;
+}
+
+.gold-material-tag.with-image .mat-value {
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-weight: 600;
+  color: #666;
+}
+
+/* ===========================================
+   이미지가 없는 재료 (블록, 물고기, 광물, 산호 등)
+   - 인라인 태그 형태로 간단하게 표시
+=========================================== */
+.gold-material-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gold-material-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--color-bg-secondary, #f5f5f5);
+  border-radius: 6px;
+  font-size: clamp(11px, 2.5vw, 12px);
+}
+
+.gold-material-tag .mat-name {
+  color: #333;
+  font-weight: 500;
+}
+
+.gold-material-tag .mat-value {
+  font-weight: 600;
+  color: #666;
+}
+
+/* ===== 스위치 전체 컨테이너 ===== */
+.switch-container {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ===== 개별 스위치 묶음 ===== */
+.switch-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 텍스트 라벨 */
+.switch-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
+  padding-top: 1px; /* 스위치 중앙 정렬 보정 */
+}
+
+/* ===== 스위치 영역 ===== */
+.switcher {
+  position: relative;
+}
+
+.switcher input {
+  display: none;
+}
+
+/* 트랙 */
+.switch_label {
+  display: block;
+  width: 47px;
+  height: 25px;
+  background: var(--color-bg-secondary, #f0f0f0);
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.25s ease;
+}
+
+/* 버튼 */
+.switch_label .onf_btn {
+  position: absolute;
+  top: 3px;              /* (22 - 16) / 2 */
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: left 0.25s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+/* ON 상태 */
+.switcher input:checked + .switch_label {
+  background: var(--color-primary, #4a90e2);
+}
+
+/* 이동 위치 (정확 계산) */
+.switcher input:checked + .switch_label .onf_btn {
+  left: 25px; /* 44 - 16 - 3 */
+}
+
+/* ===== 성급 토글 우측 정렬 컨테이너 ===== */
+.gold-switch-container {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ===== 초기화 버튼 ===== */
+.gold-reset-btn {
+  padding: 6px 14px;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 500;
+  color: #666;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gold-reset-btn:hover {
+  background: #e0e0e0;
+  border-color: #ccc;
+  color: #333;
+}
+
+/* ===========================================
+   통합 계산기 4열 그리드 레이아웃
+=========================================== */
+.gold-unified-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.gold-unified-col {
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+}
+
+.unified-tier-label {
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.unified-products {
+  margin-bottom: 8px;
+}
+
+.unified-product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+  font-size: clamp(0.65rem, 2vw, 0.75rem);
+}
+
+.unified-product-row span {
+  color: #555;
+}
+
+.unified-product-row strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.unified-gold {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-weight: 700;
+  color: var(--color-danger, #e74c3c);
+  padding-top: 6px;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* 희석액 필요 재료 섹션 */
+.gold-dilution-materials {
+  margin-top: 16px;
+  padding: 14px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.gold-dilution-materials h5 {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.dilution-section {
+  margin-bottom: 14px;
+}
+
+.dilution-section:last-child {
+  margin-bottom: 0;
+}
+
+.dilution-section h6 {
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.dilution-material-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.dilution-material-row .gold-result-section {
+  margin-bottom: 0;
+}
+
+.dilution-material-row .gold-result-section h5 {
+  font-size: clamp(0.6rem, 1.8vw, 0.7rem);
+  color: #666;
+  margin-bottom: 6px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* ===========================================
+   통합 계산기 티어별 섹션
+=========================================== */
+.gold-tier-section {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.gold-tier-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.gold-tier-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.gold-tier-header.dilution {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.gold-tier-header.star1 {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+}
+
+.gold-tier-header.star2 {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+.gold-tier-header.star3 {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+}
+
+.gold-tier-header .tier-label {
+  font-size: clamp(0.8rem, 3vw, 0.9rem);
+  font-weight: 600;
+  color: #333;
+}
+
+.gold-tier-header .tier-gold {
+  font-size: clamp(0.85rem, 3vw, 0.95rem);
+  font-weight: 700;
+  color: var(--color-danger, #e74c3c);
+}
+
+.gold-result-products.single {
+  grid-template-columns: 1fr;
+  max-width: 200px;
+}
+
+/* ===========================================
+   통합 계산기 요약 그리드
+=========================================== */
+.gold-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.gold-summary-item {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 10px;
+  padding: 12px 10px;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.gold-summary-item.dilution {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: rgba(33, 150, 243, 0.2);
+}
+
+.gold-summary-item.star1 {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  border-color: rgba(255, 193, 7, 0.2);
+}
+
+.gold-summary-item.star2 {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-color: rgba(76, 175, 80, 0.2);
+}
+
+.gold-summary-item.star3 {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  border-color: rgba(156, 39, 176, 0.2);
+}
+
+.gold-summary-item .summary-tier {
+  font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.gold-summary-item .summary-count {
+  font-size: clamp(1rem, 3.5vw, 1.1rem);
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.gold-summary-item .summary-products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.gold-summary-item .summary-products span {
+  font-size: clamp(0.6rem, 2vw, 0.7rem);
+  font-weight: 600;
+  color: #444;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.gold-summary-item .summary-gold {
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+  font-weight: 700;
+  color: var(--color-danger, #e74c3c);
+}
+
+/* 상세보기 버튼 */
+.gold-btn-details {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: var(--color-bg-secondary, #f5f5f5);
+  color: #666;
+  border: 1px solid var(--color-border-light, #e0e0e0);
+  border-radius: 6px;
+  font-size: clamp(11px, 2.5vw, 12px);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.gold-btn-details:hover {
+  background: var(--color-bg-hover, #e9ecef);
+  color: #333;
+}
+
+/* 상세 정보 섹션 */
+.gold-details-section {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed #d0d0d0;
+}
+
+.gold-detail-tier {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--color-bg-card, #f8f9fa);
+  border-radius: 8px;
+}
+
+.gold-detail-tier:last-child {
+  margin-bottom: 0;
+}
+
+.gold-detail-tier h5 {
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+  font-weight: 600;
+  color: var(--color-primary, #4a90e2);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.gold-detail-tier .gold-result-section {
+  margin-bottom: 10px;
+}
+
+.gold-detail-tier .gold-result-section h5 {
+  font-size: clamp(0.65rem, 2vw, 0.75rem);
+  color: #555;
+  margin-bottom: 6px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* 티어별 상세 색상 */
+.gold-detail-tier.dilution-detail {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.gold-detail-tier.dilution-detail h5 {
+  color: #1565c0;
+}
+
+.gold-detail-tier.star1-detail {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.gold-detail-tier.star1-detail h5 {
+  color: #f57c00;
+}
+
+.gold-detail-tier.star2-detail {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.gold-detail-tier.star2-detail h5 {
+  color: #2e7d32;
+}
+
+.gold-detail-tier.star3-detail {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+  border: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+.gold-detail-tier.star3-detail h5 {
+  color: #7b1fa2;
+}
+
+/* ===== 애니메이션 ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .gold-container {
+    padding: 0 12px;
+  }
+
+  .gold-card {
+    padding: 16px;
+  }
+
+  .gold-star-toggle {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .gold-star-toggle label {
+    text-align: center;
+    padding: 10px 16px;
+  }
+
+  .gold-switch-container {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .gold-input-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gold-btn-calculate {
+    max-width: 100%;
+  }
+
+  .gold-result-card {
+    padding: 16px;
+  }
+
+  .gold-result-products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gold-material-tags.with-image {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gold-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gold-unified-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dilution-material-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gold-container {
+    padding: 0 8px;
+  }
+
+  .gold-card {
+    padding: 12px;
+  }
+
+  .gold-input-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .gold-input-label input {
+    padding: 10px 4px;
+  }
+
+  .gold-result-card {
+    padding: 12px;
+  }
+
+  .gold-result-products {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .gold-result-products > div {
+    padding: 10px 6px;
+    min-height: 60px;
+  }
+
+  .gold-material-tags.with-image {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .gold-material-tag.with-image {
+    padding: 8px 4px;
+    min-height: 70px;
+  }
+
+  .gold-switch-wrapper span {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .gold-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .gold-summary-item {
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .gold-input-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gold-result-products {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .gold-material-tags.with-image {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gold-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

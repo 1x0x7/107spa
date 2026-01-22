@@ -9,13 +9,15 @@ import {
   EXPERT_LUCKY, 
   EXPERT_FIRE_PICK, 
   EXPERT_GEM_START, 
-  ORE_DATA 
+  ORE_DATA,
+  MINING_IMAGES
 } from '@/data/mining'
 
 type OreType = keyof typeof ORE_DATA
 
 interface Input { id: number; stamina: string; oreType: OreType }
 interface Result {
+  oreType: OreType
   oreName: string
   gemName: string
   mineCount: number
@@ -98,6 +100,7 @@ export default function MiningStaminaPage() {
 
       const ore = ORE_DATA[input.oreType]
       newResults.push({
+        oreType: input.oreType,
         oreName: ore.name,
         gemName: ore.gemName,
         mineCount,
@@ -176,6 +179,11 @@ export default function MiningStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
+                      <img
+                        src={MINING_IMAGES[r.oreType]}
+                        alt={r.oreName}
+                        style={{ width: 22, height: 22, objectFit: 'contain' }}
+                      />
                       {r.oreName}
                     </div>
                     <div className="result-row">

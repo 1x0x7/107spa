@@ -137,7 +137,7 @@
    결과 카드
 ========================= */
 .result-card {
-  margin-top: 16px;
+  margin-top: 1px;
   background: white;
   border-radius: 8px;
   border: 1px solid var(--color-border, #e0e0e0);

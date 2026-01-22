@@ -1,4 +1,9 @@
 // 재배 관련 데이터
+export const MINING_IMAGES: Record<string, string> = {
+  corum: '/img/mining/corum.png',
+  lifton: '/img/mining/lifton.png',
+  serent: '/img/mining/serent.png',
+}
 
 export const FARMING_STAMINA_PER_HARVEST = 7
 

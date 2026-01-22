@@ -1,7 +1,11 @@
 // =========================
 // 채광 관련 데이터
 // =========================
-
+export const MINING_IMAGES: Record<string, string> = {
+  corum: '/img/mining/corum.png',
+  lifton: '/img/mining/lifton.png',
+  serent: '/img/mining/serent.png',
+}
 /* ===== 기본 수치 ===== */
 export const MINING_STAMINA_PER_MINE = 10
 
