@@ -19,7 +19,7 @@ const tabs: Record<string, { href: string; label: string }[]> = {
   ocean: [
     { href: '/ocean/info', label: '정보' },
     { href: '/ocean/stamina', label: '스태미나' },
-    { href: '/ocean/gold', label: '골드 최적화' },
+    { href: '/ocean/gold', label: '연금품' },
   ],
 }
 

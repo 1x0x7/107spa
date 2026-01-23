@@ -47,73 +47,93 @@ export interface Result1Star {
 }
 
 export function calculate1Star(input: Input1Star, isAdvanced: boolean): Result1Star | null {
-  const totalShellfish = { guard: input.guard, wave: input.wave, chaos: input.chaos, life: input.life, decay: input.decay }
+  // 어패류 입력
+  const shellfish = { guard: input.guard, wave: input.wave, chaos: input.chaos, life: input.life, decay: input.decay }
 
-  const totalEss = {
+  // 보유 정수 (고급 모드에서만)
+  const ownedEss = {
     guard: input.essGuard || 0, wave: input.essWave || 0, chaos: input.essChaos || 0,
     life: input.essLife || 0, decay: input.essDecay || 0
   }
 
-  const totalCore = isAdvanced ? {
+  // 보유 핵 (고급 모드에서만)
+  const ownedCore = isAdvanced ? {
     WG: input.coreWG || 0, WP: input.coreWP || 0, OD: input.coreOD || 0, VD: input.coreVD || 0, ED: input.coreED || 0
   } : { WG: 0, WP: 0, OD: 0, VD: 0, ED: 0 }
 
-  const essFromShellfish = {
-    guard: floorToTwo(totalShellfish.guard), wave: floorToTwo(totalShellfish.wave),
-    chaos: floorToTwo(totalShellfish.chaos), life: floorToTwo(totalShellfish.life), decay: floorToTwo(totalShellfish.decay)
+  // 어패류로 만들 수 있는 정수 (2개씩 생산)
+  const maxEssFromShellfish = {
+    guard: floorToTwo(shellfish.guard), wave: floorToTwo(shellfish.wave),
+    chaos: floorToTwo(shellfish.chaos), life: floorToTwo(shellfish.life), decay: floorToTwo(shellfish.decay)
   }
-
-  const availableEss = {
-    guard: totalEss.guard + essFromShellfish.guard, wave: totalEss.wave + essFromShellfish.wave,
-    chaos: totalEss.chaos + essFromShellfish.chaos, life: totalEss.life + essFromShellfish.life, decay: totalEss.decay + essFromShellfish.decay
-  }
-
-  // 핵 제작에 필요한 정수 조합 (정확한 조합법)
-  // 물결수호 (WG): 수호+파동, 파동오염 (WP): 파동+혼란, 질서파괴 (OD): 혼란+생명
-  // 활력붕괴 (VD): 생명+부식, 침식방어 (ED): 부식+수호
-  const maxCoreWG = totalCore.WG + Math.floor((availableEss.guard + availableEss.wave) / 2)
-  const maxCoreWP = totalCore.WP + Math.floor((availableEss.wave + availableEss.chaos) / 2)
-  const maxCoreOD = totalCore.OD + Math.floor((availableEss.chaos + availableEss.life) / 2)
-  const maxCoreVD = totalCore.VD + Math.floor((availableEss.life + availableEss.decay) / 2)
-  const maxCoreED = totalCore.ED + Math.floor((availableEss.decay + availableEss.guard) / 2)
-
-  // 제품별 필요 핵: A(WG,OD,VD), K(WP,OD,VD), L(WG,WP,ED)
-  const maxA = Math.min(maxCoreWG, maxCoreOD, maxCoreVD)
-  const maxK = Math.min(maxCoreWP, maxCoreOD, maxCoreVD)
-  const maxL = Math.min(maxCoreWG, maxCoreWP, maxCoreED)
 
   let best = { gold: -1, A: 0, K: 0, L: 0 }
 
-  for (let A = 0; A <= maxA; A++) {
-    for (let K = 0; K <= maxK; K++) {
-      for (let L = 0; L <= maxL; L++) {
-        // 필요한 핵 개수 (정확한 조합법)
+  // 제품별 필요 핵:
+  // 아쿠티스 A: 물결수호(WG) + 질서파괴(OD) + 활력붕괴(VD)
+  // 광란체 K: 질서파괴(OD) + 활력붕괴(VD) + 파동오염(WP)
+  // 리바이던 L: 침식방어(ED) + 파동오염(WP) + 물결수호(WG)
+  
+  // 핵별 필요 정수:
+  // WG(물결수호): 수호 + 파동
+  // WP(파동오염): 파동 + 혼란
+  // OD(질서파괴): 혼란 + 생명
+  // VD(활력붕괴): 생명 + 부식
+  // ED(침식방어): 부식 + 수호
+
+  // 가능한 최대 제품 수 추정 (어패류 기반)
+  const maxProducts = Math.max(
+    Math.floor((shellfish.guard + shellfish.wave + shellfish.chaos + shellfish.life + shellfish.decay) / 6),
+    10
+  ) + Math.max(ownedCore.WG, ownedCore.WP, ownedCore.OD, ownedCore.VD, ownedCore.ED)
+
+  for (let A = 0; A <= maxProducts; A++) {
+    for (let K = 0; K <= maxProducts; K++) {
+      for (let L = 0; L <= maxProducts; L++) {
+        if (A + K + L === 0) continue
+
+        // 제품 제작에 필요한 핵 개수
         const needCore = {
-          WG: A + L,      // 물결 수호: 아쿠티스 + 리바이던
-          WP: K + L,      // 파동 오염: 광란체 + 리바이던
-          OD: A + K,      // 질서 파괴: 아쿠티스 + 광란체
-          VD: A + K,      // 활력 붕괴: 아쿠티스 + 광란체
-          ED: L           // 침식 방어: 리바이던만
+          WG: A + L,      // 물결수호: 아쿠티스 + 리바이던
+          WP: K + L,      // 파동오염: 광란체 + 리바이던
+          OD: A + K,      // 질서파괴: 아쿠티스 + 광란체
+          VD: A + K,      // 활력붕괴: 아쿠티스 + 광란체
+          ED: L           // 침식방어: 리바이던만
         }
+
+        // 실제로 만들어야 하는 핵 (보유량 차감)
         const makeCore = {
-          WG: Math.max(0, needCore.WG - totalCore.WG), WP: Math.max(0, needCore.WP - totalCore.WP),
-          OD: Math.max(0, needCore.OD - totalCore.OD), VD: Math.max(0, needCore.VD - totalCore.VD), ED: Math.max(0, needCore.ED - totalCore.ED)
+          WG: Math.max(0, needCore.WG - ownedCore.WG),
+          WP: Math.max(0, needCore.WP - ownedCore.WP),
+          OD: Math.max(0, needCore.OD - ownedCore.OD),
+          VD: Math.max(0, needCore.VD - ownedCore.VD),
+          ED: Math.max(0, needCore.ED - ownedCore.ED)
         }
-        // 핵 제작에 필요한 정수
-        // 물결수호: 수호+파동, 파동오염: 파동+혼란, 질서파괴: 혼란+생명, 활력붕괴: 생명+부식, 침식방어: 부식+수호
-        const needEss = {
+
+        // 핵 제작에 필요한 정수 (makeCore 기준!)
+        const needEssForMake = {
           guard: makeCore.WG + makeCore.ED,  // 물결수호 + 침식방어
           wave: makeCore.WG + makeCore.WP,   // 물결수호 + 파동오염
           chaos: makeCore.WP + makeCore.OD,  // 파동오염 + 질서파괴
           life: makeCore.OD + makeCore.VD,   // 질서파괴 + 활력붕괴
           decay: makeCore.VD + makeCore.ED   // 활력붕괴 + 침식방어
         }
+
+        // 실제로 만들어야 하는 정수 (보유 정수 차감)
         const makeEss = {
-          guard: Math.max(0, needEss.guard - totalEss.guard), wave: Math.max(0, needEss.wave - totalEss.wave),
-          chaos: Math.max(0, needEss.chaos - totalEss.chaos), life: Math.max(0, needEss.life - totalEss.life), decay: Math.max(0, needEss.decay - totalEss.decay)
+          guard: Math.max(0, needEssForMake.guard - ownedEss.guard),
+          wave: Math.max(0, needEssForMake.wave - ownedEss.wave),
+          chaos: Math.max(0, needEssForMake.chaos - ownedEss.chaos),
+          life: Math.max(0, needEssForMake.life - ownedEss.life),
+          decay: Math.max(0, needEssForMake.decay - ownedEss.decay)
         }
-        if (makeEss.guard > essFromShellfish.guard || makeEss.wave > essFromShellfish.wave ||
-            makeEss.chaos > essFromShellfish.chaos || makeEss.life > essFromShellfish.life || makeEss.decay > essFromShellfish.decay) continue
+
+        // 어패류로 만들 수 있는지 체크
+        if (makeEss.guard > maxEssFromShellfish.guard ||
+            makeEss.wave > maxEssFromShellfish.wave ||
+            makeEss.chaos > maxEssFromShellfish.chaos ||
+            makeEss.life > maxEssFromShellfish.life ||
+            makeEss.decay > maxEssFromShellfish.decay) continue
 
         const gold = A * GOLD_PRICES['1star'].A + K * GOLD_PRICES['1star'].K + L * GOLD_PRICES['1star'].L
         if (gold > best.gold) best = { gold, A, K, L }
@@ -123,61 +143,89 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean): Result1S
 
   if (best.gold < 0) return null
 
-  // 정확한 핵 조합법
+  // 최적 결과에 대한 상세 정보 계산
   const coreNeed = {
-    WG: best.A + best.L,      // 물결 수호: 아쿠티스 + 리바이던
-    WP: best.K + best.L,      // 파동 오염: 광란체 + 리바이던
-    OD: best.A + best.K,      // 질서 파괴: 아쿠티스 + 광란체
-    VD: best.A + best.K,      // 활력 붕괴: 아쿠티스 + 광란체
-    ED: best.L                // 침식 방어: 리바이던만
+    WG: best.A + best.L,
+    WP: best.K + best.L,
+    OD: best.A + best.K,
+    VD: best.A + best.K,
+    ED: best.L
   }
   const coreToMake = {
-    WG: Math.max(0, coreNeed.WG - totalCore.WG), WP: Math.max(0, coreNeed.WP - totalCore.WP),
-    OD: Math.max(0, coreNeed.OD - totalCore.OD), VD: Math.max(0, coreNeed.VD - totalCore.VD), ED: Math.max(0, coreNeed.ED - totalCore.ED)
+    WG: Math.max(0, coreNeed.WG - ownedCore.WG),
+    WP: Math.max(0, coreNeed.WP - ownedCore.WP),
+    OD: Math.max(0, coreNeed.OD - ownedCore.OD),
+    VD: Math.max(0, coreNeed.VD - ownedCore.VD),
+    ED: Math.max(0, coreNeed.ED - ownedCore.ED)
   }
-  // 핵 제작에 필요한 정수
-  const essNeedForCore = {
-    guard: coreToMake.WG + coreToMake.ED,  // 물결수호 + 침식방어
-    wave: coreToMake.WG + coreToMake.WP,   // 물결수호 + 파동오염
-    chaos: coreToMake.WP + coreToMake.OD,  // 파동오염 + 질서파괴
-    life: coreToMake.OD + coreToMake.VD,   // 질서파괴 + 활력붕괴
-    decay: coreToMake.VD + coreToMake.ED   // 활력붕괴 + 침식방어
+
+  // 핵 제작에 필요한 정수 (coreToMake 기준 - 보유 핵 반영!)
+  const essNeedTotal = {
+    guard: coreToMake.WG + coreToMake.ED,
+    wave: coreToMake.WG + coreToMake.WP,
+    chaos: coreToMake.WP + coreToMake.OD,
+    life: coreToMake.OD + coreToMake.VD,
+    decay: coreToMake.VD + coreToMake.ED
   }
+
+  // 실제로 어패류로 만들어야 하는 정수 (보유 정수 차감)
   const essToMake = {
-    guard: Math.max(0, essNeedForCore.guard - totalEss.guard), wave: Math.max(0, essNeedForCore.wave - totalEss.wave),
-    chaos: Math.max(0, essNeedForCore.chaos - totalEss.chaos), life: Math.max(0, essNeedForCore.life - totalEss.life), decay: Math.max(0, essNeedForCore.decay - totalEss.decay)
+    guard: Math.max(0, essNeedTotal.guard - ownedEss.guard),
+    wave: Math.max(0, essNeedTotal.wave - ownedEss.wave),
+    chaos: Math.max(0, essNeedTotal.chaos - ownedEss.chaos),
+    life: Math.max(0, essNeedTotal.life - ownedEss.life),
+    decay: Math.max(0, essNeedTotal.decay - ownedEss.decay)
   }
 
   // 제작 횟수 (2개씩 나오므로)
   const craftCount = {
-    guard: Math.ceil(essToMake.guard / 2), wave: Math.ceil(essToMake.wave / 2),
-    chaos: Math.ceil(essToMake.chaos / 2), life: Math.ceil(essToMake.life / 2), decay: Math.ceil(essToMake.decay / 2)
+    guard: Math.ceil(essToMake.guard / 2),
+    wave: Math.ceil(essToMake.wave / 2),
+    chaos: Math.ceil(essToMake.chaos / 2),
+    life: Math.ceil(essToMake.life / 2),
+    decay: Math.ceil(essToMake.decay / 2)
   }
 
-  // 블록 필요량 (정수 제작에 필요)
+  // 블록 필요량 (정수 제작에 필요) - 점토2, 모래4, 흙8, 자갈4, 화강암2
   const blockNeed = {
-    clay: craftCount.guard * 2, sand: craftCount.wave * 4, dirt: craftCount.chaos * 8,
-    gravel: craftCount.life * 4, granite: craftCount.decay * 2
+    clay: craftCount.guard * 2,
+    sand: craftCount.wave * 4,
+    dirt: craftCount.chaos * 8,
+    gravel: craftCount.life * 4,
+    granite: craftCount.decay * 2
   }
-  const fishNeed = { shrimp: coreToMake.WG, domi: coreToMake.WP, herring: coreToMake.OD, goldfish: coreToMake.VD, bass: coreToMake.ED }
 
-  // 전체 필요량 (세트 모드용)
-  const essNeedTotal = {
-    guard: coreNeed.WG + coreNeed.ED,  // 물결수호 + 침식방어
-    wave: coreNeed.WG + coreNeed.WP,   // 물결수호 + 파동오염
-    chaos: coreNeed.WP + coreNeed.OD,  // 파동오염 + 질서파괴
-    life: coreNeed.OD + coreNeed.VD,   // 질서파괴 + 활력붕괴
-    decay: coreNeed.VD + coreNeed.ED   // 활력붕괴 + 침식방어
+  // 물고기 필요량 (핵 제작에 필요)
+  const fishNeed = {
+    shrimp: coreToMake.WG,
+    domi: coreToMake.WP,
+    herring: coreToMake.OD,
+    goldfish: coreToMake.VD,
+    bass: coreToMake.ED
   }
-  const craftCountTotal = {
-    guard: Math.ceil(essNeedTotal.guard / 2), wave: Math.ceil(essNeedTotal.wave / 2),
-    chaos: Math.ceil(essNeedTotal.chaos / 2), life: Math.ceil(essNeedTotal.life / 2), decay: Math.ceil(essNeedTotal.decay / 2)
+
+  // 전체 필요량 (만약 보유량 없이 처음부터 만든다면)
+  const totalCraftCount = {
+    guard: Math.ceil(essNeedTotal.guard / 2),
+    wave: Math.ceil(essNeedTotal.wave / 2),
+    chaos: Math.ceil(essNeedTotal.chaos / 2),
+    life: Math.ceil(essNeedTotal.life / 2),
+    decay: Math.ceil(essNeedTotal.decay / 2)
   }
   const blockNeedTotal = {
-    clay: craftCountTotal.guard * 2, sand: craftCountTotal.wave * 4, dirt: craftCountTotal.chaos * 8,
-    gravel: craftCountTotal.life * 4, granite: craftCountTotal.decay * 2
+    clay: totalCraftCount.guard * 2,
+    sand: totalCraftCount.wave * 4,
+    dirt: totalCraftCount.chaos * 8,
+    gravel: totalCraftCount.life * 4,
+    granite: totalCraftCount.decay * 2
   }
-  const fishNeedTotal = { shrimp: coreNeed.WG, domi: coreNeed.WP, herring: coreNeed.OD, goldfish: coreNeed.VD, bass: coreNeed.ED }
+  const fishNeedTotal = {
+    shrimp: coreNeed.WG,
+    domi: coreNeed.WP,
+    herring: coreNeed.OD,
+    goldfish: coreNeed.VD,
+    bass: coreNeed.ED
+  }
 
   return { best, coreNeed, coreToMake, essNeedTotal, essToMake, blockNeed, blockNeedTotal, fishNeed, fishNeedTotal }
 }
@@ -287,8 +335,9 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean): Result2S
     vital: Math.max(0, crystalNeed.vital - totalCrystal.vital), erosion: Math.max(0, crystalNeed.erosion - totalCrystal.erosion),
     defense: Math.max(0, crystalNeed.defense - totalCrystal.defense), regen: Math.max(0, crystalNeed.regen - totalCrystal.regen), poison: Math.max(0, crystalNeed.poison - totalCrystal.poison)
   }
-  // 결정 제작에 필요한 에센스
-  const essNeedForCrystal = {
+
+  // 결정 제작에 필요한 에센스 (crystalToMake 기준 - 보유 결정 반영!)
+  const essNeedTotal = {
     guard: crystalToMake.vital + crystalToMake.defense,  // 활기보존 + 방어오염
     wave: crystalToMake.erosion + crystalToMake.regen,   // 파도침식 + 격류재생
     chaos: crystalToMake.defense + crystalToMake.poison, // 방어오염 + 맹독혼란
@@ -296,8 +345,8 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean): Result2S
     decay: crystalToMake.erosion + crystalToMake.poison  // 파도침식 + 맹독혼란
   }
   const essToMake = {
-    guard: Math.max(0, essNeedForCrystal.guard - totalEss.guard), wave: Math.max(0, essNeedForCrystal.wave - totalEss.wave),
-    chaos: Math.max(0, essNeedForCrystal.chaos - totalEss.chaos), life: Math.max(0, essNeedForCrystal.life - totalEss.life), decay: Math.max(0, essNeedForCrystal.decay - totalEss.decay)
+    guard: Math.max(0, essNeedTotal.guard - totalEss.guard), wave: Math.max(0, essNeedTotal.wave - totalEss.wave),
+    chaos: Math.max(0, essNeedTotal.chaos - totalEss.chaos), life: Math.max(0, essNeedTotal.life - totalEss.life), decay: Math.max(0, essNeedTotal.decay - totalEss.decay)
   }
 
   const totalCrystalToMake = crystalToMake.vital + crystalToMake.erosion + crystalToMake.defense + crystalToMake.regen + crystalToMake.poison
@@ -311,21 +360,21 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean): Result2S
     ironIngot: crystalToMake.defense * 3, goldIngot: crystalToMake.regen * 2, diamond: crystalToMake.poison
   }
 
-  // 전체 필요 에센스 (세트 모드용)
-  const essNeedTotal = {
-    guard: crystalNeed.vital + crystalNeed.defense,  // 활기보존 + 방어오염
-    wave: crystalNeed.erosion + crystalNeed.regen,   // 파도침식 + 격류재생
-    chaos: crystalNeed.defense + crystalNeed.poison, // 방어오염 + 맹독혼란
-    life: crystalNeed.vital + crystalNeed.regen,     // 활기보존 + 격류재생
-    decay: crystalNeed.erosion + crystalNeed.poison  // 파도침식 + 맹독혼란
+  // 전체 필요량 (보유량 없이 처음부터 만든다면)
+  const essNeedAllCrystals = {
+    guard: crystalNeed.vital + crystalNeed.defense,
+    wave: crystalNeed.erosion + crystalNeed.regen,
+    chaos: crystalNeed.defense + crystalNeed.poison,
+    life: crystalNeed.vital + crystalNeed.regen,
+    decay: crystalNeed.erosion + crystalNeed.poison
   }
   const totalCrystalNeed = crystalNeed.vital + crystalNeed.erosion + crystalNeed.defense + crystalNeed.regen + crystalNeed.poison
-  const totalEssNeed = essNeedTotal.guard + essNeedTotal.wave + essNeedTotal.chaos + essNeedTotal.life + essNeedTotal.decay
+  const totalEssNeed = essNeedAllCrystals.guard + essNeedAllCrystals.wave + essNeedAllCrystals.chaos + essNeedAllCrystals.life + essNeedAllCrystals.decay
 
   const materialNeedTotal = {
     seaweed: Math.ceil(totalEssNeed / 2) * 4,
-    oakLeaves: Math.ceil(essNeedTotal.guard / 2) * 6, spruceLeaves: Math.ceil(essNeedTotal.wave / 2) * 6,
-    birchLeaves: Math.ceil(essNeedTotal.chaos / 2) * 6, acaciaLeaves: Math.ceil(essNeedTotal.life / 2) * 6, cherryLeaves: Math.ceil(essNeedTotal.decay / 2) * 6,
+    oakLeaves: Math.ceil(essNeedAllCrystals.guard / 2) * 6, spruceLeaves: Math.ceil(essNeedAllCrystals.wave / 2) * 6,
+    birchLeaves: Math.ceil(essNeedAllCrystals.chaos / 2) * 6, acaciaLeaves: Math.ceil(essNeedAllCrystals.life / 2) * 6, cherryLeaves: Math.ceil(essNeedAllCrystals.decay / 2) * 6,
     kelp: totalCrystalNeed * 4, lapisBlock: crystalNeed.vital, redstoneBlock: crystalNeed.erosion,
     ironIngot: crystalNeed.defense * 3, goldIngot: crystalNeed.regen * 2, diamond: crystalNeed.poison
   }
@@ -406,13 +455,18 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean): Result3S
     immortal: Math.max(0, potionNeed.immortal - totalPotion.immortal), barrier: Math.max(0, potionNeed.barrier - totalPotion.barrier),
     corrupt: Math.max(0, potionNeed.corrupt - totalPotion.corrupt), frenzy: Math.max(0, potionNeed.frenzy - totalPotion.frenzy), venom: Math.max(0, potionNeed.venom - totalPotion.venom)
   }
-  const elixNeedForPotion = {
-    guard: potionToMake.immortal + potionToMake.barrier, wave: potionToMake.barrier + potionToMake.venom,
-    chaos: potionToMake.corrupt + potionToMake.frenzy, life: potionToMake.immortal + potionToMake.frenzy, decay: potionToMake.corrupt + potionToMake.venom
+
+  // 영약 제작에 필요한 엘릭서 (potionToMake 기준 - 보유 영약 반영!)
+  const elixNeedTotal = {
+    guard: potionToMake.immortal + potionToMake.barrier,
+    wave: potionToMake.barrier + potionToMake.venom,
+    chaos: potionToMake.corrupt + potionToMake.frenzy,
+    life: potionToMake.immortal + potionToMake.frenzy,
+    decay: potionToMake.corrupt + potionToMake.venom
   }
   const elixToMake = {
-    guard: Math.max(0, elixNeedForPotion.guard - totalElix.guard), wave: Math.max(0, elixNeedForPotion.wave - totalElix.wave),
-    chaos: Math.max(0, elixNeedForPotion.chaos - totalElix.chaos), life: Math.max(0, elixNeedForPotion.life - totalElix.life), decay: Math.max(0, elixNeedForPotion.decay - totalElix.decay)
+    guard: Math.max(0, elixNeedTotal.guard - totalElix.guard), wave: Math.max(0, elixNeedTotal.wave - totalElix.wave),
+    chaos: Math.max(0, elixNeedTotal.chaos - totalElix.chaos), life: Math.max(0, elixNeedTotal.life - totalElix.life), decay: Math.max(0, elixNeedTotal.decay - totalElix.decay)
   }
   const totalElixToMake = elixToMake.guard + elixToMake.wave + elixToMake.chaos + elixToMake.life + elixToMake.decay
   const totalPotionToMake = potionToMake.immortal + potionToMake.barrier + potionToMake.corrupt + potionToMake.frenzy + potionToMake.venom
@@ -424,16 +478,20 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean): Result3S
   }
   const deadCoralNeed = { deadTubeCoral: potionToMake.immortal * 2, deadBrainCoral: potionToMake.barrier * 2, deadBubbleCoral: potionToMake.corrupt * 2, deadFireCoral: potionToMake.frenzy * 2, deadHornCoral: potionToMake.venom * 2 }
 
-  const elixNeedTotal = {
-    guard: potionNeed.immortal + potionNeed.barrier, wave: potionNeed.barrier + potionNeed.venom,
-    chaos: potionNeed.corrupt + potionNeed.frenzy, life: potionNeed.immortal + potionNeed.frenzy, decay: potionNeed.corrupt + potionNeed.venom
+  // 전체 필요량 (보유량 없이 처음부터 만든다면)
+  const elixNeedAllPotions = {
+    guard: potionNeed.immortal + potionNeed.barrier,
+    wave: potionNeed.barrier + potionNeed.venom,
+    chaos: potionNeed.corrupt + potionNeed.frenzy,
+    life: potionNeed.immortal + potionNeed.frenzy,
+    decay: potionNeed.corrupt + potionNeed.venom
   }
-  const totalElixNeed = elixNeedTotal.guard + elixNeedTotal.wave + elixNeedTotal.chaos + elixNeedTotal.life + elixNeedTotal.decay
+  const totalElixNeed = elixNeedAllPotions.guard + elixNeedAllPotions.wave + elixNeedAllPotions.chaos + elixNeedAllPotions.life + elixNeedAllPotions.decay
   const totalPotionNeed = potionNeed.immortal + potionNeed.barrier + potionNeed.corrupt + potionNeed.frenzy + potionNeed.venom
 
   const materialNeedTotal = {
     seaSquirt: totalElixNeed * 2, glassBottle: totalElixNeed * 3,
-    netherrack: elixNeedTotal.guard * 8, magmaBlock: elixNeedTotal.wave * 4, soulSoil: elixNeedTotal.chaos * 4, crimsonStem: elixNeedTotal.life * 4, warpedStem: elixNeedTotal.decay * 4,
+    netherrack: elixNeedAllPotions.guard * 8, magmaBlock: elixNeedAllPotions.wave * 4, soulSoil: elixNeedAllPotions.chaos * 4, crimsonStem: elixNeedAllPotions.life * 4, warpedStem: elixNeedAllPotions.decay * 4,
     driedKelp: totalPotionNeed * 6, glowBerry: totalPotionNeed * 4
   }
   const deadCoralNeedTotal = { deadTubeCoral: potionNeed.immortal * 2, deadBrainCoral: potionNeed.barrier * 2, deadBubbleCoral: potionNeed.corrupt * 2, deadFireCoral: potionNeed.frenzy * 2, deadHornCoral: potionNeed.venom * 2 }
@@ -459,7 +517,48 @@ export interface ResultAll {
   summary: { dilutionGold: number; star1Gold: number; star2Gold: number; star3Gold: number }
 }
 
-export function calculateAll(input: InputAll): ResultAll {
+export function calculateAll(
+  input: InputAll, 
+  includeDilution: boolean = true,
+  advanced1?: { essGuard: number; essWave: number; essChaos: number; essLife: number; essDecay: number; coreWG: number; coreWP: number; coreOD: number; coreVD: number; coreED: number },
+  advanced2?: { essGuard: number; essWave: number; essChaos: number; essLife: number; essDecay: number; crystalVital: number; crystalErosion: number; crystalDefense: number; crystalRegen: number; crystalPoison: number },
+  advanced3?: { elixGuard: number; elixWave: number; elixChaos: number; elixLife: number; elixDecay: number; potionImmortal: number; potionBarrier: number; potionCorrupt: number; potionFrenzy: number; potionVenom: number }
+): ResultAll {
+  const hasAdvanced1 = advanced1 && Object.values(advanced1).some(v => v > 0)
+  const hasAdvanced2 = advanced2 && Object.values(advanced2).some(v => v > 0)
+  const hasAdvanced3 = advanced3 && Object.values(advanced3).some(v => v > 0)
+
+  // includeDilution이 false면 희석액 미포함
+  if (!includeDilution) {
+    const r1 = calculate1Star({ 
+      guard: input.star1.guard, wave: input.star1.wave, 
+      chaos: input.star1.chaos, life: input.star1.life, decay: input.star1.decay,
+      ...(hasAdvanced1 ? advanced1 : {})
+    }, !!hasAdvanced1)
+    
+    const r2 = calculate2Star({ 
+      guard2: input.star2.guard, wave2: input.star2.wave, 
+      chaos2: input.star2.chaos, life2: input.star2.life, decay2: input.star2.decay,
+      ...(hasAdvanced2 ? advanced2 : {})
+    }, !!hasAdvanced2)
+    
+    const r3 = calculate3Star({ 
+      guard: input.star3.guard, wave: input.star3.wave, 
+      chaos: input.star3.chaos, life: input.star3.life, decay: input.star3.decay,
+      ...(hasAdvanced3 ? advanced3 : {})
+    }, !!hasAdvanced3)
+    
+    const star1Gold = r1?.best.gold || 0
+    const star2Gold = r2?.best.gold || 0
+    const star3Gold = r3?.best.gold || 0
+    const totalGold = star1Gold + star2Gold + star3Gold
+    
+    return {
+      totalGold, dilution: 0, result1: r1, result2: r2, result3: r3,
+      summary: { dilutionGold: 0, star1Gold, star2Gold, star3Gold }
+    }
+  }
+
   // 희석액이 사용하는 어패류:
   // 성게★ 4개 (star1.decay), 굴★ 4개 (star1.guard)
   // 굴★★ 2개 (star2.guard), 문어★★ 2개 (star2.chaos)
@@ -510,18 +609,21 @@ export function calculateAll(input: InputAll): ResultAll {
     
     const r1 = calculate1Star({ 
       guard: remaining1.guard, wave: remaining1.wave, 
-      chaos: remaining1.chaos, life: remaining1.life, decay: remaining1.decay 
-    }, false)
+      chaos: remaining1.chaos, life: remaining1.life, decay: remaining1.decay,
+      ...(hasAdvanced1 ? advanced1 : {})
+    }, !!hasAdvanced1)
     
     const r2 = calculate2Star({ 
       guard2: remaining2.guard, wave2: remaining2.wave, 
-      chaos2: remaining2.chaos, life2: remaining2.life, decay2: remaining2.decay 
-    }, false)
+      chaos2: remaining2.chaos, life2: remaining2.life, decay2: remaining2.decay,
+      ...(hasAdvanced2 ? advanced2 : {})
+    }, !!hasAdvanced2)
     
     const r3 = calculate3Star({ 
       guard: remaining3.guard, wave: remaining3.wave, 
-      chaos: remaining3.chaos, life: remaining3.life, decay: remaining3.decay 
-    }, false)
+      chaos: remaining3.chaos, life: remaining3.life, decay: remaining3.decay,
+      ...(hasAdvanced3 ? advanced3 : {})
+    }, !!hasAdvanced3)
     
     const dilutionGold = d * GOLD_PRICES['0star'].DILUTION
     const star1Gold = r1?.best.gold || 0

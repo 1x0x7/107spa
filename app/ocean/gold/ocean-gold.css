@@ -113,6 +113,13 @@
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
+.input-set-display {
+  font-size: clamp(10px, 2.5vw, 12px);
+  color: #888;
+  text-align: left;
+  margin-top: -2px;
+}
+
 /* ===== 고급 입력 섹션 ===== */
 .gold-advanced-section {
   margin-bottom: 20px;
@@ -126,6 +133,22 @@
   margin-bottom: 12px;
   font-size: clamp(11px, 3vw, 13px);
   font-weight: 600;
+}
+
+.section-header-with-owned {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.owned-summary {
+  font-size: clamp(9px, 2.2vw, 10px);
+  font-weight: 400;
+  color: #888;
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
 /* ===== 계산 버튼 ===== */
@@ -281,8 +304,8 @@
 }
 
 .gold-material-tag.with-image .mat-name {
-  font-size: clamp(0.6rem, 2vw, 0.7rem);
-  color: #333;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  color: #424242;
   margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
@@ -304,17 +327,17 @@
 .gold-material-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .gold-material-tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: 8px;
+  padding: 8px 14px;
   background: var(--color-bg-secondary, #f5f5f5);
   border-radius: 6px;
-  font-size: clamp(11px, 2.5vw, 12px);
+  font-size: clamp(12px, 2.8vw, 14px);
 }
 
 .gold-material-tag .mat-name {
@@ -324,7 +347,7 @@
 
 .gold-material-tag .mat-value {
   font-weight: 600;
-  color: #666;
+  color: #555;
 }
 
 /* ===== 스위치 전체 컨테이너 ===== */
@@ -483,53 +506,182 @@
 
 /* 희석액 필요 재료 섹션 */
 .gold-dilution-materials {
-  margin-top: 16px;
+  margin-top: 8px;
   padding: 14px;
-  background: #f8f9fa;
-  border-radius: 10px;
+  background: #fafafa;
+  border-radius: 12px;
   border: 1px solid #e0e0e0;
 }
 
 .gold-dilution-materials h5 {
-  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
   font-weight: 600;
   color: #333;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
+
+  margin-top: 0;        /* 👈 위쪽 여백 제거 */
+  margin-bottom: 12px;  /* 필요하면 더 줄여도 됨 */
+
+  padding-bottom: 12px; /* 살짝 줄여도 깔끔 */
   border-bottom: 1px solid #e0e0e0;
 }
 
-.dilution-section {
-  margin-bottom: 14px;
+
+/* 세로 3열 그리드 */
+.dilution-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
-.dilution-section:last-child {
-  margin-bottom: 0;
+/* 티어 카드 */
+.dilution-tier-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
 }
 
-.dilution-section h6 {
+.dilution-tier-card.tier1 {
+  background: linear-gradient(180deg, rgba(76, 175, 80, 0.04) 0%, #fff 100%);
+}
+
+.dilution-tier-card.tier2 {
+  background: linear-gradient(180deg, rgba(156, 39, 176, 0.04) 0%, #fff 100%);
+}
+
+.dilution-tier-card.tier3 {
+  background: linear-gradient(180deg, rgba(191, 79, 154, 0.04) 0%, #fff 100%);
+}
+
+.tier-card-header {
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.tier-card-title {
   font-size: clamp(0.7rem, 2vw, 0.8rem);
   font-weight: 600;
-  color: #555;
+  color: #333;
+}
+
+.tier-card-count {
+  font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+  font-weight: 600;
+  color: #666;
+  background: rgba(0,0,0,0.05);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.tier-card-body {
+  padding: 10px 12px;
+}
+
+.tier-card-row {
   margin-bottom: 8px;
 }
 
-.dilution-material-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.dilution-material-row .gold-result-section {
+.tier-card-row:last-child {
   margin-bottom: 0;
 }
 
-.dilution-material-row .gold-result-section h5 {
-  font-size: clamp(0.6rem, 1.8vw, 0.7rem);
-  color: #666;
-  margin-bottom: 6px;
-  padding-bottom: 0;
-  border-bottom: none;
+.row-label {
+  font-size: clamp(0.6rem, 1.6vw, 0.68rem);
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.row-label .from-input {
+  font-weight: 500;
+  color: #4caf50;
+  font-size: 0.85em;
+}
+
+.row-label .need-more {
+  font-weight: 500;
+  color: #e57373;
+  font-size: 0.85em;
+}
+
+.row-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row-items span {
+  font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+  color: #444;
+}
+
+/* 4열 요약 카드 */
+.gold-unified-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+/* 희석액 미포함 시 3열 */
+.gold-unified-cards.no-dilution {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.gold-result-mini-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-card-header {
+  padding: 8px 12px;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 600;
+  color: #333;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.mini-card-products {
+  padding: 10px 12px;
+  flex: 1;
+}
+
+.mini-product {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 0;
+}
+
+.mini-product-name {
+  font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+  color: #555;
+}
+
+.mini-product-count {
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 600;
+  color: #333;
+}
+
+.mini-card-gold {
+  padding: 8px 12px;
+  font-size: clamp(0.75rem, 2vw, 0.85rem);
+  font-weight: 700;
+  color: var(--color-danger, #e74c3c);
+  background: #f8f9fa;
+  border-top: 1px solid #eee;
+  text-align: center;
 }
 
 /* ===========================================
@@ -827,9 +979,22 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .dilution-material-row {
+  .gold-unified-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dilution-tier-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+  }
+
+  .dilution-recipe-items {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .gold-unified-cards {
+    grid-template-columns: 1fr;
   }
 }
 
