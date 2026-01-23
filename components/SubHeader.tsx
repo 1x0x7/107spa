@@ -8,18 +8,18 @@ const tabs: Record<string, { href: string; label: string }[]> = {
   mining: [
     { href: '/mining/info', label: '정보' },
     { href: '/mining/stamina', label: '스태미나' },
-    { href: '/mining/convert', label: '변환' },
+    // { href: '/mining/convert', label: '변환' },
   ],
   farming: [
     { href: '/farming/info', label: '정보' },
     { href: '/farming/stamina', label: '스태미나' },
-    { href: '/farming/efficiency', label: '요리 효율' },
-    { href: '/farming/harvest', label: '수확' },
+    /*{ href: '/farming/efficiency', label: '요리 효율' },
+    { href: '/farming/harvest', label: '수확' },*/
   ],
   ocean: [
     { href: '/ocean/info', label: '정보' },
     { href: '/ocean/stamina', label: '스태미나' },
-    { href: '/ocean/gold', label: '연금품' },
+    // { href: '/ocean/gold', label: '연금품' },
   ],
 }
 
