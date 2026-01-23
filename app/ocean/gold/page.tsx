@@ -449,15 +449,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">1성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">아쿠티스</span>
+                        <span className="mini-product-name">영생의 아쿠티스</span>
                         <span className="mini-product-count">{resultAll.result1?.best.A || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">광란체</span>
+                        <span className="mini-product-name">크라켄의 광란체</span>
                         <span className="mini-product-count">{resultAll.result1?.best.K || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">깃털</span>
+                        <span className="mini-product-name">리바이던의 깃털</span>
                         <span className="mini-product-count">{resultAll.result1?.best.L || 0}</span>
                       </div>
                     </div>
@@ -469,15 +469,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">2성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">파동 코어</span>
+                        <span className="mini-product-name">해구의 파동 코어</span>
                         <span className="mini-product-count">{resultAll.result2?.best.CORE || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">심해 비약</span>
+                        <span className="mini-product-name">침묵의 심해 비약</span>
                         <span className="mini-product-count">{resultAll.result2?.best.POTION || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">청해 날개</span>
+                        <span className="mini-product-name">청해룡의 날개</span>
                         <span className="mini-product-count">{resultAll.result2?.best.WING || 0}</span>
                       </div>
                     </div>
@@ -489,15 +489,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">3성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">아쿠아 파편</span>
+                        <span className="mini-product-name">아쿠아 펄스 파편</span>
                         <span className="mini-product-count">{resultAll.result3?.best.AQUA || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">나우틸 손</span>
+                        <span className="mini-product-name">나우틸러스의 손</span>
                         <span className="mini-product-count">{resultAll.result3?.best.NAUTILUS || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">무저 척추</span>
+                        <span className="mini-product-name">무저의 척추</span>
                         <span className="mini-product-count">{resultAll.result3?.best.SPINE || 0}</span>
                       </div>
                     </div>
