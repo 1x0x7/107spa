@@ -9,6 +9,7 @@ import './styles/layout.css'
 import './styles/dark.css'
 import './styles/info.css'
 import './styles/stamina.css'
+import { SecurityLock } from '@/components/SecurityLock'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/img/1x0x7_.png" />
       </head>
       <body className="layout-root">
+        <SecurityLock />
         <ExpertProvider>
           {/* 공통 헤더 */}
           <Header />

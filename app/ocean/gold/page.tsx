@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useExpert } from '@/hooks/useExpert'
+import { useSecurityLock } from '@/hooks/useSecurityLock'
 import { 
   calculate1Star, calculate2Star, calculate3Star, calculateAll,
   PREMIUM_PRICE_RATE,
@@ -78,6 +79,9 @@ export default function OceanGoldPage() {
       }
     }
   }, [shellfish, advanced1, advanced2, advanced3, isLoaded])
+
+  // 보안 잠금 (스크롤/복사 방지) - 전체 사이트에 적용하려면 layout.tsx에서 SecurityLock 컴포넌트 사용
+  useSecurityLock()
 
   const fmt = (n: number) => n.toLocaleString()
   const getPremiumRate = () => PREMIUM_PRICE_RATE[ocean.premiumPrice] || 0
@@ -226,7 +230,13 @@ export default function OceanGoldPage() {
   const renderInput = (label: string, value: number, onChange: (v: number) => void) => (
     <label className="gold-input-label">
       <span>{label}</span>
-      <input type="number" min={0} value={value || ''} onChange={(e) => onChange(parseInt(e.target.value) || 0)} />
+      <input 
+        type="number" 
+        min={0} 
+        value={value || ''} 
+        onChange={(e) => onChange(parseInt(e.target.value) || 0)} 
+        style={{ userSelect: 'text' } as React.CSSProperties}
+      />
       {setMode && <span className="input-set-display">{Math.floor(value / 64)} / {value % 64}</span>}
     </label>
   )
@@ -283,14 +293,13 @@ export default function OceanGoldPage() {
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
   }
 
+  // 수정: 0 값도 표시
   const renderSectionWithImage = (title: string, items: { name: string; value: number; icon?: string }[]) => {
-    const filtered = items.filter(i => i.value > 0)
-    if (filtered.length === 0) return null
     return (
       <div className="gold-result-section">
         <h5>{title}</h5>
         <div className="gold-material-tags with-image">
-          {filtered.map((item, idx) => (
+          {items.map((item, idx) => (
             <span key={idx} className="gold-material-tag with-image">
               {item.icon && <span className="mat-icon"><img src={item.icon} alt={item.name} /></span>}
               <span className="mat-name">{item.name}</span>
@@ -302,14 +311,13 @@ export default function OceanGoldPage() {
     )
   }
 
+  // 수정: 0 값도 표시
   const renderSection = (title: string, items: { name: string; value: number }[]) => {
-    const filtered = items.filter(i => i.value > 0)
-    if (filtered.length === 0) return null
     return (
       <div className="gold-result-section">
         <h5>{title}</h5>
         <div className="gold-material-tags">
-          {filtered.map((item, idx) => (
+          {items.map((item, idx) => (
             <span key={idx} className="gold-material-tag">
               <span className="mat-name">{item.name}</span>
               <span className="mat-value">{formatValue(item.value)}</span>
@@ -404,7 +412,7 @@ export default function OceanGoldPage() {
             </div>
 
             {/* 통합 결과 */}
-            {resultAll && (
+            {resultAll && (resultAll.result1 || resultAll.result2 || resultAll.result3) && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
                   <h4>📊 최적 분배 결과</h4>
