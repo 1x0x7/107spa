@@ -12,6 +12,7 @@ import './styles/stamina.css'
 import { SecurityLock } from '@/components/SecurityLock'
 import { Analytics } from "@vercel/analytics/next"
 
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
@@ -35,7 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* 공통 푸터 */}
           <Footer />
         </ExpertProvider>
+        <Analytics />
       </body>
     </html>
   )
 }
+
