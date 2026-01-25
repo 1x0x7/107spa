@@ -37,6 +37,17 @@ export interface Input1Star {
 
 export interface Result1Star {
   best: { gold: number; A: number; K: number; L: number }
+  // 제품용만 (희석액 제외)
+  coreNeedProduct: Record<string, number>
+  essNeedProduct: Record<string, number>
+  blockNeedProduct: Record<string, number>
+  fishNeedProduct: Record<string, number>
+  // 희석액용만 (통합 탭에서 사용)
+  reservedCoreED: number
+  essNeedDilution: Record<string, number>
+  blockNeedDilution: Record<string, number>
+  fishNeedDilution: Record<string, number>
+  // 총합 (내부 계산용)
   coreNeed: Record<string, number>
   coreToMake: Record<string, number>
   essNeedTotal: Record<string, number>
@@ -45,7 +56,6 @@ export interface Result1Star {
   blockNeedTotal: Record<string, number>
   fishNeed: Record<string, number>
   fishNeedTotal: Record<string, number>
-  reservedCoreED?: number
 }
 
 /**
@@ -90,24 +100,33 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
 
   let best = { gold: -1, A: 0, K: 0, L: 0 }
 
-  const maxProducts = Math.floor((totalEss.guard + totalEss.wave + totalEss.chaos + totalEss.life + totalEss.decay) / 3) + 
-                      Math.max(ownedCore.WG, ownedCore.WP, ownedCore.OD, ownedCore.VD, ownedCore.ED) + 10
+  // 각 제품별 최대 가능 개수 계산
+  // life = 2*(A+K) 이므로 A+K <= (life + ownedOD + ownedVD) / 2
+  const maxAK = Math.floor((totalEss.life + ownedCore.OD + ownedCore.VD) / 2) + ownedCore.OD + ownedCore.VD
+  // L은 guard, wave, decay에 의해 제한
+  const maxL = Math.min(
+    totalEss.guard + ownedCore.WG + ownedCore.ED,
+    totalEss.wave + ownedCore.WG + ownedCore.WP,
+    totalEss.decay + ownedCore.VD + ownedCore.ED
+  )
+  // 상한 제한 (실제 게임에서 150개 이상 만들 일은 거의 없음)
+  const maxProduct = Math.min(150, Math.max(maxAK, maxL))
 
-  for (let A = 0; A <= maxProducts; A++) {
-    for (let K = 0; K <= maxProducts; K++) {
-      for (let L = 0; L <= maxProducts; L++) {
+  for (let A = 0; A <= maxProduct; A++) {
+    // A만으로 life 제약 초과 체크
+    if (2 * A > totalEss.life + ownedCore.OD + ownedCore.VD) break
+    
+    for (let K = 0; K <= maxProduct; K++) {
+      // A+K로 life 제약 초과 체크
+      const minLife = 2 * Math.max(0, A + K - Math.max(ownedCore.OD, ownedCore.VD))
+      if (minLife > totalEss.life) break
+      
+      for (let L = 0; L <= maxProduct; L++) {
         if (A + K + L === 0 && reservedCoreED === 0) continue
 
-        // 필요 핵 (제품용 + 희석액용 ED)
         const needCore = {
-          WG: A + L,
-          WP: K + L,
-          OD: A + K,
-          VD: A + K,
-          ED: L + reservedCoreED  // 깃털용 + 희석액용!
+          WG: A + L, WP: K + L, OD: A + K, VD: A + K, ED: L + reservedCoreED
         }
-
-        // 만들어야 할 핵 (보유량 차감)
         const makeCore = {
           WG: Math.max(0, needCore.WG - ownedCore.WG),
           WP: Math.max(0, needCore.WP - ownedCore.WP),
@@ -115,24 +134,19 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
           VD: Math.max(0, needCore.VD - ownedCore.VD),
           ED: Math.max(0, needCore.ED - ownedCore.ED)
         }
-
-        // 핵 제작에 필요한 정수
         const needEss = {
-          guard: makeCore.WG + makeCore.ED,  // 물결수호 + 침식방어
-          wave: makeCore.WG + makeCore.WP,   // 물결수호 + 파동오염
-          chaos: makeCore.WP + makeCore.OD,  // 파동오염 + 질서파괴
-          life: makeCore.OD + makeCore.VD,   // 질서파괴 + 활력붕괴
-          decay: makeCore.VD + makeCore.ED   // 활력붕괴 + 침식방어
+          guard: makeCore.WG + makeCore.ED,
+          wave: makeCore.WG + makeCore.WP,
+          chaos: makeCore.WP + makeCore.OD,
+          life: makeCore.OD + makeCore.VD,
+          decay: makeCore.VD + makeCore.ED
         }
 
-        // 정수 충분한지 체크
         if (needEss.guard > totalEss.guard || needEss.wave > totalEss.wave ||
             needEss.chaos > totalEss.chaos || needEss.life > totalEss.life || 
             needEss.decay > totalEss.decay) continue
 
-        // 1성 제품 골드만 계산
         const gold = A * GOLD_PRICES['1star'].A + K * GOLD_PRICES['1star'].K + L * GOLD_PRICES['1star'].L
-        
         if (gold > best.gold) {
           best = { gold, A, K, L }
         }
@@ -142,13 +156,111 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
 
   if (best.gold < 0 && reservedCoreED === 0) return null
 
-  // 최적 결과 상세 계산
-  const coreNeed = {
+  // === 제품용 재료 계산 (희석액 제외) ===
+  const coreNeedProduct = {
     WG: best.A + best.L,
     WP: best.K + best.L,
     OD: best.A + best.K,
     VD: best.A + best.K,
-    ED: best.L + reservedCoreED  // 희석액용 포함
+    ED: best.L  // 깃털용만!
+  }
+
+  const coreToMakeProduct = {
+    WG: Math.max(0, coreNeedProduct.WG - ownedCore.WG),
+    WP: Math.max(0, coreNeedProduct.WP - ownedCore.WP),
+    OD: Math.max(0, coreNeedProduct.OD - ownedCore.OD),
+    VD: Math.max(0, coreNeedProduct.VD - ownedCore.VD),
+    ED: Math.max(0, coreNeedProduct.ED - ownedCore.ED)
+  }
+
+  // 핵 만드는데 필요한 정수 (내부 계산용)
+  const essNeedRaw = {
+    guard: coreToMakeProduct.WG + coreToMakeProduct.ED,
+    wave: coreToMakeProduct.WG + coreToMakeProduct.WP,
+    chaos: coreToMakeProduct.WP + coreToMakeProduct.OD,
+    life: coreToMakeProduct.OD + coreToMakeProduct.VD,
+    decay: coreToMakeProduct.VD + coreToMakeProduct.ED
+  }
+
+  // 제작 횟수 (2개 단위로 올림)
+  const craftCountProduct = {
+    guard: Math.ceil(Math.max(0, essNeedRaw.guard - ownedEss.guard) / 2),
+    wave: Math.ceil(Math.max(0, essNeedRaw.wave - ownedEss.wave) / 2),
+    chaos: Math.ceil(Math.max(0, essNeedRaw.chaos - ownedEss.chaos) / 2),
+    life: Math.ceil(Math.max(0, essNeedRaw.life - ownedEss.life) / 2),
+    decay: Math.ceil(Math.max(0, essNeedRaw.decay - ownedEss.decay) / 2)
+  }
+
+  // 실제 제작할 정수 (짝수, 제작량 기준)
+  const essNeedProduct = {
+    guard: craftCountProduct.guard * 2,
+    wave: craftCountProduct.wave * 2,
+    chaos: craftCountProduct.chaos * 2,
+    life: craftCountProduct.life * 2,
+    decay: craftCountProduct.decay * 2
+  }
+
+  const blockNeedProduct = {
+    clay: craftCountProduct.guard * 2, sand: craftCountProduct.wave * 4, dirt: craftCountProduct.chaos * 8,
+    gravel: craftCountProduct.life * 4, granite: craftCountProduct.decay * 2
+  }
+
+  const fishNeedProduct = {
+    shrimp: coreToMakeProduct.WG, domi: coreToMakeProduct.WP, herring: coreToMakeProduct.OD,
+    goldfish: coreToMakeProduct.VD, bass: coreToMakeProduct.ED
+  }
+
+  // === 희석액용 재료 계산 (보유량 차감 후) ===
+  // 제품용에서 사용하고 남은 보유 핵
+  const remainingOwnedCoreED = Math.max(0, ownedCore.ED - coreNeedProduct.ED)
+  // 희석액용으로 만들어야 할 핵 (남은 보유량 차감)
+  const coreToMakeDilution = Math.max(0, reservedCoreED - remainingOwnedCoreED)
+  
+  // 제품용에서 사용하고 남은 보유 정수
+  const remainingOwnedEss = {
+    guard: Math.max(0, ownedEss.guard - essNeedProduct.guard),
+    decay: Math.max(0, ownedEss.decay - essNeedProduct.decay)
+  }
+  
+  // 희석액용 핵 만드는데 필요한 정수 (남은 보유 정수 차감)
+  const essToMakeDilutionRaw = {
+    guard: Math.max(0, coreToMakeDilution - remainingOwnedEss.guard),
+    decay: Math.max(0, coreToMakeDilution - remainingOwnedEss.decay)
+  }
+
+  // 제작 횟수 (2개 단위)
+  const craftCountDilution = {
+    guard: Math.ceil(essToMakeDilutionRaw.guard / 2),
+    decay: Math.ceil(essToMakeDilutionRaw.decay / 2)
+  }
+
+  // 실제 제작할 정수 (짝수, 제작량 기준)
+  const essNeedDilution = {
+    guard: craftCountDilution.guard * 2,
+    wave: 0,
+    chaos: 0,
+    life: 0,
+    decay: craftCountDilution.decay * 2
+  }
+
+  const blockNeedDilution = {
+    clay: craftCountDilution.guard * 2,
+    sand: 0, dirt: 0, gravel: 0,
+    granite: craftCountDilution.decay * 2
+  }
+
+  const fishNeedDilution = {
+    shrimp: 0, domi: 0, herring: 0, goldfish: 0,
+    bass: coreToMakeDilution  // 만들어야 할 핵 개수만큼
+  }
+
+  // === 총합 (내부 계산용) ===
+  const coreNeed = {
+    WG: coreNeedProduct.WG,
+    WP: coreNeedProduct.WP,
+    OD: coreNeedProduct.OD,
+    VD: coreNeedProduct.VD,
+    ED: coreNeedProduct.ED + reservedCoreED  // 제품 + 희석액
   }
   
   const coreToMake = {
@@ -159,7 +271,8 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
     ED: Math.max(0, coreNeed.ED - ownedCore.ED)
   }
 
-  const essNeedTotal = {
+  // 핵 만드는데 필요한 정수 (내부 계산용 raw)
+  const essNeedTotalRaw = {
     guard: coreToMake.WG + coreToMake.ED,
     wave: coreToMake.WG + coreToMake.WP,
     chaos: coreToMake.WP + coreToMake.OD,
@@ -167,21 +280,26 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
     decay: coreToMake.VD + coreToMake.ED
   }
 
-  const essToMake = {
-    guard: Math.max(0, essNeedTotal.guard - ownedEss.guard),
-    wave: Math.max(0, essNeedTotal.wave - ownedEss.wave),
-    chaos: Math.max(0, essNeedTotal.chaos - ownedEss.chaos),
-    life: Math.max(0, essNeedTotal.life - ownedEss.life),
-    decay: Math.max(0, essNeedTotal.decay - ownedEss.decay)
+  // 제작 횟수 (2개 단위)
+  const craftCount = {
+    guard: Math.ceil(Math.max(0, essNeedTotalRaw.guard - ownedEss.guard) / 2),
+    wave: Math.ceil(Math.max(0, essNeedTotalRaw.wave - ownedEss.wave) / 2),
+    chaos: Math.ceil(Math.max(0, essNeedTotalRaw.chaos - ownedEss.chaos) / 2),
+    life: Math.ceil(Math.max(0, essNeedTotalRaw.life - ownedEss.life) / 2),
+    decay: Math.ceil(Math.max(0, essNeedTotalRaw.decay - ownedEss.decay) / 2)
   }
 
-  const craftCount = {
-    guard: Math.ceil(essToMake.guard / 2),
-    wave: Math.ceil(essToMake.wave / 2),
-    chaos: Math.ceil(essToMake.chaos / 2),
-    life: Math.ceil(essToMake.life / 2),
-    decay: Math.ceil(essToMake.decay / 2)
+  // 실제 제작할 정수 (짝수)
+  const essToMake = {
+    guard: craftCount.guard * 2,
+    wave: craftCount.wave * 2,
+    chaos: craftCount.chaos * 2,
+    life: craftCount.life * 2,
+    decay: craftCount.decay * 2
   }
+
+  // essNeedTotal도 제작량 기준으로 통일
+  const essNeedTotal = { ...essToMake }
 
   const blockNeed = {
     clay: craftCount.guard * 2, sand: craftCount.wave * 4, dirt: craftCount.chaos * 8,
@@ -212,8 +330,13 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
   }
 
   return { 
-    best, coreNeed, coreToMake, essNeedTotal, essToMake, blockNeed, blockNeedTotal, fishNeed, fishNeedTotal,
-    reservedCoreED
+    best,
+    // 제품용
+    coreNeedProduct, essNeedProduct, blockNeedProduct, fishNeedProduct,
+    // 희석액용
+    reservedCoreED, essNeedDilution, blockNeedDilution, fishNeedDilution,
+    // 총합
+    coreNeed, coreToMake, essNeedTotal, essToMake, blockNeed, blockNeedTotal, fishNeed, fishNeedTotal
   }
 }
 
@@ -228,13 +351,21 @@ export interface Input2Star {
 
 export interface Result2Star {
   best: { gold: number; CORE: number; POTION: number; WING: number }
+  // 제품용만 (희석액 제외)
+  crystalNeedProduct: Record<string, number>
+  essNeedProduct: Record<string, number>
+  materialNeedProduct: Record<string, number>
+  // 희석액용만 (통합 탭에서 사용)
+  reservedCrystalDefense: number
+  essNeedDilution: Record<string, number>
+  materialNeedDilution: Record<string, number>
+  // 총합 (내부 계산용)
   crystalNeed: Record<string, number>
   crystalToMake: Record<string, number>
   essNeedTotal: Record<string, number>
   essToMake: Record<string, number>
   materialNeed: Record<string, number>
   materialNeedTotal: Record<string, number>
-  reservedCrystalDefense?: number
 }
 
 /**
@@ -277,22 +408,35 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
 
   let best = { gold: -1, CORE: 0, POTION: 0, WING: 0 }
 
-  const maxProducts = Math.floor((totalEss.guard + totalEss.wave + totalEss.chaos + totalEss.life + totalEss.decay) / 3) +
-                      Math.max(ownedCrystal.vital, ownedCrystal.erosion, ownedCrystal.defense, ownedCrystal.regen, ownedCrystal.poison) + 10
+  // 각 제품별 최대 가능 개수 계산
+  const maxFromWave = Math.floor((totalEss.wave + ownedCrystal.erosion + ownedCrystal.regen) / 2) + ownedCrystal.erosion + ownedCrystal.regen
+  const maxFromLife = Math.floor((totalEss.life + ownedCrystal.vital + ownedCrystal.regen) / 2) + ownedCrystal.vital + ownedCrystal.regen
+  // 상한 제한
+  const maxProduct = Math.min(150, Math.max(maxFromWave, maxFromLife, 
+    totalEss.guard + ownedCrystal.vital + ownedCrystal.defense,
+    totalEss.chaos + ownedCrystal.defense + ownedCrystal.poison,
+    totalEss.decay + ownedCrystal.erosion + ownedCrystal.poison
+  ))
 
-  for (let CORE = 0; CORE <= maxProducts; CORE++) {
-    for (let POTION = 0; POTION <= maxProducts; POTION++) {
-      for (let WING = 0; WING <= maxProducts; WING++) {
+  for (let CORE = 0; CORE <= maxProduct; CORE++) {
+    // CORE만으로 wave 제약 초과 체크
+    if (2 * CORE > totalEss.wave + ownedCrystal.erosion + ownedCrystal.regen) break
+    
+    for (let POTION = 0; POTION <= maxProduct; POTION++) {
+      // CORE+POTION으로 wave 제약 초과 체크
+      const minWave = 2 * Math.max(0, CORE + POTION - Math.max(ownedCrystal.erosion, ownedCrystal.regen))
+      if (minWave > totalEss.wave) break
+
+      for (let WING = 0; WING <= maxProduct; WING++) {
         if (CORE + POTION + WING === 0 && reservedCrystalDefense === 0) continue
 
         const needCrystal = {
           vital: CORE + WING,
           erosion: CORE + POTION,
-          defense: WING + reservedCrystalDefense,  // 날개용 + 희석액용!
+          defense: WING + reservedCrystalDefense,
           regen: CORE + POTION,
           poison: POTION + WING
         }
-
         const makeCrystal = {
           vital: Math.max(0, needCrystal.vital - ownedCrystal.vital),
           erosion: Math.max(0, needCrystal.erosion - ownedCrystal.erosion),
@@ -300,7 +444,6 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
           regen: Math.max(0, needCrystal.regen - ownedCrystal.regen),
           poison: Math.max(0, needCrystal.poison - ownedCrystal.poison)
         }
-
         const needEss = {
           guard: makeCrystal.vital + makeCrystal.defense,
           wave: makeCrystal.erosion + makeCrystal.regen,
@@ -314,20 +457,132 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
             needEss.decay > totalEss.decay) continue
 
         const gold = CORE * GOLD_PRICES['2star'].CORE + POTION * GOLD_PRICES['2star'].POTION + WING * GOLD_PRICES['2star'].WING
-        
-        if (gold > best.gold) best = { gold, CORE, POTION, WING }
+        if (gold > best.gold) {
+          best = { gold, CORE, POTION, WING }
+        }
       }
     }
   }
 
   if (best.gold < 0 && reservedCrystalDefense === 0) return null
 
-  const crystalNeed = {
+  // === 제품용 재료 계산 (희석액 제외) ===
+  const crystalNeedProduct = {
     vital: best.CORE + best.WING,
     erosion: best.CORE + best.POTION,
-    defense: best.WING + reservedCrystalDefense,  // 희석액용 포함
+    defense: best.WING,  // 날개용만!
     regen: best.CORE + best.POTION,
     poison: best.POTION + best.WING
+  }
+
+  const crystalToMakeProduct = {
+    vital: Math.max(0, crystalNeedProduct.vital - ownedCrystal.vital),
+    erosion: Math.max(0, crystalNeedProduct.erosion - ownedCrystal.erosion),
+    defense: Math.max(0, crystalNeedProduct.defense - ownedCrystal.defense),
+    regen: Math.max(0, crystalNeedProduct.regen - ownedCrystal.regen),
+    poison: Math.max(0, crystalNeedProduct.poison - ownedCrystal.poison)
+  }
+
+  // 결정 만드는데 필요한 에센스 (내부 계산용)
+  const essNeedRaw = {
+    guard: crystalToMakeProduct.vital + crystalToMakeProduct.defense,
+    wave: crystalToMakeProduct.erosion + crystalToMakeProduct.regen,
+    chaos: crystalToMakeProduct.defense + crystalToMakeProduct.poison,
+    life: crystalToMakeProduct.vital + crystalToMakeProduct.regen,
+    decay: crystalToMakeProduct.erosion + crystalToMakeProduct.poison
+  }
+
+  // 제작 횟수 (2개 단위로 올림)
+  const craftCountProduct = {
+    guard: Math.ceil(Math.max(0, essNeedRaw.guard - ownedEss.guard) / 2),
+    wave: Math.ceil(Math.max(0, essNeedRaw.wave - ownedEss.wave) / 2),
+    chaos: Math.ceil(Math.max(0, essNeedRaw.chaos - ownedEss.chaos) / 2),
+    life: Math.ceil(Math.max(0, essNeedRaw.life - ownedEss.life) / 2),
+    decay: Math.ceil(Math.max(0, essNeedRaw.decay - ownedEss.decay) / 2)
+  }
+
+  // 실제 제작할 에센스 (짝수, 제작량 기준)
+  const essNeedProduct = {
+    guard: craftCountProduct.guard * 2,
+    wave: craftCountProduct.wave * 2,
+    chaos: craftCountProduct.chaos * 2,
+    life: craftCountProduct.life * 2,
+    decay: craftCountProduct.decay * 2
+  }
+
+  // essToMakeProduct도 짝수 기준으로 (어패류 사용량)
+  const essToMakeProduct = {
+    guard: craftCountProduct.guard * 2,
+    wave: craftCountProduct.wave * 2,
+    chaos: craftCountProduct.chaos * 2,
+    life: craftCountProduct.life * 2,
+    decay: craftCountProduct.decay * 2
+  }
+
+  const totalCrystalToMakeProduct = crystalToMakeProduct.vital + crystalToMakeProduct.erosion + crystalToMakeProduct.defense + crystalToMakeProduct.regen + crystalToMakeProduct.poison
+  const totalEssToMakeProduct = essToMakeProduct.guard + essToMakeProduct.wave + essToMakeProduct.chaos + essToMakeProduct.life + essToMakeProduct.decay
+
+  const materialNeedProduct = {
+    seaweed: Math.ceil(totalEssToMakeProduct / 2) * 4,
+    oakLeaves: craftCountProduct.guard * 6, spruceLeaves: craftCountProduct.wave * 6,
+    birchLeaves: craftCountProduct.chaos * 6, acaciaLeaves: craftCountProduct.life * 6, cherryLeaves: craftCountProduct.decay * 6,
+    kelp: totalCrystalToMakeProduct * 4, lapisBlock: crystalToMakeProduct.vital, redstoneBlock: crystalToMakeProduct.erosion,
+    ironIngot: crystalToMakeProduct.defense * 3, goldIngot: crystalToMakeProduct.regen * 2, diamond: crystalToMakeProduct.poison
+  }
+
+  // === 희석액용 재료 계산 (보유량 차감 후) ===
+  // 제품용에서 사용하고 남은 보유 결정
+  const remainingOwnedCrystalDefense = Math.max(0, ownedCrystal.defense - crystalNeedProduct.defense)
+  // 희석액용으로 만들어야 할 결정 (남은 보유량 차감)
+  const crystalToMakeDilution = Math.max(0, reservedCrystalDefense - remainingOwnedCrystalDefense)
+  
+  // 제품용에서 사용하고 남은 보유 에센스
+  const remainingOwnedEss = {
+    guard: Math.max(0, ownedEss.guard - essNeedProduct.guard),
+    chaos: Math.max(0, ownedEss.chaos - essNeedProduct.chaos)
+  }
+  
+  // 희석액용 결정 만드는데 필요한 에센스 (남은 보유 에센스 차감)
+  const essToMakeDilutionRaw = {
+    guard: Math.max(0, crystalToMakeDilution - remainingOwnedEss.guard),
+    chaos: Math.max(0, crystalToMakeDilution - remainingOwnedEss.chaos)
+  }
+
+  // 제작 횟수 (2개 단위)
+  const craftCountDilution = {
+    guard: Math.ceil(essToMakeDilutionRaw.guard / 2),
+    chaos: Math.ceil(essToMakeDilutionRaw.chaos / 2)
+  }
+
+  // 실제 제작할 에센스 (짝수, 제작량 기준)
+  const essNeedDilution = {
+    guard: craftCountDilution.guard * 2,
+    wave: 0,
+    chaos: craftCountDilution.chaos * 2,
+    life: 0,
+    decay: 0
+  }
+
+  const materialNeedDilution = {
+    seaweed: Math.ceil((craftCountDilution.guard + craftCountDilution.chaos)) * 4,
+    oakLeaves: craftCountDilution.guard * 6,
+    spruceLeaves: 0,
+    birchLeaves: craftCountDilution.chaos * 6,
+    acaciaLeaves: 0,
+    cherryLeaves: 0,
+    kelp: crystalToMakeDilution * 4,
+    lapisBlock: 0, redstoneBlock: 0,
+    ironIngot: crystalToMakeDilution * 3,
+    goldIngot: 0, diamond: 0
+  }
+
+  // === 총합 (내부 계산용) ===
+  const crystalNeed = {
+    vital: crystalNeedProduct.vital,
+    erosion: crystalNeedProduct.erosion,
+    defense: crystalNeedProduct.defense + reservedCrystalDefense,  // 제품 + 희석액
+    regen: crystalNeedProduct.regen,
+    poison: crystalNeedProduct.poison
   }
 
   const crystalToMake = {
@@ -338,7 +593,8 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
     poison: Math.max(0, crystalNeed.poison - ownedCrystal.poison)
   }
 
-  const essNeedTotal = {
+  // 결정 만드는데 필요한 에센스 (raw)
+  const essNeedTotalRaw = {
     guard: crystalToMake.vital + crystalToMake.defense,
     wave: crystalToMake.erosion + crystalToMake.regen,
     chaos: crystalToMake.defense + crystalToMake.poison,
@@ -346,21 +602,33 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
     decay: crystalToMake.erosion + crystalToMake.poison
   }
 
-  const essToMake = {
-    guard: Math.max(0, essNeedTotal.guard - ownedEss.guard),
-    wave: Math.max(0, essNeedTotal.wave - ownedEss.wave),
-    chaos: Math.max(0, essNeedTotal.chaos - ownedEss.chaos),
-    life: Math.max(0, essNeedTotal.life - ownedEss.life),
-    decay: Math.max(0, essNeedTotal.decay - ownedEss.decay)
+  // 제작 횟수 (2개 단위)
+  const craftCountTotal = {
+    guard: Math.ceil(Math.max(0, essNeedTotalRaw.guard - ownedEss.guard) / 2),
+    wave: Math.ceil(Math.max(0, essNeedTotalRaw.wave - ownedEss.wave) / 2),
+    chaos: Math.ceil(Math.max(0, essNeedTotalRaw.chaos - ownedEss.chaos) / 2),
+    life: Math.ceil(Math.max(0, essNeedTotalRaw.life - ownedEss.life) / 2),
+    decay: Math.ceil(Math.max(0, essNeedTotalRaw.decay - ownedEss.decay) / 2)
   }
+
+  // 실제 제작할 에센스 (짝수)
+  const essToMake = {
+    guard: craftCountTotal.guard * 2,
+    wave: craftCountTotal.wave * 2,
+    chaos: craftCountTotal.chaos * 2,
+    life: craftCountTotal.life * 2,
+    decay: craftCountTotal.decay * 2
+  }
+
+  const essNeedTotal = { ...essToMake }
 
   const totalCrystalToMake = crystalToMake.vital + crystalToMake.erosion + crystalToMake.defense + crystalToMake.regen + crystalToMake.poison
   const totalEssToMake = essToMake.guard + essToMake.wave + essToMake.chaos + essToMake.life + essToMake.decay
 
   const materialNeed = {
     seaweed: Math.ceil(totalEssToMake / 2) * 4,
-    oakLeaves: Math.ceil(essToMake.guard / 2) * 6, spruceLeaves: Math.ceil(essToMake.wave / 2) * 6,
-    birchLeaves: Math.ceil(essToMake.chaos / 2) * 6, acaciaLeaves: Math.ceil(essToMake.life / 2) * 6, cherryLeaves: Math.ceil(essToMake.decay / 2) * 6,
+    oakLeaves: craftCountTotal.guard * 6, spruceLeaves: craftCountTotal.wave * 6,
+    birchLeaves: craftCountTotal.chaos * 6, acaciaLeaves: craftCountTotal.life * 6, cherryLeaves: craftCountTotal.decay * 6,
     kelp: totalCrystalToMake * 4, lapisBlock: crystalToMake.vital, redstoneBlock: crystalToMake.erosion,
     ironIngot: crystalToMake.defense * 3, goldIngot: crystalToMake.regen * 2, diamond: crystalToMake.poison
   }
@@ -370,15 +638,20 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
 
   const materialNeedTotal = {
     seaweed: Math.ceil(totalEssNeed / 2) * 4,
-    oakLeaves: Math.ceil(essNeedTotal.guard / 2) * 6, spruceLeaves: Math.ceil(essNeedTotal.wave / 2) * 6,
-    birchLeaves: Math.ceil(essNeedTotal.chaos / 2) * 6, acaciaLeaves: Math.ceil(essNeedTotal.life / 2) * 6, cherryLeaves: Math.ceil(essNeedTotal.decay / 2) * 6,
+    oakLeaves: craftCountTotal.guard * 6, spruceLeaves: craftCountTotal.wave * 6,
+    birchLeaves: craftCountTotal.chaos * 6, acaciaLeaves: craftCountTotal.life * 6, cherryLeaves: craftCountTotal.decay * 6,
     kelp: totalCrystalNeed * 4, lapisBlock: crystalNeed.vital, redstoneBlock: crystalNeed.erosion,
     ironIngot: crystalNeed.defense * 3, goldIngot: crystalNeed.regen * 2, diamond: crystalNeed.poison
   }
 
   return { 
-    best, crystalNeed, crystalToMake, essNeedTotal, essToMake, materialNeed, materialNeedTotal,
-    reservedCrystalDefense
+    best,
+    // 제품용
+    crystalNeedProduct, essNeedProduct, materialNeedProduct,
+    // 희석액용
+    reservedCrystalDefense, essNeedDilution, materialNeedDilution,
+    // 총합
+    crystalNeed, crystalToMake, essNeedTotal, essToMake, materialNeed, materialNeedTotal
   }
 }
 
@@ -393,6 +666,17 @@ export interface Input3Star {
 
 export interface Result3Star {
   best: { gold: number; AQUA: number; NAUTILUS: number; SPINE: number }
+  // 제품용만 (희석액 제외)
+  potionNeedProduct: Record<string, number>
+  elixNeedProduct: Record<string, number>
+  materialNeedProduct: Record<string, number>
+  deadCoralNeedProduct: Record<string, number>
+  // 희석액용만 (통합 탭에서 사용)
+  reservedPotionCorrupt: number
+  elixNeedDilution: Record<string, number>
+  materialNeedDilution: Record<string, number>
+  deadCoralNeedDilution: Record<string, number>
+  // 총합 (내부 계산용)
   potionNeed: Record<string, number>
   potionToMake: Record<string, number>
   elixNeedTotal: Record<string, number>
@@ -401,7 +685,6 @@ export interface Result3Star {
   materialNeedTotal: Record<string, number>
   deadCoralNeed: Record<string, number>
   deadCoralNeedTotal: Record<string, number>
-  reservedPotionCorrupt?: number
 }
 
 /**
@@ -440,22 +723,35 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
 
   let best = { gold: -1, AQUA: 0, NAUTILUS: 0, SPINE: 0 }
 
-  const maxProducts = Math.floor((totalElix.guard + totalElix.wave + totalElix.chaos + totalElix.life + totalElix.decay) / 3) +
-                      Math.max(ownedPotion.immortal, ownedPotion.barrier, ownedPotion.corrupt, ownedPotion.frenzy, ownedPotion.venom) + 10
+  // 각 제품별 최대 가능 개수 계산
+  const maxFromGuard = Math.floor((totalElix.guard + ownedPotion.immortal + ownedPotion.barrier) / 2) + ownedPotion.immortal + ownedPotion.barrier
+  // 상한 제한
+  const maxProduct = Math.min(150, Math.max(maxFromGuard,
+    totalElix.wave + ownedPotion.barrier + ownedPotion.venom,
+    totalElix.chaos + ownedPotion.corrupt + ownedPotion.frenzy,
+    totalElix.life + ownedPotion.immortal + ownedPotion.frenzy,
+    totalElix.decay + ownedPotion.corrupt + ownedPotion.venom
+  ))
 
-  for (let AQUA = 0; AQUA <= maxProducts; AQUA++) {
-    for (let NAUTILUS = 0; NAUTILUS <= maxProducts; NAUTILUS++) {
-      for (let SPINE = 0; SPINE <= maxProducts; SPINE++) {
+  for (let AQUA = 0; AQUA <= maxProduct; AQUA++) {
+    // AQUA만으로 guard 제약 초과 체크
+    if (2 * AQUA > totalElix.guard + ownedPotion.immortal + ownedPotion.barrier) break
+    
+    for (let NAUTILUS = 0; NAUTILUS <= maxProduct; NAUTILUS++) {
+      // AQUA+NAUTILUS로 guard 제약 초과 체크
+      const minGuard = 2 * Math.max(0, AQUA + NAUTILUS - Math.max(ownedPotion.immortal, ownedPotion.barrier))
+      if (minGuard > totalElix.guard) break
+
+      for (let SPINE = 0; SPINE <= maxProduct; SPINE++) {
         if (AQUA + NAUTILUS + SPINE === 0 && reservedPotionCorrupt === 0) continue
 
         const needPotion = {
           immortal: AQUA + NAUTILUS,
           barrier: AQUA + NAUTILUS,
-          corrupt: SPINE + reservedPotionCorrupt,  // 척추용 + 희석액용!
+          corrupt: SPINE + reservedPotionCorrupt,
           frenzy: NAUTILUS + SPINE,
           venom: AQUA + SPINE
         }
-
         const makePotion = {
           immortal: Math.max(0, needPotion.immortal - ownedPotion.immortal),
           barrier: Math.max(0, needPotion.barrier - ownedPotion.barrier),
@@ -463,7 +759,6 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
           frenzy: Math.max(0, needPotion.frenzy - ownedPotion.frenzy),
           venom: Math.max(0, needPotion.venom - ownedPotion.venom)
         }
-
         const needElix = {
           guard: makePotion.immortal + makePotion.barrier,
           wave: makePotion.barrier + makePotion.venom,
@@ -477,20 +772,120 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
             needElix.decay > totalElix.decay) continue
 
         const gold = AQUA * GOLD_PRICES['3star'].AQUA + NAUTILUS * GOLD_PRICES['3star'].NAUTILUS + SPINE * GOLD_PRICES['3star'].SPINE
-        
-        if (gold > best.gold) best = { gold, AQUA, NAUTILUS, SPINE }
+        if (gold > best.gold) {
+          best = { gold, AQUA, NAUTILUS, SPINE }
+        }
       }
     }
   }
 
   if (best.gold < 0 && reservedPotionCorrupt === 0) return null
 
-  const potionNeed = {
+  // === 제품용 재료 계산 (희석액 제외) ===
+  const potionNeedProduct = {
     immortal: best.AQUA + best.NAUTILUS,
     barrier: best.AQUA + best.NAUTILUS,
-    corrupt: best.SPINE + reservedPotionCorrupt,  // 희석액용 포함
+    corrupt: best.SPINE,  // 척추용만!
     frenzy: best.NAUTILUS + best.SPINE,
     venom: best.AQUA + best.SPINE
+  }
+
+  const potionToMakeProduct = {
+    immortal: Math.max(0, potionNeedProduct.immortal - ownedPotion.immortal),
+    barrier: Math.max(0, potionNeedProduct.barrier - ownedPotion.barrier),
+    corrupt: Math.max(0, potionNeedProduct.corrupt - ownedPotion.corrupt),
+    frenzy: Math.max(0, potionNeedProduct.frenzy - ownedPotion.frenzy),
+    venom: Math.max(0, potionNeedProduct.venom - ownedPotion.venom)
+  }
+
+  // 영약 만드는데 필요한 엘릭서 (내부 계산용)
+  const elixNeedRaw = {
+    guard: potionToMakeProduct.immortal + potionToMakeProduct.barrier,
+    wave: potionToMakeProduct.barrier + potionToMakeProduct.venom,
+    chaos: potionToMakeProduct.corrupt + potionToMakeProduct.frenzy,
+    life: potionToMakeProduct.immortal + potionToMakeProduct.frenzy,
+    decay: potionToMakeProduct.corrupt + potionToMakeProduct.venom
+  }
+
+  // 실제 제작할 엘릭서 (보유량 차감 후, 3성은 1:1이라 짝수 올림 불필요)
+  const elixToMakeProduct = {
+    guard: Math.max(0, elixNeedRaw.guard - ownedElix.guard),
+    wave: Math.max(0, elixNeedRaw.wave - ownedElix.wave),
+    chaos: Math.max(0, elixNeedRaw.chaos - ownedElix.chaos),
+    life: Math.max(0, elixNeedRaw.life - ownedElix.life),
+    decay: Math.max(0, elixNeedRaw.decay - ownedElix.decay)
+  }
+
+  // elixNeedProduct = 실제 제작량으로 통일
+  const elixNeedProduct = { ...elixToMakeProduct }
+
+  const totalElixToMakeProduct = elixToMakeProduct.guard + elixToMakeProduct.wave + elixToMakeProduct.chaos + elixToMakeProduct.life + elixToMakeProduct.decay
+  const totalPotionToMakeProduct = potionToMakeProduct.immortal + potionToMakeProduct.barrier + potionToMakeProduct.corrupt + potionToMakeProduct.frenzy + potionToMakeProduct.venom
+
+  const materialNeedProduct = {
+    seaSquirt: totalElixToMakeProduct * 2, glassBottle: totalElixToMakeProduct * 3,
+    netherrack: elixToMakeProduct.guard * 8, magmaBlock: elixToMakeProduct.wave * 4, soulSoil: elixToMakeProduct.chaos * 4, 
+    crimsonStem: elixToMakeProduct.life * 4, warpedStem: elixToMakeProduct.decay * 4,
+    driedKelp: totalPotionToMakeProduct * 6, glowBerry: totalPotionToMakeProduct * 4
+  }
+
+  const deadCoralNeedProduct = {
+    deadTubeCoral: potionToMakeProduct.immortal * 2, deadBrainCoral: potionToMakeProduct.barrier * 2, 
+    deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2, deadHornCoral: potionToMakeProduct.venom * 2
+  }
+
+  // === 희석액용 재료 계산 (보유량 차감 후) ===
+  // 제품용에서 사용하고 남은 보유 영약
+  const remainingOwnedPotionCorrupt = Math.max(0, ownedPotion.corrupt - potionNeedProduct.corrupt)
+  // 희석액용으로 만들어야 할 영약 (남은 보유량 차감)
+  const potionToMakeDilution = Math.max(0, reservedPotionCorrupt - remainingOwnedPotionCorrupt)
+  
+  // 제품용에서 사용하고 남은 보유 엘릭서
+  const remainingOwnedElix = {
+    chaos: Math.max(0, ownedElix.chaos - elixNeedProduct.chaos),
+    decay: Math.max(0, ownedElix.decay - elixNeedProduct.decay)
+  }
+  
+  // 희석액용 영약 만드는데 필요한 엘릭서 (남은 보유 엘릭서 차감)
+  const elixToMakeDilution = {
+    chaos: Math.max(0, potionToMakeDilution - remainingOwnedElix.chaos),
+    decay: Math.max(0, potionToMakeDilution - remainingOwnedElix.decay)
+  }
+
+  const elixNeedDilution = {
+    guard: 0,
+    wave: 0,
+    chaos: elixToMakeDilution.chaos,  // 실제 제작량
+    life: 0,
+    decay: elixToMakeDilution.decay   // 실제 제작량
+  }
+
+  const totalElixToMakeDilution = elixToMakeDilution.chaos + elixToMakeDilution.decay
+
+  const materialNeedDilution = {
+    seaSquirt: totalElixToMakeDilution * 2,
+    glassBottle: totalElixToMakeDilution * 3,
+    netherrack: 0, magmaBlock: 0,
+    soulSoil: elixToMakeDilution.chaos * 4,
+    crimsonStem: 0,
+    warpedStem: elixToMakeDilution.decay * 4,
+    driedKelp: potionToMakeDilution * 6,
+    glowBerry: potionToMakeDilution * 4
+  }
+
+  const deadCoralNeedDilution = {
+    deadTubeCoral: 0, deadBrainCoral: 0, 
+    deadBubbleCoral: potionToMakeDilution * 2,  // 타락침식영약용 (만들어야 할 양만)
+    deadFireCoral: 0, deadHornCoral: 0
+  }
+
+  // === 총합 (내부 계산용) ===
+  const potionNeed = {
+    immortal: potionNeedProduct.immortal,
+    barrier: potionNeedProduct.barrier,
+    corrupt: potionNeedProduct.corrupt + reservedPotionCorrupt,  // 제품 + 희석액
+    frenzy: potionNeedProduct.frenzy,
+    venom: potionNeedProduct.venom
   }
 
   const potionToMake = {
@@ -501,7 +896,8 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     venom: Math.max(0, potionNeed.venom - ownedPotion.venom)
   }
 
-  const elixNeedTotal = {
+  // 영약 만드는데 필요한 엘릭서 (raw)
+  const elixNeedTotalRaw = {
     guard: potionToMake.immortal + potionToMake.barrier,
     wave: potionToMake.barrier + potionToMake.venom,
     chaos: potionToMake.corrupt + potionToMake.frenzy,
@@ -509,13 +905,17 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     decay: potionToMake.corrupt + potionToMake.venom
   }
 
+  // 실제 제작할 엘릭서 (보유량 차감 후, 3성은 1:1)
   const elixToMake = {
-    guard: Math.max(0, elixNeedTotal.guard - ownedElix.guard),
-    wave: Math.max(0, elixNeedTotal.wave - ownedElix.wave),
-    chaos: Math.max(0, elixNeedTotal.chaos - ownedElix.chaos),
-    life: Math.max(0, elixNeedTotal.life - ownedElix.life),
-    decay: Math.max(0, elixNeedTotal.decay - ownedElix.decay)
+    guard: Math.max(0, elixNeedTotalRaw.guard - ownedElix.guard),
+    wave: Math.max(0, elixNeedTotalRaw.wave - ownedElix.wave),
+    chaos: Math.max(0, elixNeedTotalRaw.chaos - ownedElix.chaos),
+    life: Math.max(0, elixNeedTotalRaw.life - ownedElix.life),
+    decay: Math.max(0, elixNeedTotalRaw.decay - ownedElix.decay)
   }
+
+  // elixNeedTotal = 제작량 기준으로 통일
+  const elixNeedTotal = { ...elixToMake }
 
   const totalElixToMake = elixToMake.guard + elixToMake.wave + elixToMake.chaos + elixToMake.life + elixToMake.decay
   const totalPotionToMake = potionToMake.immortal + potionToMake.barrier + potionToMake.corrupt + potionToMake.frenzy + potionToMake.venom
@@ -548,8 +948,13 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
   }
 
   return { 
-    best, potionNeed, potionToMake, elixNeedTotal, elixToMake, materialNeed, materialNeedTotal, deadCoralNeed, deadCoralNeedTotal,
-    reservedPotionCorrupt
+    best,
+    // 제품용
+    potionNeedProduct, elixNeedProduct, materialNeedProduct, deadCoralNeedProduct,
+    // 희석액용
+    reservedPotionCorrupt, elixNeedDilution, materialNeedDilution, deadCoralNeedDilution,
+    // 총합
+    potionNeed, potionToMake, elixNeedTotal, elixToMake, materialNeed, materialNeedTotal, deadCoralNeed, deadCoralNeedTotal
   }
 }
 
@@ -583,7 +988,6 @@ export interface ResultAll {
  */
 export function calculateAll(
   input: InputAll, 
-  includeDilution: boolean = true,
   advanced1?: any,
   advanced2?: any,
   advanced3?: any
@@ -591,37 +995,6 @@ export function calculateAll(
   const hasAdvanced1 = advanced1 && Object.values(advanced1).some((v: any) => v > 0)
   const hasAdvanced2 = advanced2 && Object.values(advanced2).some((v: any) => v > 0)
   const hasAdvanced3 = advanced3 && Object.values(advanced3).some((v: any) => v > 0)
-
-  // 희석액 미포함 시
-  if (!includeDilution) {
-    const r1 = calculate1Star({ 
-      ...input.star1, 
-      ...(hasAdvanced1 ? advanced1 : {})
-    }, !!hasAdvanced1, 0)
-    
-    const r2 = calculate2Star({ 
-      guard2: input.star2.guard, wave2: input.star2.wave, chaos2: input.star2.chaos, 
-      life2: input.star2.life, decay2: input.star2.decay,
-      ...(hasAdvanced2 ? advanced2 : {})
-    }, !!hasAdvanced2, 0)
-    
-    const r3 = calculate3Star({ 
-      ...input.star3, 
-      ...(hasAdvanced3 ? advanced3 : {})
-    }, !!hasAdvanced3, 0)
-    
-    return {
-      totalGold: (r1?.best.gold || 0) + (r2?.best.gold || 0) + (r3?.best.gold || 0),
-      dilution: 0,
-      result1: r1, result2: r2, result3: r3,
-      summary: { 
-        dilutionGold: 0, 
-        star1Gold: r1?.best.gold || 0, 
-        star2Gold: r2?.best.gold || 0, 
-        star3Gold: r3?.best.gold || 0 
-      }
-    }
-  }
 
   // 희석액 최대 개수 추정 (정수/에센스/엘릭서 기준)
   const ess1Guard = floorToTwo(input.star1.guard) + (advanced1?.essGuard || 0)

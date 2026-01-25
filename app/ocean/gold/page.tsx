@@ -20,7 +20,6 @@ export default function OceanGoldPage() {
   const [advancedMode, setAdvancedMode] = useState(false)
   const [setMode, setSetMode] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
-  const [includeDilution, setIncludeDilution] = useState(true) // 희석액 포함 스위치
   const [independentMode, setIndependentMode] = useState(false) // 독립 계산 스위치
   const [isLoaded, setIsLoaded] = useState(false)
   
@@ -144,13 +143,12 @@ export default function OceanGoldPage() {
       setResult2(resultAll.result2)
       setResult3(resultAll.result3)
     }
-  }, [independentMode])
+  }, [independentMode, starLevel])
 
   const calculate = () => {
     if (starLevel === 'all') {
-      // 통합: 희석액 포함 여부에 따라 계산
-      const res = calculateAll(shellfish, includeDilution, advanced1, advanced2, advanced3)
-      if (res.totalGold === 0) { alert('재료가 부족합니다'); return }
+      // 통합: 항상 희석액 포함
+      const res = calculateAll(shellfish, advanced1, advanced2, advanced3)
       setResultAll(res)
       // 개별 탭 결과도 저장 (연동용)
       setResult1(res.result1)
@@ -164,7 +162,6 @@ export default function OceanGoldPage() {
         ...shellfish.star1, 
         ...(advancedMode ? advanced1 : {})
       }, advancedMode)
-      if (!res) { alert('재료가 부족합니다'); return }
       setResult1(res)
       setIndependentMode(true)
     } else if (starLevel === '2') {
@@ -173,7 +170,6 @@ export default function OceanGoldPage() {
         chaos2: shellfish.star2.chaos, life2: shellfish.star2.life, decay2: shellfish.star2.decay,
         ...(advancedMode ? advanced2 : {})
       }, advancedMode)
-      if (!res) { alert('재료가 부족합니다'); return }
       setResult2(res)
       setIndependentMode(true)
     } else if (starLevel === '3') {
@@ -181,7 +177,6 @@ export default function OceanGoldPage() {
         ...shellfish.star3, 
         ...(advancedMode ? advanced3 : {})
       }, advancedMode)
-      if (!res) { alert('재료가 부족합니다'); return }
       setResult3(res)
       setIndependentMode(true)
     }
@@ -244,11 +239,11 @@ export default function OceanGoldPage() {
       { name: '혼란 정수', value: advanced1.essChaos },
       { name: '생명 정수', value: advanced1.essLife },
       { name: '부식 정수', value: advanced1.essDecay },
-      { name: '물결 수호 핵', value: advanced1.coreWG },
-      { name: '파동 오염 핵', value: advanced1.coreWP },
-      { name: '질서 파괴 핵', value: advanced1.coreOD },
-      { name: '활력 붕괴 핵', value: advanced1.coreVD },
-      { name: '침식 방어 핵', value: advanced1.coreED },
+      { name: '물결수호 핵', value: advanced1.coreWG },
+      { name: '파동오염 핵', value: advanced1.coreWP },
+      { name: '질서파괴 핵', value: advanced1.coreOD },
+      { name: '활력붕괴 핵', value: advanced1.coreVD },
+      { name: '침식방어 핵', value: advanced1.coreED },
     ].filter(i => i.value > 0)
     if (items.length === 0) return null
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
@@ -261,11 +256,11 @@ export default function OceanGoldPage() {
       { name: '혼란 에센스', value: advanced2.essChaos },
       { name: '생명 에센스', value: advanced2.essLife },
       { name: '부식 에센스', value: advanced2.essDecay },
-      { name: '활기 보존', value: advanced2.crystalVital },
-      { name: '파도 침식', value: advanced2.crystalErosion },
-      { name: '방어 오염', value: advanced2.crystalDefense },
-      { name: '격류 재생', value: advanced2.crystalRegen },
-      { name: '맹독 혼란', value: advanced2.crystalPoison },
+      { name: '활기보존', value: advanced2.crystalVital },
+      { name: '파도침식', value: advanced2.crystalErosion },
+      { name: '방어오염', value: advanced2.crystalDefense },
+      { name: '격류재생', value: advanced2.crystalRegen },
+      { name: '맹독혼란', value: advanced2.crystalPoison },
     ].filter(i => i.value > 0)
     if (items.length === 0) return null
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
@@ -278,11 +273,11 @@ export default function OceanGoldPage() {
       { name: '혼란 엘릭서', value: advanced3.elixChaos },
       { name: '생명 엘릭서', value: advanced3.elixLife },
       { name: '부식 엘릭서', value: advanced3.elixDecay },
-      { name: '불멸 재생', value: advanced3.potionImmortal },
-      { name: '파동 장벽', value: advanced3.potionBarrier },
-      { name: '타락 침식', value: advanced3.potionCorrupt },
-      { name: '생명 광란', value: advanced3.potionFrenzy },
-      { name: '맹독 파동', value: advanced3.potionVenom },
+      { name: '불멸재생', value: advanced3.potionImmortal },
+      { name: '파동장벽', value: advanced3.potionBarrier },
+      { name: '타락침식', value: advanced3.potionCorrupt },
+      { name: '생명광란', value: advanced3.potionFrenzy },
+      { name: '맹독파동', value: advanced3.potionVenom },
     ].filter(i => i.value > 0)
     if (items.length === 0) return null
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
@@ -344,15 +339,6 @@ export default function OceanGoldPage() {
                 <label htmlFor="set-mode-switch" className="switch_label"><span className="onf_btn" /></label>
               </div>
             </div>
-            {starLevel === 'all' && (
-              <div className="switch-wrapper">
-                <span className="switch-label" onClick={() => setIncludeDilution(v => !v)}>희석액 포함</span>
-                <div className="switcher">
-                  <input type="checkbox" id="dilution-switch" checked={includeDilution} onChange={(e) => setIncludeDilution(e.target.checked)} />
-                  <label htmlFor="dilution-switch" className="switch_label"><span className="onf_btn" /></label>
-                </div>
-              </div>
-            )}
             {starLevel !== 'all' && (
               <>
                 <div className="switch-wrapper">
@@ -428,36 +414,34 @@ export default function OceanGoldPage() {
                   </div>
                 </div>
 
-                {/* 4열/3열 카드 형태 결과 */}
-                <div className={`gold-unified-cards ${!includeDilution || resultAll.dilution === 0 ? 'no-dilution' : ''}`}>
-                  {/* 희석액 (0성) - 희석액 포함 & 희석액 > 0일 때만 표시 */}
-                  {includeDilution && resultAll.dilution > 0 && (
-                    <div className="gold-result-mini-card">
-                      <div className="mini-card-header">희석액 (0성)</div>
-                      <div className="mini-card-products">
-                        <div className="mini-product">
-                          <span className="mini-product-name">추출된 희석액</span>
-                          <span className="mini-product-count">{resultAll.dilution}</span>
-                        </div>
+                {/* 4열 카드 형태 결과 (항상 희석액 포함) */}
+                <div className="gold-unified-cards">
+                  {/* 희석액 (0성) - 항상 표시 */}
+                  <div className="gold-result-mini-card">
+                    <div className="mini-card-header">희석액 (0성)</div>
+                    <div className="mini-card-products">
+                      <div className="mini-product">
+                        <span className="mini-product-name">희석된 추출액</span>
+                        <span className="mini-product-count">{resultAll.dilution}</span>
                       </div>
-                      <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.dilutionGold * (1 + getPremiumRate())))}</div>
                     </div>
-                  )}
+                    <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.dilutionGold * (1 + getPremiumRate())))}</div>
+                  </div>
 
                   {/* 1성 */}
                   <div className="gold-result-mini-card">
                     <div className="mini-card-header">1성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">영생의 아쿠티스</span>
+                        <span className="mini-product-name">아쿠티스</span>
                         <span className="mini-product-count">{resultAll.result1?.best.A || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">크라켄의 광란체</span>
+                        <span className="mini-product-name">광란체</span>
                         <span className="mini-product-count">{resultAll.result1?.best.K || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">리바이던의 깃털</span>
+                        <span className="mini-product-name">깃털</span>
                         <span className="mini-product-count">{resultAll.result1?.best.L || 0}</span>
                       </div>
                     </div>
@@ -469,15 +453,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">2성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">해구 파동의 코어</span>
+                        <span className="mini-product-name">파동 코어</span>
                         <span className="mini-product-count">{resultAll.result2?.best.CORE || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">침묵의 심해 비약</span>
+                        <span className="mini-product-name">심해 비약</span>
                         <span className="mini-product-count">{resultAll.result2?.best.POTION || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">청해룡의 날개</span>
+                        <span className="mini-product-name">청해 날개</span>
                         <span className="mini-product-count">{resultAll.result2?.best.WING || 0}</span>
                       </div>
                     </div>
@@ -489,15 +473,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">3성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">아쿠아 펄스 파편</span>
+                        <span className="mini-product-name">아쿠아 파편</span>
                         <span className="mini-product-count">{resultAll.result3?.best.AQUA || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">나우틸러스의 손</span>
+                        <span className="mini-product-name">나우틸 손</span>
                         <span className="mini-product-count">{resultAll.result3?.best.NAUTILUS || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">무저의 척추</span>
+                        <span className="mini-product-name">무저 척추</span>
                         <span className="mini-product-count">{resultAll.result3?.best.SPINE || 0}</span>
                       </div>
                     </div>
@@ -505,122 +489,110 @@ export default function OceanGoldPage() {
                   </div>
                 </div>
 
-                {/* 희석액 필요 재료 - 희석액 포함 & 희석액 > 0일 때만 표시 */}
-                {includeDilution && resultAll.dilution > 0 && (
-                  <div className="gold-dilution-materials">
-                    <h5>희석액 필요 재료</h5>
+                {/* 희석액 필요 재료 - 항상 표시 */}
+                <div className="gold-dilution-materials">
+                  <h5>희석액 필요 재료</h5>
 
-                    {/* 세로 3열 배치 */}
-                    <div className="dilution-tier-grid">
-                      {/* 1성: 침식 방어 핵 (초록) */}
-                      <div className="dilution-tier-card tier1">
-                        <div className="tier-card-header">
-                          <span className="tier-card-title">침식 방어의 핵★</span>
-                          <span className="tier-card-count">{resultAll.dilution * 3}개</span>
+                  {/* 세로 3열 배치 */}
+                  <div className="dilution-tier-grid">
+                    {/* 1성: 침식 방어 핵 */}
+                    <div className="dilution-tier-card tier1">
+                      <div className="tier-card-header">
+                        <img src="/img/ocean/core_ed.png" alt="침식방어핵" style={{ width: 20, height: 20, marginRight: 4 }} />
+                        <span className="tier-card-title">침식 방어의 핵★</span>
+                        <span className="tier-card-count">{resultAll.result1?.reservedCoreED || 0}개</span>
+                      </div>
+                      <div className="tier-card-body">
+                        <div className="tier-card-row">
+                          <span className="row-label">정수</span>
+                          <div className="row-items">
+                            <span>부식 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.decay || 0) : resultAll.result1?.essNeedDilution?.decay || 0}</span>
+                            <span>수호 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.guard || 0) : resultAll.result1?.essNeedDilution?.guard || 0}</span>
+                          </div>
                         </div>
-                        <div className="tier-card-body">
-                          <div className="tier-card-row">
-                            <span className="row-label">어패류 <span className="from-input">(입력에서 사용)</span></span>
-                            <div className="row-items">
-                              <span>성게 ★ {setMode ? formatSet(resultAll.dilution * 4) : resultAll.dilution * 4}</span>
-                              <span>굴 ★ {setMode ? formatSet(resultAll.dilution * 4) : resultAll.dilution * 4}</span>
-                            </div>
+                        <div className="tier-card-row">
+                          <span className="row-label">블록</span>
+                          <div className="row-items">
+                            <span>화강암 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.granite || 0) : resultAll.result1?.blockNeedDilution?.granite || 0}</span>
+                            <span>점토 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.clay || 0) : resultAll.result1?.blockNeedDilution?.clay || 0}</span>
                           </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">정수 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items">
-                              <span>부식 {setMode ? formatSet(resultAll.dilution * 4) : resultAll.dilution * 4}</span>
-                              <span>수호 {setMode ? formatSet(resultAll.dilution * 4) : resultAll.dilution * 4}</span>
-                            </div>
-                          </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">블록 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items"> 
-                              <span>화강암 {setMode ? formatSet(resultAll.dilution * 4) : resultAll.dilution * 4}</span>
-                              <span>점토 {setMode ? formatSet(resultAll.dilution * 4) : resultAll.dilution * 4}</span>
-                            </div>
-                          </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">물고기 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items">
-                              <span>농어 {setMode ? formatSet(resultAll.dilution * 3) : resultAll.dilution * 3}</span>
-                            </div>
+                        </div>
+                        <div className="tier-card-row">
+                          <span className="row-label">물고기</span>
+                          <div className="row-items">
+                            <span>농어 {setMode ? formatSet(resultAll.result1?.fishNeedDilution?.bass || 0) : resultAll.result1?.fishNeedDilution?.bass || 0}</span>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      {/* 2성: 방어 오염 결정 (보라) */}
-                      <div className="dilution-tier-card tier2">
-                        <div className="tier-card-header">
-                          <span className="tier-card-title">방어 오염의 결정★★</span>
-                          <span className="tier-card-count">{resultAll.dilution * 2}개</span>
+                    {/* 2성: 방어 오염 결정 */}
+                    <div className="dilution-tier-card tier2">
+                      <div className="tier-card-header">
+                        <img src="/img/ocean/crystal_defense.png" alt="방어오염결정" style={{ width:17, height: 20, marginRight: 4 }} />
+                        <span className="tier-card-title">방어 오염의 결정★★</span>
+                        <span className="tier-card-count">{resultAll.result2?.reservedCrystalDefense || 0}개</span>
+                      </div>
+                      <div className="tier-card-body">
+                        <div className="tier-card-row">
+                          <span className="row-label">에센스 재료</span>
+                          <div className="row-items">
+                            <span>해초 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.seaweed || 0) : resultAll.result2?.materialNeedDilution?.seaweed || 0}</span>
+                            <span>참나무잎 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.oakLeaves || 0) : resultAll.result2?.materialNeedDilution?.oakLeaves || 0}</span>
+                            <span>자작나무잎 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.birchLeaves || 0) : resultAll.result2?.materialNeedDilution?.birchLeaves || 0}</span>
+                          </div>
                         </div>
-                        <div className="tier-card-body">
-                          <div className="tier-card-row">
-                            <span className="row-label">어패류 <span className="from-input">(입력에서 사용)</span></span>
-                            <div className="row-items">
-                              <span>문어 ★★ {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                              <span>굴 ★★ {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                            </div>
-                          </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">에센스 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items">
-                              <span>혼란 {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                              <span>수호 {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                            </div>
-                          </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">재료 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items">
-                              <span>해초 {setMode ? formatSet(resultAll.dilution * 8) : resultAll.dilution * 8}</span>
-                              <span>켈프 {setMode ? formatSet(resultAll.dilution * 8) : resultAll.dilution * 8}</span>
-                              <span>철 주괴 {setMode ? formatSet(resultAll.dilution * 6) : resultAll.dilution * 6}</span>
-                            </div>
-                          </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">나뭇잎 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items">
-                              <span>자작나무 {setMode ? formatSet(resultAll.dilution * 6) : resultAll.dilution * 6}</span>
-                              <span>참나무 {setMode ? formatSet(resultAll.dilution * 6) : resultAll.dilution * 6}</span>
-                            </div>
+                        <div className="tier-card-row">
+                          <span className="row-label">결정 재료</span>
+                          <div className="row-items">
+                            <span>켈프 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.kelp || 0) : resultAll.result2?.materialNeedDilution?.kelp || 0}</span>
+                            <span>철 주괴 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.ironIngot || 0) : resultAll.result2?.materialNeedDilution?.ironIngot || 0}</span>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      {/* 3성: 타락 침식 영약 (핑크) */}
-                      <div className="dilution-tier-card tier3">
-                        <div className="tier-card-header">
-                          <span className="tier-card-title">타락 침식의 영약★★★</span>
-                          <span className="tier-card-count">{resultAll.dilution * 1}개</span>
+                    {/* 3성: 타락 침식 영약 */}
+                    <div className="dilution-tier-card tier3">
+                      <div className="tier-card-header">
+                        <img src="/img/ocean/potion-corrupt.png" alt="타락침식영약" style={{ width: 20, height: 20, marginRight: 4 }} />
+                        <span className="tier-card-title">타락 침식의 영약★★★</span>
+                        <span className="tier-card-count">{resultAll.result3?.reservedPotionCorrupt || 0}개</span>
+                      </div>
+                      <div className="tier-card-body">
+                        <div className="tier-card-row">
+                          <span className="row-label">엘릭서</span>
+                          <div className="row-items">
+                            <span>혼란 {setMode ? formatSet(resultAll.result3?.elixNeedDilution?.chaos || 0) : resultAll.result3?.elixNeedDilution?.chaos || 0}</span>
+                            <span>부식 {setMode ? formatSet(resultAll.result3?.elixNeedDilution?.decay || 0) : resultAll.result3?.elixNeedDilution?.decay || 0}</span>
+                          </div>
                         </div>
-                        <div className="tier-card-body">
                           <div className="tier-card-row">
-                            <span className="row-label">어패류 <span className="from-input">(입력에서 사용)</span></span>
+                            <span className="row-label">엘릭서 재료</span>
                             <div className="row-items">
-                              <span>문어 ★★★ {setMode ? formatSet(resultAll.dilution * 1) : resultAll.dilution * 1}</span>
-                              <span>성게 ★★★ {setMode ? formatSet(resultAll.dilution * 1) : resultAll.dilution * 1}</span>
+                              <span>불우렁쉥이 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.seaSquirt || 0) : resultAll.result3?.materialNeedDilution?.seaSquirt || 0}</span>
+                              <span>유리병 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glassBottle || 0) : resultAll.result3?.materialNeedDilution?.glassBottle || 0}</span>
+                              <span>영혼흙 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.soulSoil || 0) : resultAll.result3?.materialNeedDilution?.soulSoil || 0}</span>
+                              <span>뒤틀린 자루 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.warpedStem || 0) : resultAll.result3?.materialNeedDilution?.warpedStem || 0}</span>
                             </div>
                           </div>
                           <div className="tier-card-row">
-                            <span className="row-label">엘릭서 <span className="need-more">(추가 필요)</span></span>
+                            <span className="row-label">영약 재료</span>
                             <div className="row-items">
-                              <span>혼란 {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                              <span>부식 {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
+                              <span>말린 켈프 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.driedKelp || 0) : resultAll.result3?.materialNeedDilution?.driedKelp || 0}</span>
+                              <span>발광 열매 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glowBerry || 0) : resultAll.result3?.materialNeedDilution?.glowBerry || 0}</span>
                             </div>
                           </div>
-                          <div className="tier-card-row">
-                            <span className="row-label">재료 <span className="need-more">(추가 필요)</span></span>
-                            <div className="row-items">
-                              <span>불우렁쉥이 {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                              <span>유리병 {setMode ? formatSet(resultAll.dilution * 2) : resultAll.dilution * 2}</span>
-                            </div>
+                        <div className="tier-card-row">
+                          <span className="row-label">산호</span>
+                          <div className="row-items">
+                            <span>죽은 거품 산호 {setMode ? formatSet(resultAll.result3?.deadCoralNeedDilution?.deadBubbleCoral || 0) : resultAll.result3?.deadCoralNeedDilution?.deadBubbleCoral || 0}</span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             )}
           </div>
@@ -668,7 +640,7 @@ export default function OceanGoldPage() {
             {result1 && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
-                  <h4>📊 최적 조합 결과{resultAll && !independentMode ? ' 0성 포함' : ''}</h4>
+                  <h4>📊 최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
                   <div className="gold-result-gold">
                     💰 {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star1Gold : result1.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
@@ -681,33 +653,33 @@ export default function OceanGoldPage() {
                   <div><div className="product-name">{productNames['1'].L}</div><div className="product-count">{result1.best.L}</div></div>
                 </div>
 
-                {renderSectionWithImage('🔹 필요 정수', [
-                  { name: '수호', value: ceilToTwo(result1.essNeedTotal.guard), icon: '/img/ocean/essence_guard.png' },
-                  { name: '파동', value: ceilToTwo(result1.essNeedTotal.wave), icon: '/img/ocean/essence_wave.png' },
-                  { name: '혼란', value: ceilToTwo(result1.essNeedTotal.chaos), icon: '/img/ocean/essence_chaos.png' },
-                  { name: '생명', value: ceilToTwo(result1.essNeedTotal.life), icon: '/img/ocean/essence_life.png' },
-                  { name: '부식', value: ceilToTwo(result1.essNeedTotal.decay), icon: '/img/ocean/essence_decay.png' }
+                {renderSectionWithImage('🔹 필요 정수 ', [
+                  { name: '수호', value: ceilToTwo(result1.essNeedProduct.guard), icon: '/img/ocean/essence_guard.png' },
+                  { name: '파동', value: ceilToTwo(result1.essNeedProduct.wave), icon: '/img/ocean/essence_wave.png' },
+                  { name: '혼란', value: ceilToTwo(result1.essNeedProduct.chaos), icon: '/img/ocean/essence_chaos.png' },
+                  { name: '생명', value: ceilToTwo(result1.essNeedProduct.life), icon: '/img/ocean/essence_life.png' },
+                  { name: '부식', value: ceilToTwo(result1.essNeedProduct.decay), icon: '/img/ocean/essence_decay.png' }
                 ])}
-                {renderSectionWithImage('🔹 필요 핵', [
-                  { name: '물결 수호', value: result1.coreNeed.WG, icon: '/img/ocean/core_wg.png' },
-                  { name: '파동 오염', value: result1.coreNeed.WP, icon: '/img/ocean/core_wp.png' },
-                  { name: '질서 파괴', value: result1.coreNeed.OD, icon: '/img/ocean/core_od.png' },
-                  { name: '활력 붕괴', value: result1.coreNeed.VD, icon: '/img/ocean/core_vd.png' },
-                  { name: '침식 방어', value: result1.coreNeed.ED, icon: '/img/ocean/core_ed.png' }
+                {renderSectionWithImage('🔹 필요 핵 ', [
+                  { name: '물결 수호', value: result1.coreNeedProduct.WG, icon: '/img/ocean/core_wg.png' },
+                  { name: '파동 오염', value: result1.coreNeedProduct.WP, icon: '/img/ocean/core_wp.png' },
+                  { name: '질서 파괴', value: result1.coreNeedProduct.OD, icon: '/img/ocean/core_od.png' },
+                  { name: '활력 붕괴', value: result1.coreNeedProduct.VD, icon: '/img/ocean/core_vd.png' },
+                  { name: '침식 방어', value: result1.coreNeedProduct.ED, icon: '/img/ocean/core_ed.png' }
                 ])}
-                {renderSection('🔹 필요 블록', [
-                  { name: '점토', value: result1.blockNeedTotal.clay },
-                  { name: '모래', value: result1.blockNeedTotal.sand },
-                  { name: '흙', value: result1.blockNeedTotal.dirt },
-                  { name: '자갈', value: result1.blockNeedTotal.gravel },
-                  { name: '화강암', value: result1.blockNeedTotal.granite }
+                {renderSection('🔹 필요 블록 ', [
+                  { name: '점토', value: result1.blockNeedProduct.clay },
+                  { name: '모래', value: result1.blockNeedProduct.sand },
+                  { name: '흙', value: result1.blockNeedProduct.dirt },
+                  { name: '자갈', value: result1.blockNeedProduct.gravel },
+                  { name: '화강암', value: result1.blockNeedProduct.granite }
                 ])}
-                {renderSection('🔹 필요 물고기', [
-                  { name: '새우', value: result1.fishNeedTotal.shrimp },
-                  { name: '도미', value: result1.fishNeedTotal.domi },
-                  { name: '청어', value: result1.fishNeedTotal.herring },
-                  { name: '금붕어', value: result1.fishNeedTotal.goldfish },
-                  { name: '농어', value: result1.fishNeedTotal.bass }
+                {renderSection('🔹 필요 물고기 ', [
+                  { name: '새우', value: result1.fishNeedProduct.shrimp },
+                  { name: '도미', value: result1.fishNeedProduct.domi },
+                  { name: '청어', value: result1.fishNeedProduct.herring },
+                  { name: '금붕어', value: result1.fishNeedProduct.goldfish },
+                  { name: '농어', value: result1.fishNeedProduct.bass }
                 ])}
               </div>
             )}
@@ -756,7 +728,7 @@ export default function OceanGoldPage() {
             {result2 && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
-                  <h4>📊 최적 조합 결과{resultAll && !independentMode ? ' 0성 포함' : ''}</h4>
+                  <h4>📊 최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
                   <div className="gold-result-gold">
                     💰 {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star2Gold : result2.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
@@ -769,30 +741,37 @@ export default function OceanGoldPage() {
                   <div><div className="product-name">{productNames['2'].L}</div><div className="product-count">{result2.best.WING}</div></div>
                 </div>
 
-                {renderSectionWithImage('🔹 필요 에센스', [
-                  { name: '수호', value: ceilToTwo(result2.essNeedTotal.guard), icon: '/img/ocean/essence_guard_2.png' },
-                  { name: '파동', value: ceilToTwo(result2.essNeedTotal.wave), icon: '/img/ocean/essence_wave_2.png' },
-                  { name: '혼란', value: ceilToTwo(result2.essNeedTotal.chaos), icon: '/img/ocean/essence_chaos_2.png' },
-                  { name: '생명', value: ceilToTwo(result2.essNeedTotal.life), icon: '/img/ocean/essence_life_2.png' },
-                  { name: '부식', value: ceilToTwo(result2.essNeedTotal.decay), icon: '/img/ocean/essence_decay_2.png' }
+                {renderSectionWithImage('🔹 필요 에센스 ', [
+                  { name: '수호', value: ceilToTwo(result2.essNeedProduct.guard), icon: '/img/ocean/essence_guard_2.png' },
+                  { name: '파동', value: ceilToTwo(result2.essNeedProduct.wave), icon: '/img/ocean/essence_wave_2.png' },
+                  { name: '혼란', value: ceilToTwo(result2.essNeedProduct.chaos), icon: '/img/ocean/essence_chaos_2.png' },
+                  { name: '생명', value: ceilToTwo(result2.essNeedProduct.life), icon: '/img/ocean/essence_life_2.png' },
+                  { name: '부식', value: ceilToTwo(result2.essNeedProduct.decay), icon: '/img/ocean/essence_decay_2.png' }
                 ])}
-                {renderSectionWithImage('🔹 필요 결정', [
-                  { name: '활기 보존', value: result2.crystalNeed.vital, icon: '/img/ocean/crystal_vital.png' },
-                  { name: '파도 침식', value: result2.crystalNeed.erosion, icon: '/img/ocean/crystal_erosion.png' },
-                  { name: '방어 오염', value: result2.crystalNeed.defense, icon: '/img/ocean/crystal_defense.png' },
-                  { name: '격류 재생', value: result2.crystalNeed.regen, icon: '/img/ocean/crystal_regen.png' },
-                  { name: '맹독 혼란', value: result2.crystalNeed.poison, icon: '/img/ocean/crystal_poison.png' }
+                {renderSectionWithImage('🔹 필요 결정 ', [
+                  { name: '활기보존', value: result2.crystalNeedProduct.vital, icon: '/img/ocean/crystal_vital.png' },
+                  { name: '파도침식', value: result2.crystalNeedProduct.erosion, icon: '/img/ocean/crystal_erosion.png' },
+                  { name: '방어오염', value: result2.crystalNeedProduct.defense, icon: '/img/ocean/crystal_defense.png' },
+                  { name: '격류재생', value: result2.crystalNeedProduct.regen, icon: '/img/ocean/crystal_regen.png' },
+                  { name: '맹독혼란', value: result2.crystalNeedProduct.poison, icon: '/img/ocean/crystal_poison.png' }
                 ])}
-                {renderSection('🔹 필요 재료', [
-                  { name: '해초', value: result2.materialNeedTotal.seaweed },
-                  { name: '켈프', value: result2.materialNeedTotal.kelp }
+                {renderSection('🔹 필요 재료 ', [
+                  { name: '해초', value: result2.materialNeedProduct.seaweed },
+                  { name: '켈프', value: result2.materialNeedProduct.kelp }
                 ])}
-                {renderSection('🔹 필요 광물', [
-                  { name: '청금석 블록', value: result2.materialNeedTotal.lapisBlock },
-                  { name: '레드스톤 블록', value: result2.materialNeedTotal.redstoneBlock },
-                  { name: '철 주괴', value: result2.materialNeedTotal.ironIngot },
-                  { name: '금 주괴', value: result2.materialNeedTotal.goldIngot },
-                  { name: '다이아몬드', value: result2.materialNeedTotal.diamond }
+                {renderSection('🔹 필요 블록 ', [
+                  { name: '참나무 잎', value: result2.materialNeedProduct.oakLeaves },
+                  { name: '가문비 잎', value: result2.materialNeedProduct.spruceLeaves },
+                  { name: '자작나무 잎', value: result2.materialNeedProduct.birchLeaves },
+                  { name: '아카시아 잎', value: result2.materialNeedProduct.acaciaLeaves },
+                  { name: '벚나무 잎', value: result2.materialNeedProduct.cherryLeaves }
+                ])}
+                {renderSection('🔹 필요 광물 ', [
+                  { name: '청금석 블록', value: result2.materialNeedProduct.lapisBlock },
+                  { name: '레드스톤 블록', value: result2.materialNeedProduct.redstoneBlock },
+                  { name: '철 주괴', value: result2.materialNeedProduct.ironIngot },
+                  { name: '금 주괴', value: result2.materialNeedProduct.goldIngot },
+                  { name: '다이아몬드', value: result2.materialNeedProduct.diamond }
                 ])}
               </div>
             )}
@@ -841,7 +820,7 @@ export default function OceanGoldPage() {
             {result3 && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
-                  <h4>📊 최적 조합 결과{resultAll && !independentMode ? ' / 0성 포함' : ''}</h4>
+                  <h4>📊 최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
                   <div className="gold-result-gold">
                     💰 {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star3Gold : result3.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
@@ -854,32 +833,39 @@ export default function OceanGoldPage() {
                   <div><div className="product-name">{productNames['3'].L}</div><div className="product-count">{result3.best.SPINE}</div></div>
                 </div>
 
-                {renderSectionWithImage('🔹 필요 엘릭서', [
-                  { name: '수호', value: ceilToTwo(result3.elixNeedTotal.guard), icon: '/img/ocean/elixir-guard.png' },
-                  { name: '파동', value: ceilToTwo(result3.elixNeedTotal.wave), icon: '/img/ocean/elixir-wave.png' },
-                  { name: '혼란', value: ceilToTwo(result3.elixNeedTotal.chaos), icon: '/img/ocean/elixir-chaos.png' },
-                  { name: '생명', value: ceilToTwo(result3.elixNeedTotal.life), icon: '/img/ocean/elixir-life.png' },
-                  { name: '부식', value: ceilToTwo(result3.elixNeedTotal.decay), icon: '/img/ocean/elixir-decay.png' }
+                {renderSectionWithImage('🔹 필요 엘릭서 ', [
+                  { name: '수호', value: (result3.elixNeedProduct.guard), icon: '/img/ocean/elixir-guard.png' },
+                  { name: '파동', value: (result3.elixNeedProduct.wave), icon: '/img/ocean/elixir-wave.png' },
+                  { name: '혼란', value: (result3.elixNeedProduct.chaos), icon: '/img/ocean/elixir-chaos.png' },
+                  { name: '생명', value: (result3.elixNeedProduct.life), icon: '/img/ocean/elixir-life.png' },
+                  { name: '부식', value: (result3.elixNeedProduct.decay), icon: '/img/ocean/elixir-decay.png' }
                 ])}
-                {renderSectionWithImage('🔹 필요 영약', [
-                  { name: '불멸 재생', value: result3.potionNeed.immortal, icon: '/img/ocean/potion-immortal.png' },
-                  { name: '파동 장벽', value: result3.potionNeed.barrier, icon: '/img/ocean/potion-barrier.png' },
-                  { name: '타락 침식', value: result3.potionNeed.corrupt, icon: '/img/ocean/potion-corrupt.png' },
-                  { name: '생명 광란', value: result3.potionNeed.frenzy, icon: '/img/ocean/potion-frenzy.png' },
-                  { name: '맹독 파동', value: result3.potionNeed.venom, icon: '/img/ocean/potion-venom.png' }
+                {renderSectionWithImage('🔹 필요 영약 ', [
+                  { name: '불멸재생', value: result3.potionNeedProduct.immortal, icon: '/img/ocean/potion-immortal.png' },
+                  { name: '파동장벽', value: result3.potionNeedProduct.barrier, icon: '/img/ocean/potion-barrier.png' },
+                  { name: '타락침식', value: result3.potionNeedProduct.corrupt, icon: '/img/ocean/potion-corrupt.png' },
+                  { name: '생명광란', value: result3.potionNeedProduct.frenzy, icon: '/img/ocean/potion-frenzy.png' },
+                  { name: '맹독파동', value: result3.potionNeedProduct.venom, icon: '/img/ocean/potion-venom.png' }
                 ])}
-                {renderSection('🔹 필요 재료', [
-                  { name: '불우렁쉥이', value: result3.materialNeedTotal.seaSquirt },
-                  { name: '유리병', value: result3.materialNeedTotal.glassBottle },
-                  { name: '말린 켈프', value: result3.materialNeedTotal.driedKelp },
-                  { name: '발광 열매', value: result3.materialNeedTotal.glowBerry }
+                {renderSection('🔹 필요 재료 ', [
+                  { name: '불우렁쉥이', value: result3.materialNeedProduct.seaSquirt },
+                  { name: '유리병', value: result3.materialNeedProduct.glassBottle },
+                  { name: '말린 켈프', value: result3.materialNeedProduct.driedKelp },
+                  { name: '발광 열매', value: result3.materialNeedProduct.glowBerry }
                 ])}
-                {renderSection('🔹 필요 산호', [
-                  { name: '죽은 관 산호', value: result3.deadCoralNeedTotal.deadTubeCoral },
-                  { name: '죽은 사방산호', value: result3.deadCoralNeedTotal.deadBrainCoral },
-                  { name: '죽은 거품 산호', value: result3.deadCoralNeedTotal.deadBubbleCoral },
-                  { name: '죽은 불 산호', value: result3.deadCoralNeedTotal.deadFireCoral },
-                  { name: '죽은 뇌 산호', value: result3.deadCoralNeedTotal.deadHornCoral }
+                {renderSection('🔹 필요 블록 ', [
+                  { name: '네더랙', value: result3.materialNeedProduct.netherrack },
+                  { name: '마그마 블록', value: result3.materialNeedProduct.magmaBlock },
+                  { name: '영혼 흙', value: result3.materialNeedProduct.soulSoil },
+                  { name: '진홍빛 자루', value: result3.materialNeedProduct.crimsonStem },
+                  { name: '뒤틀린 자루', value: result3.materialNeedProduct.warpedStem }
+                ])}
+                {renderSection('🔹 필요 산호 ', [
+                  { name: '죽은 관 산호', value: result3.deadCoralNeedProduct.deadTubeCoral },
+                  { name: '죽은 사방산호', value: result3.deadCoralNeedProduct.deadBrainCoral },
+                  { name: '죽은 거품 산호', value: result3.deadCoralNeedProduct.deadBubbleCoral },
+                  { name: '죽은 불 산호', value: result3.deadCoralNeedProduct.deadFireCoral },
+                  { name: '죽은 뇌 산호', value: result3.deadCoralNeedProduct.deadHornCoral }
                 ])}
               </div>
             )}

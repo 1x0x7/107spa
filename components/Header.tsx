@@ -19,12 +19,21 @@ export default function Header() {
 
   const toggleTheme = () => {
     const newDark = !isDark
+    
+    document.documentElement.classList.add('theme-transition')
+    
     setIsDark(newDark)
     document.documentElement.setAttribute(
       'data-theme',
       newDark ? 'dark' : 'light'
     )
     localStorage.setItem('theme', newDark ? 'dark' : 'light')
+    
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.classList.remove('theme-transition')
+      })
+    })
   }
 
   const isActive = (href: string) => {
