@@ -503,7 +503,7 @@
   border-top: 1px solid #e0e0e0;
 }
 
-/* 희석액 필요 재료 섹션 */
+/* 추출액 필요 재료 섹션 */
 .gold-dilution-materials {
   margin-top: 8px;
   padding: 14px;
@@ -626,7 +626,7 @@
   margin-bottom: 8px;
 }
 
-/* 희석액 미포함 시 3열 */
+/* 추출액 미포함 시 3열 */
 .gold-unified-cards.no-dilution {
   grid-template-columns: repeat(3, 1fr);
 }

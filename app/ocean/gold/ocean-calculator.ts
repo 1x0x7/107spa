@@ -1,5 +1,5 @@
 // 해양 골드 계산기 - 중간재료 공유 통합 최적화 (2025년 업데이트)
-// A사이트(띵보)와 동일한 로직: 희석액과 제품이 중간재료(핵/결정/영약)를 공유
+// A사이트(띵보)와 동일한 로직: 추출액과 제품이 중간재료(핵/결정/영약)를 공유
 
 // 골드 가격
 export const GOLD_PRICES = {
@@ -15,7 +15,7 @@ export const PREMIUM_PRICE_RATE: Record<number, number> = {
   5: 0.20, 6: 0.30, 7: 0.40, 8: 0.50
 }
 
-// 희석액 1개당 필요 중간재료
+// 추출액 1개당 필요 중간재료
 export const DILUTION_INTERMEDIATE = {
   coreED: 3,           // 침식 방어의 핵 ★ 3개
   crystalDefense: 2,   // 방어 오염의 결정 ★★ 2개
@@ -27,7 +27,7 @@ function floorToTwo(n: number) {
 }
 
 // ========================
-// 1성 계산기 (희석액용 침식방어핵 예약 지원)
+// 1성 계산기 (추출액용 침식방어핵 예약 지원)
 // ========================
 export interface Input1Star {
   guard: number; wave: number; chaos: number; life: number; decay: number
@@ -37,12 +37,12 @@ export interface Input1Star {
 
 export interface Result1Star {
   best: { gold: number; A: number; K: number; L: number }
-  // 제품용만 (희석액 제외)
+  // 제품용만 (추출액 제외)
   coreNeedProduct: Record<string, number>
   essNeedProduct: Record<string, number>
   blockNeedProduct: Record<string, number>
   fishNeedProduct: Record<string, number>
-  // 희석액용만 (통합 탭에서 사용)
+  // 추출액용만 (통합 탭에서 사용)
   reservedCoreED: number
   essNeedDilution: Record<string, number>
   blockNeedDilution: Record<string, number>
@@ -59,8 +59,8 @@ export interface Result1Star {
 }
 
 /**
- * 1성 계산 (희석액용 침식방어핵 예약 가능)
- * @param reservedCoreED 희석액용으로 예약할 침식방어핵 개수 (통합 계산에서 사용)
+ * 1성 계산 (추출액용 침식방어핵 예약 가능)
+ * @param reservedCoreED 추출액용으로 예약할 침식방어핵 개수 (통합 계산에서 사용)
  */
 export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedCoreED: number = 0): Result1Star | null {
   const shellfish = { guard: input.guard, wave: input.wave, chaos: input.chaos, life: input.life, decay: input.decay }
@@ -156,7 +156,7 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
 
   if (best.gold < 0 && reservedCoreED === 0) return null
 
-  // === 제품용 재료 계산 (희석액 제외) ===
+  // === 제품용 재료 계산 (추출액 제외) ===
   const coreNeedProduct = {
     WG: best.A + best.L,
     WP: best.K + best.L,
@@ -210,10 +210,10 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
     goldfish: coreToMakeProduct.VD, bass: coreToMakeProduct.ED
   }
 
-  // === 희석액용 재료 계산 (보유량 차감 후) ===
+  // === 추출액용 재료 계산 (보유량 차감 후) ===
   // 제품용에서 사용하고 남은 보유 핵
   const remainingOwnedCoreED = Math.max(0, ownedCore.ED - coreNeedProduct.ED)
-  // 희석액용으로 만들어야 할 핵 (남은 보유량 차감)
+  // 추출액용으로 만들어야 할 핵 (남은 보유량 차감)
   const coreToMakeDilution = Math.max(0, reservedCoreED - remainingOwnedCoreED)
   
   // 제품용에서 사용하고 남은 보유 정수
@@ -222,7 +222,7 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
     decay: Math.max(0, ownedEss.decay - essNeedProduct.decay)
   }
   
-  // 희석액용 핵 만드는데 필요한 정수 (남은 보유 정수 차감)
+  // 추출액용 핵 만드는데 필요한 정수 (남은 보유 정수 차감)
   const essToMakeDilutionRaw = {
     guard: Math.max(0, coreToMakeDilution - remainingOwnedEss.guard),
     decay: Math.max(0, coreToMakeDilution - remainingOwnedEss.decay)
@@ -260,7 +260,7 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
     WP: coreNeedProduct.WP,
     OD: coreNeedProduct.OD,
     VD: coreNeedProduct.VD,
-    ED: coreNeedProduct.ED + reservedCoreED  // 제품 + 희석액
+    ED: coreNeedProduct.ED + reservedCoreED  // 제품 + 추출액
   }
   
   const coreToMake = {
@@ -333,7 +333,7 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
     best,
     // 제품용
     coreNeedProduct, essNeedProduct, blockNeedProduct, fishNeedProduct,
-    // 희석액용
+    // 추출액용
     reservedCoreED, essNeedDilution, blockNeedDilution, fishNeedDilution,
     // 총합
     coreNeed, coreToMake, essNeedTotal, essToMake, blockNeed, blockNeedTotal, fishNeed, fishNeedTotal
@@ -341,7 +341,7 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
 }
 
 // ========================
-// 2성 계산기 (희석액용 방어오염결정 예약 지원)
+// 2성 계산기 (추출액용 방어오염결정 예약 지원)
 // ========================
 export interface Input2Star {
   guard2: number; wave2: number; chaos2: number; life2: number; decay2: number
@@ -351,11 +351,11 @@ export interface Input2Star {
 
 export interface Result2Star {
   best: { gold: number; CORE: number; POTION: number; WING: number }
-  // 제품용만 (희석액 제외)
+  // 제품용만 (추출액 제외)
   crystalNeedProduct: Record<string, number>
   essNeedProduct: Record<string, number>
   materialNeedProduct: Record<string, number>
-  // 희석액용만 (통합 탭에서 사용)
+  // 추출액용만 (통합 탭에서 사용)
   reservedCrystalDefense: number
   essNeedDilution: Record<string, number>
   materialNeedDilution: Record<string, number>
@@ -369,7 +369,7 @@ export interface Result2Star {
 }
 
 /**
- * 2성 계산 (희석액용 방어오염결정 예약 가능)
+ * 2성 계산 (추출액용 방어오염결정 예약 가능)
  */
 export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedCrystalDefense: number = 0): Result2Star | null {
   const shellfish = { guard: input.guard2, wave: input.wave2, chaos: input.chaos2, life: input.life2, decay: input.decay2 }
@@ -466,7 +466,7 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
 
   if (best.gold < 0 && reservedCrystalDefense === 0) return null
 
-  // === 제품용 재료 계산 (희석액 제외) ===
+  // === 제품용 재료 계산 (추출액 제외) ===
   const crystalNeedProduct = {
     vital: best.CORE + best.WING,
     erosion: best.CORE + best.POTION,
@@ -530,10 +530,10 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
     ironIngot: crystalToMakeProduct.defense * 3, goldIngot: crystalToMakeProduct.regen * 2, diamond: crystalToMakeProduct.poison
   }
 
-  // === 희석액용 재료 계산 (보유량 차감 후) ===
+  // === 추출액용 재료 계산 (보유량 차감 후) ===
   // 제품용에서 사용하고 남은 보유 결정
   const remainingOwnedCrystalDefense = Math.max(0, ownedCrystal.defense - crystalNeedProduct.defense)
-  // 희석액용으로 만들어야 할 결정 (남은 보유량 차감)
+  // 추출액용으로 만들어야 할 결정 (남은 보유량 차감)
   const crystalToMakeDilution = Math.max(0, reservedCrystalDefense - remainingOwnedCrystalDefense)
   
   // 제품용에서 사용하고 남은 보유 에센스
@@ -542,7 +542,7 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
     chaos: Math.max(0, ownedEss.chaos - essNeedProduct.chaos)
   }
   
-  // 희석액용 결정 만드는데 필요한 에센스 (남은 보유 에센스 차감)
+  // 추출액용 결정 만드는데 필요한 에센스 (남은 보유 에센스 차감)
   const essToMakeDilutionRaw = {
     guard: Math.max(0, crystalToMakeDilution - remainingOwnedEss.guard),
     chaos: Math.max(0, crystalToMakeDilution - remainingOwnedEss.chaos)
@@ -580,7 +580,7 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
   const crystalNeed = {
     vital: crystalNeedProduct.vital,
     erosion: crystalNeedProduct.erosion,
-    defense: crystalNeedProduct.defense + reservedCrystalDefense,  // 제품 + 희석액
+    defense: crystalNeedProduct.defense + reservedCrystalDefense,  // 제품 + 추출액
     regen: crystalNeedProduct.regen,
     poison: crystalNeedProduct.poison
   }
@@ -648,7 +648,7 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
     best,
     // 제품용
     crystalNeedProduct, essNeedProduct, materialNeedProduct,
-    // 희석액용
+    // 추출액용
     reservedCrystalDefense, essNeedDilution, materialNeedDilution,
     // 총합
     crystalNeed, crystalToMake, essNeedTotal, essToMake, materialNeed, materialNeedTotal
@@ -656,7 +656,7 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
 }
 
 // ========================
-// 3성 계산기 (희석액용 타락침식영약 예약 지원)
+// 3성 계산기 (추출액용 타락침식영약 예약 지원)
 // ========================
 export interface Input3Star {
   guard: number; wave: number; chaos: number; life: number; decay: number
@@ -666,12 +666,12 @@ export interface Input3Star {
 
 export interface Result3Star {
   best: { gold: number; AQUA: number; NAUTILUS: number; SPINE: number }
-  // 제품용만 (희석액 제외)
+  // 제품용만 (추출액 제외)
   potionNeedProduct: Record<string, number>
   elixNeedProduct: Record<string, number>
   materialNeedProduct: Record<string, number>
   deadCoralNeedProduct: Record<string, number>
-  // 희석액용만 (통합 탭에서 사용)
+  // 추출액용만 (통합 탭에서 사용)
   reservedPotionCorrupt: number
   elixNeedDilution: Record<string, number>
   materialNeedDilution: Record<string, number>
@@ -688,7 +688,7 @@ export interface Result3Star {
 }
 
 /**
- * 3성 계산 (희석액용 타락침식영약 예약 가능)
+ * 3성 계산 (추출액용 타락침식영약 예약 가능)
  */
 export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedPotionCorrupt: number = 0): Result3Star | null {
   const shellfish = { guard: input.guard, wave: input.wave, chaos: input.chaos, life: input.life, decay: input.decay }
@@ -781,7 +781,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
 
   if (best.gold < 0 && reservedPotionCorrupt === 0) return null
 
-  // === 제품용 재료 계산 (희석액 제외) ===
+  // === 제품용 재료 계산 (추출액 제외) ===
   const potionNeedProduct = {
     immortal: best.AQUA + best.NAUTILUS,
     barrier: best.AQUA + best.NAUTILUS,
@@ -834,10 +834,10 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2, deadHornCoral: potionToMakeProduct.venom * 2
   }
 
-  // === 희석액용 재료 계산 (보유량 차감 후) ===
+  // === 추출액용 재료 계산 (보유량 차감 후) ===
   // 제품용에서 사용하고 남은 보유 영약
   const remainingOwnedPotionCorrupt = Math.max(0, ownedPotion.corrupt - potionNeedProduct.corrupt)
-  // 희석액용으로 만들어야 할 영약 (남은 보유량 차감)
+  // 추출액용으로 만들어야 할 영약 (남은 보유량 차감)
   const potionToMakeDilution = Math.max(0, reservedPotionCorrupt - remainingOwnedPotionCorrupt)
   
   // 제품용에서 사용하고 남은 보유 엘릭서
@@ -846,7 +846,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     decay: Math.max(0, ownedElix.decay - elixNeedProduct.decay)
   }
   
-  // 희석액용 영약 만드는데 필요한 엘릭서 (남은 보유 엘릭서 차감)
+  // 추출액용 영약 만드는데 필요한 엘릭서 (남은 보유 엘릭서 차감)
   const elixToMakeDilution = {
     chaos: Math.max(0, potionToMakeDilution - remainingOwnedElix.chaos),
     decay: Math.max(0, potionToMakeDilution - remainingOwnedElix.decay)
@@ -883,7 +883,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
   const potionNeed = {
     immortal: potionNeedProduct.immortal,
     barrier: potionNeedProduct.barrier,
-    corrupt: potionNeedProduct.corrupt + reservedPotionCorrupt,  // 제품 + 희석액
+    corrupt: potionNeedProduct.corrupt + reservedPotionCorrupt,  // 제품 + 추출액
     frenzy: potionNeedProduct.frenzy,
     venom: potionNeedProduct.venom
   }
@@ -951,7 +951,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     best,
     // 제품용
     potionNeedProduct, elixNeedProduct, materialNeedProduct, deadCoralNeedProduct,
-    // 희석액용
+    // 추출액용
     reservedPotionCorrupt, elixNeedDilution, materialNeedDilution, deadCoralNeedDilution,
     // 총합
     potionNeed, potionToMake, elixNeedTotal, elixToMake, materialNeed, materialNeedTotal, deadCoralNeed, deadCoralNeedTotal
@@ -978,10 +978,10 @@ export interface ResultAll {
 
 /**
  * 통합 최적화 계산
- * - 희석액과 각 성급 제품이 중간재료를 공유
- * - 희석액 개수별로 최적 조합 탐색
+ * - 추출액과 각 성급 제품이 중간재료를 공유
+ * - 추출액 개수별로 최적 조합 탐색
  * 
- * 희석액 1개 = 침식방어핵 3개 + 방어오염결정 2개 + 타락침식영약 1개
+ * 추출액 1개 = 침식방어핵 3개 + 방어오염결정 2개 + 타락침식영약 1개
  * - 침식방어핵은 1성 깃털(L)과 공유
  * - 방어오염결정은 2성 날개(WING)와 공유
  * - 타락침식영약은 3성 척추(SPINE)와 공유
@@ -996,7 +996,7 @@ export function calculateAll(
   const hasAdvanced2 = advanced2 && Object.values(advanced2).some((v: any) => v > 0)
   const hasAdvanced3 = advanced3 && Object.values(advanced3).some((v: any) => v > 0)
 
-  // 희석액 최대 개수 추정 (정수/에센스/엘릭서 기준)
+  // 추출액 최대 개수 추정 (정수/에센스/엘릭서 기준)
   const ess1Guard = floorToTwo(input.star1.guard) + (advanced1?.essGuard || 0)
   const ess1Decay = floorToTwo(input.star1.decay) + (advanced1?.essDecay || 0)
   const ownedCoreED = advanced1?.coreED || 0
@@ -1025,9 +1025,9 @@ export function calculateAll(
     summary: { dilutionGold: 0, star1Gold: 0, star2Gold: 0, star3Gold: 0 }
   }
 
-  // 희석액 0개부터 최대까지 모든 경우 시뮬레이션
+  // 추출액 0개부터 최대까지 모든 경우 시뮬레이션
   for (let d = 0; d <= maxDilution; d++) {
-    // 희석액 d개에 필요한 중간재료 (제품과 공유됨!)
+    // 추출액 d개에 필요한 중간재료 (제품과 공유됨!)
     const reservedCoreED = d * DILUTION_INTERMEDIATE.coreED           // 침식방어핵 3d개
     const reservedCrystalDefense = d * DILUTION_INTERMEDIATE.crystalDefense  // 방어오염결정 2d개
     const reservedPotionCorrupt = d * DILUTION_INTERMEDIATE.potionCorrupt    // 타락침식영약 d개
@@ -1049,7 +1049,7 @@ export function calculateAll(
       ...(hasAdvanced3 ? advanced3 : {})
     }, !!hasAdvanced3, reservedPotionCorrupt)
 
-    // 하나라도 실패하면 이 희석액 개수는 불가능
+    // 하나라도 실패하면 이 추출액 개수는 불가능
     if (!r1 || !r2 || !r3) continue
 
     const dilutionGold = d * GOLD_PRICES['0star'].DILUTION

@@ -147,7 +147,7 @@ export default function OceanGoldPage() {
 
   const calculate = () => {
     if (starLevel === 'all') {
-      // 통합: 항상 희석액 포함
+      // 통합: 항상 추출액 포함
       const res = calculateAll(shellfish, advanced1, advanced2, advanced3)
       setResultAll(res)
       // 개별 탭 결과도 저장 (연동용)
@@ -256,11 +256,11 @@ export default function OceanGoldPage() {
       { name: '혼란 에센스', value: advanced2.essChaos },
       { name: '생명 에센스', value: advanced2.essLife },
       { name: '부식 에센스', value: advanced2.essDecay },
-      { name: '활기보존', value: advanced2.crystalVital },
-      { name: '파도침식', value: advanced2.crystalErosion },
-      { name: '방어오염', value: advanced2.crystalDefense },
-      { name: '격류재생', value: advanced2.crystalRegen },
-      { name: '맹독혼란', value: advanced2.crystalPoison },
+      { name: '활기 보존', value: advanced2.crystalVital },
+      { name: '파도 침식', value: advanced2.crystalErosion },
+      { name: '방어 오염', value: advanced2.crystalDefense },
+      { name: '격류 재생', value: advanced2.crystalRegen },
+      { name: '맹독 혼란', value: advanced2.crystalPoison },
     ].filter(i => i.value > 0)
     if (items.length === 0) return null
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
@@ -273,11 +273,11 @@ export default function OceanGoldPage() {
       { name: '혼란 엘릭서', value: advanced3.elixChaos },
       { name: '생명 엘릭서', value: advanced3.elixLife },
       { name: '부식 엘릭서', value: advanced3.elixDecay },
-      { name: '불멸재생', value: advanced3.potionImmortal },
-      { name: '파동장벽', value: advanced3.potionBarrier },
-      { name: '타락침식', value: advanced3.potionCorrupt },
-      { name: '생명광란', value: advanced3.potionFrenzy },
-      { name: '맹독파동', value: advanced3.potionVenom },
+      { name: '불멸 재생', value: advanced3.potionImmortal },
+      { name: '파동 장벽', value: advanced3.potionBarrier },
+      { name: '타락 침식', value: advanced3.potionCorrupt },
+      { name: '생명 광란', value: advanced3.potionFrenzy },
+      { name: '맹독 파동', value: advanced3.potionVenom },
     ].filter(i => i.value > 0)
     if (items.length === 0) return null
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
@@ -328,7 +328,7 @@ export default function OceanGoldPage() {
           {(['all', '1', '2', '3'] as StarLevel[]).map(s => (
             <label key={s} className={starLevel === s ? 'active' : ''}>
               <input type="radio" name="star" checked={starLevel === s} onChange={() => setStarLevel(s)} />
-              {s === 'all' ? '📊 통합' : `${s}성`}
+              {s === 'all' ? '통합' : `${s}성`}
             </label>
           ))}
           <div className="gold-switch-container switch-container">
@@ -368,7 +368,7 @@ export default function OceanGoldPage() {
         {/* 통합 계산기 */}
         {starLevel === 'all' && (
           <div className="gold-card">
-            <div className="gold-card-header">📊 통합 계산기</div>
+            <div className="gold-card-header">통합 계산기</div>
             <div className="gold-card-body">
               <div className="gold-advanced-section">
                 <h4 className="section-header-with-owned">1성 어패류 {renderOwnedSummary1()}</h4>
@@ -414,11 +414,11 @@ export default function OceanGoldPage() {
                   </div>
                 </div>
 
-                {/* 4열 카드 형태 결과 (항상 희석액 포함) */}
+                {/* 4열 카드 형태 결과 (항상 추출액 포함) */}
                 <div className="gold-unified-cards">
-                  {/* 희석액 (0성) - 항상 표시 */}
+                  {/* 추출액 (0성) - 항상 표시 */}
                   <div className="gold-result-mini-card">
-                    <div className="mini-card-header">희석액 (0성)</div>
+                    <div className="mini-card-header">추출액 (0성)</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
                         <span className="mini-product-name">희석된 추출액</span>
@@ -433,15 +433,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">1성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">아쿠티스</span>
+                        <span className="mini-product-name">영생의 아쿠티스</span>
                         <span className="mini-product-count">{resultAll.result1?.best.A || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">광란체</span>
+                        <span className="mini-product-name">크라켄의 광란체</span>
                         <span className="mini-product-count">{resultAll.result1?.best.K || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">깃털</span>
+                        <span className="mini-product-name">리바이던의 깃털</span>
                         <span className="mini-product-count">{resultAll.result1?.best.L || 0}</span>
                       </div>
                     </div>
@@ -453,15 +453,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">2성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">파동 코어</span>
+                        <span className="mini-product-name">해구의 파동 코어</span>
                         <span className="mini-product-count">{resultAll.result2?.best.CORE || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">심해 비약</span>
+                        <span className="mini-product-name">침묵의 심해 비약</span>
                         <span className="mini-product-count">{resultAll.result2?.best.POTION || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">청해 날개</span>
+                        <span className="mini-product-name">청해룡의 날개</span>
                         <span className="mini-product-count">{resultAll.result2?.best.WING || 0}</span>
                       </div>
                     </div>
@@ -473,15 +473,15 @@ export default function OceanGoldPage() {
                     <div className="mini-card-header">3성</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">아쿠아 파편</span>
+                        <span className="mini-product-name">아쿠아 펄스 파편</span>
                         <span className="mini-product-count">{resultAll.result3?.best.AQUA || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">나우틸 손</span>
+                        <span className="mini-product-name">나우틸러스의 손</span>
                         <span className="mini-product-count">{resultAll.result3?.best.NAUTILUS || 0}</span>
                       </div>
                       <div className="mini-product">
-                        <span className="mini-product-name">무저 척추</span>
+                        <span className="mini-product-name">무저의 척추</span>
                         <span className="mini-product-count">{resultAll.result3?.best.SPINE || 0}</span>
                       </div>
                     </div>
@@ -489,9 +489,9 @@ export default function OceanGoldPage() {
                   </div>
                 </div>
 
-                {/* 희석액 필요 재료 - 항상 표시 */}
+                {/* 추출액 필요 재료 - 항상 표시 */}
                 <div className="gold-dilution-materials">
-                  <h5>희석액 필요 재료</h5>
+                  <h5>추출액 필요 재료</h5>
 
                   {/* 세로 3열 배치 */}
                   <div className="dilution-tier-grid">
@@ -749,11 +749,11 @@ export default function OceanGoldPage() {
                   { name: '부식', value: ceilToTwo(result2.essNeedProduct.decay), icon: '/img/ocean/essence_decay_2.png' }
                 ])}
                 {renderSectionWithImage('🔹 필요 결정 ', [
-                  { name: '활기보존', value: result2.crystalNeedProduct.vital, icon: '/img/ocean/crystal_vital.png' },
-                  { name: '파도침식', value: result2.crystalNeedProduct.erosion, icon: '/img/ocean/crystal_erosion.png' },
-                  { name: '방어오염', value: result2.crystalNeedProduct.defense, icon: '/img/ocean/crystal_defense.png' },
-                  { name: '격류재생', value: result2.crystalNeedProduct.regen, icon: '/img/ocean/crystal_regen.png' },
-                  { name: '맹독혼란', value: result2.crystalNeedProduct.poison, icon: '/img/ocean/crystal_poison.png' }
+                  { name: '활기 보존', value: result2.crystalNeedProduct.vital, icon: '/img/ocean/crystal_vital.png' },
+                  { name: '파도 침식', value: result2.crystalNeedProduct.erosion, icon: '/img/ocean/crystal_erosion.png' },
+                  { name: '방어 오염', value: result2.crystalNeedProduct.defense, icon: '/img/ocean/crystal_defense.png' },
+                  { name: '격류 재생', value: result2.crystalNeedProduct.regen, icon: '/img/ocean/crystal_regen.png' },
+                  { name: '맹독 혼란', value: result2.crystalNeedProduct.poison, icon: '/img/ocean/crystal_poison.png' }
                 ])}
                 {renderSection('🔹 필요 재료 ', [
                   { name: '해초', value: result2.materialNeedProduct.seaweed },
@@ -841,11 +841,11 @@ export default function OceanGoldPage() {
                   { name: '부식', value: (result3.elixNeedProduct.decay), icon: '/img/ocean/elixir-decay.png' }
                 ])}
                 {renderSectionWithImage('🔹 필요 영약 ', [
-                  { name: '불멸재생', value: result3.potionNeedProduct.immortal, icon: '/img/ocean/potion-immortal.png' },
-                  { name: '파동장벽', value: result3.potionNeedProduct.barrier, icon: '/img/ocean/potion-barrier.png' },
-                  { name: '타락침식', value: result3.potionNeedProduct.corrupt, icon: '/img/ocean/potion-corrupt.png' },
-                  { name: '생명광란', value: result3.potionNeedProduct.frenzy, icon: '/img/ocean/potion-frenzy.png' },
-                  { name: '맹독파동', value: result3.potionNeedProduct.venom, icon: '/img/ocean/potion-venom.png' }
+                  { name: '불멸 재생', value: result3.potionNeedProduct.immortal, icon: '/img/ocean/potion-immortal.png' },
+                  { name: '파동 장벽', value: result3.potionNeedProduct.barrier, icon: '/img/ocean/potion-barrier.png' },
+                  { name: '타락 침식', value: result3.potionNeedProduct.corrupt, icon: '/img/ocean/potion-corrupt.png' },
+                  { name: '생명 광란', value: result3.potionNeedProduct.frenzy, icon: '/img/ocean/potion-frenzy.png' },
+                  { name: '맹독 파동', value: result3.potionNeedProduct.venom, icon: '/img/ocean/potion-venom.png' }
                 ])}
                 {renderSection('🔹 필요 재료 ', [
                   { name: '불우렁쉥이', value: result3.materialNeedProduct.seaSquirt },
