@@ -35,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* 공통 푸터 */}
           <Footer />
         </ExpertProvider>
+        <Analytics />
       </body>
     </html>
   )
