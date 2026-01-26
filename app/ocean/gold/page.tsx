@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useExpert } from '@/hooks/useExpert'
 import { useSecurityLock } from '@/hooks/useSecurityLock'
 import { 
@@ -23,6 +23,11 @@ export default function OceanGoldPage() {
   const [showDetails, setShowDetails] = useState(false)
   const [independentMode, setIndependentMode] = useState(false) // 독립 계산 스위치
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isCalculating, setIsCalculating] = useState(false) // 계산 중 상태
+  const [workerReady, setWorkerReady] = useState(false) // Worker 준비 상태
+  
+  // Web Worker 참조
+  const workerRef = useRef<Worker | null>(null)
   
   // 입력 필드 텍스트 상태 (세트 표기 유지용)
   const [inputTexts, setInputTexts] = useState<Record<string, string>>({})
@@ -83,6 +88,57 @@ export default function OceanGoldPage() {
     }
   }, [shellfish, advanced1, advanced2, advanced3, isLoaded])
 
+  // Web Worker 초기화
+  useEffect(() => {
+    try {
+      workerRef.current = new Worker('/ocean-worker.js')
+      
+      workerRef.current.onmessage = (e) => {
+        const { type, result } = e.data
+        setIsCalculating(false)
+        
+        switch(type) {
+          case 'calculate1Star':
+            setResult1(result)
+            setIndependentMode(true)
+            break
+          case 'calculate2Star':
+            setResult2(result)
+            setIndependentMode(true)
+            break
+          case 'calculate3Star':
+            setResult3(result)
+            setIndependentMode(true)
+            break
+          case 'calculateAll':
+            setResultAll(result)
+            if (result) {
+              setResult1(result.result1)
+              setResult2(result.result2)
+              setResult3(result.result3)
+            }
+            setIndependentMode(false)
+            break
+        }
+      }
+      
+      workerRef.current.onerror = (e) => {
+        console.error('Worker error:', e)
+        setWorkerReady(false)
+        setIsCalculating(false)
+      }
+      
+      setWorkerReady(true)
+    } catch (e) {
+      console.error('Worker init failed:', e)
+      setWorkerReady(false)
+    }
+    
+    return () => {
+      workerRef.current?.terminate()
+    }
+  }, [])
+
   // 보안 잠금 (스크롤/복사 방지) - 전체 사이트에 적용하려면 layout.tsx에서 SecurityLock 컴포넌트 사용
   useSecurityLock()
 
@@ -121,28 +177,39 @@ export default function OceanGoldPage() {
   // 독립 계산 스위치 변경 시 자동 재계산
   useEffect(() => {
     if (starLevel === 'all') return
+    if (!workerRef.current) return
     
     if (independentMode) {
-      // 독립 계산 모드: 해당 성급만 계산
+      // 독립 계산 모드: 해당 성급만 계산 (Worker 사용)
+      setIsCalculating(true)
       if (starLevel === '1') {
-        const res = calculate1Star({ 
-          ...shellfish.star1, 
-          ...(advancedMode ? advanced1 : {})
-        }, advancedMode)
-        if (res) setResult1(res)
+        workerRef.current.postMessage({
+          type: 'calculate1Star',
+          payload: {
+            input: { ...shellfish.star1, ...(advancedMode ? advanced1 : {}) },
+            isAdvanced: advancedMode
+          }
+        })
       } else if (starLevel === '2') {
-        const res = calculate2Star({ 
-          guard2: shellfish.star2.guard, wave2: shellfish.star2.wave,
-          chaos2: shellfish.star2.chaos, life2: shellfish.star2.life, decay2: shellfish.star2.decay,
-          ...(advancedMode ? advanced2 : {})
-        }, advancedMode)
-        if (res) setResult2(res)
+        workerRef.current.postMessage({
+          type: 'calculate2Star',
+          payload: {
+            input: {
+              guard2: shellfish.star2.guard, wave2: shellfish.star2.wave,
+              chaos2: shellfish.star2.chaos, life2: shellfish.star2.life, decay2: shellfish.star2.decay,
+              ...(advancedMode ? advanced2 : {})
+            },
+            isAdvanced: advancedMode
+          }
+        })
       } else if (starLevel === '3') {
-        const res = calculate3Star({ 
-          ...shellfish.star3, 
-          ...(advancedMode ? advanced3 : {})
-        }, advancedMode)
-        if (res) setResult3(res)
+        workerRef.current.postMessage({
+          type: 'calculate3Star',
+          payload: {
+            input: { ...shellfish.star3, ...(advancedMode ? advanced3 : {}) },
+            isAdvanced: advancedMode
+          }
+        })
       }
     } else if (resultAll) {
       // 통합 연동 모드: 통합 결과 사용
@@ -153,39 +220,80 @@ export default function OceanGoldPage() {
   }, [independentMode, starLevel])
 
   const calculate = () => {
-    if (starLevel === 'all') {
-      // 통합: 항상 추출액 포함
-      const res = calculateAll(shellfish, advanced1, advanced2, advanced3)
-      setResultAll(res)
-      // 개별 탭 결과도 저장 (연동용)
-      setResult1(res.result1)
-      setResult2(res.result2)
-      setResult3(res.result3)
-      // 독립 모드 리셋
-      setIndependentMode(false)
-    } else if (starLevel === '1') {
-      // 독립 계산
-      const res = calculate1Star({ 
-        ...shellfish.star1, 
-        ...(advancedMode ? advanced1 : {})
-      }, advancedMode)
-      setResult1(res)
-      setIndependentMode(true)
-    } else if (starLevel === '2') {
-      const res = calculate2Star({ 
-        guard2: shellfish.star2.guard, wave2: shellfish.star2.wave,
-        chaos2: shellfish.star2.chaos, life2: shellfish.star2.life, decay2: shellfish.star2.decay,
-        ...(advancedMode ? advanced2 : {})
-      }, advancedMode)
-      setResult2(res)
-      setIndependentMode(true)
-    } else if (starLevel === '3') {
-      const res = calculate3Star({ 
-        ...shellfish.star3, 
-        ...(advancedMode ? advanced3 : {})
-      }, advancedMode)
-      setResult3(res)
-      setIndependentMode(true)
+    setIsCalculating(true)
+    
+    // Worker가 준비되었으면 Worker 사용, 아니면 직접 계산 (fallback)
+    if (workerReady && workerRef.current) {
+      if (starLevel === 'all') {
+        workerRef.current.postMessage({
+          type: 'calculateAll',
+          payload: { shellfish, advanced1, advanced2, advanced3 }
+        })
+      } else if (starLevel === '1') {
+        workerRef.current.postMessage({
+          type: 'calculate1Star',
+          payload: {
+            input: { ...shellfish.star1, ...(advancedMode ? advanced1 : {}) },
+            isAdvanced: advancedMode
+          }
+        })
+      } else if (starLevel === '2') {
+        workerRef.current.postMessage({
+          type: 'calculate2Star',
+          payload: {
+            input: {
+              guard2: shellfish.star2.guard, wave2: shellfish.star2.wave,
+              chaos2: shellfish.star2.chaos, life2: shellfish.star2.life, decay2: shellfish.star2.decay,
+              ...(advancedMode ? advanced2 : {})
+            },
+            isAdvanced: advancedMode
+          }
+        })
+      } else if (starLevel === '3') {
+        workerRef.current.postMessage({
+          type: 'calculate3Star',
+          payload: {
+            input: { ...shellfish.star3, ...(advancedMode ? advanced3 : {}) },
+            isAdvanced: advancedMode
+          }
+        })
+      }
+    } else {
+      // Fallback: Worker 없이 직접 계산
+      try {
+        if (starLevel === 'all') {
+          const res = calculateAll(shellfish, advanced1, advanced2, advanced3)
+          setResultAll(res)
+          setResult1(res.result1)
+          setResult2(res.result2)
+          setResult3(res.result3)
+          setIndependentMode(false)
+        } else if (starLevel === '1') {
+          const res = calculate1Star({ 
+            ...shellfish.star1, 
+            ...(advancedMode ? advanced1 : {})
+          }, advancedMode)
+          setResult1(res)
+          setIndependentMode(true)
+        } else if (starLevel === '2') {
+          const res = calculate2Star({ 
+            guard2: shellfish.star2.guard, wave2: shellfish.star2.wave,
+            chaos2: shellfish.star2.chaos, life2: shellfish.star2.life, decay2: shellfish.star2.decay,
+            ...(advancedMode ? advanced2 : {})
+          }, advancedMode)
+          setResult2(res)
+          setIndependentMode(true)
+        } else if (starLevel === '3') {
+          const res = calculate3Star({ 
+            ...shellfish.star3, 
+            ...(advancedMode ? advanced3 : {})
+          }, advancedMode)
+          setResult3(res)
+          setIndependentMode(true)
+        }
+      } finally {
+        setIsCalculating(false)
+      }
     }
   }
 
@@ -455,7 +563,9 @@ export default function OceanGoldPage() {
                   {renderInput('성게 ★★★', shellfish.star3.decay, v => updateShellfish('star3', 'decay', v), 's3-decay')}
                 </div>
               </div>
-              <button className="gold-btn-calculate" onClick={calculate}>최대 골드 계산</button>
+              <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
+                {isCalculating ? '계산 중입니다...' : '최대 골드 계산'}
+              </button>
             </div>
 
             {/* 통합 결과 */}
@@ -680,16 +790,18 @@ export default function OceanGoldPage() {
                   <div className="gold-advanced-section">
                     <h4>보유 핵</h4>
                     <div className="gold-input-grid">
-                      {renderInput('파동 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }), 'a1-coreWG')}
-                      {renderInput('파동 생명', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }), 'a1-coreWP')}
-                      {renderInput('혼란 부식', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }), 'a1-coreOD')}
-                      {renderInput('생명 부식', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }), 'a1-coreVD')}
+                      {renderInput('물결 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }), 'a1-coreWG')}
+                      {renderInput('파동 오염', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }), 'a1-coreWP')}
+                      {renderInput('질서 파괴', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }), 'a1-coreOD')}
+                      {renderInput('활력 붕괴', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }), 'a1-coreVD')}
                       {renderInput('침식 방어', advanced1.coreED, v => setAdvanced1({ ...advanced1, coreED: v }), 'a1-coreED')}
                     </div>
                   </div>
                 </>
               )}
-              <button className="gold-btn-calculate" onClick={calculate}>1성 최대 골드 계산</button>
+              <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
+                {isCalculating ? '계산 중입니다...' : '1성 최대 골드 계산'}
+              </button>
             </div>
 
             {result1 && (
@@ -777,7 +889,9 @@ export default function OceanGoldPage() {
                   </div>
                 </>
               )}
-              <button className="gold-btn-calculate" onClick={calculate}>2성 최대 골드 계산</button>
+              <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
+                {isCalculating ? '계산 중입니다...' : '2성 최대 골드 계산'}
+              </button>
             </div>
 
             {result2 && (
@@ -869,7 +983,9 @@ export default function OceanGoldPage() {
                   </div>
                 </>
               )}
-              <button className="gold-btn-calculate" onClick={calculate}>3성 최대 골드 계산</button>
+              <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
+                {isCalculating ? '계산 중입니다...' : '3성 최대 골드 계산'}
+              </button>
             </div>
 
             {result3 && (

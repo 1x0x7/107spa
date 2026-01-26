@@ -100,11 +100,20 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
 
   let best = { gold: -1, A: 0, K: 0, L: 0 }
 
-  // 상한 계산 (최대 100)
-  const maxProduct = 100
+  // 상한 동적 계산: 가장 적은 정수 기준 (최소 100, 최대 2000)
+  const minEss = Math.min(totalEss.guard, totalEss.wave, totalEss.chaos, totalEss.life, totalEss.decay)
+  const totalEssSum = totalEss.guard + totalEss.wave + totalEss.chaos + totalEss.life + totalEss.decay
+  const maxProduct = Math.min(2000, Math.max(100, Math.ceil(minEss)))
 
   for (let A = 0; A <= maxProduct; A++) {
+    // A만으로도 정수 초과하면 break
+    const minEssForA = A * 2
+    if (minEssForA > totalEssSum) break
+    
     for (let K = 0; K <= maxProduct; K++) {
+      const minEssForAK = (A + K) * 2
+      if (minEssForAK > totalEssSum) break
+      
       for (let L = 0; L <= maxProduct; L++) {
         if (A + K + L === 0 && reservedCoreED === 0) continue
 
@@ -392,11 +401,19 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
 
   let best = { gold: -1, CORE: 0, POTION: 0, WING: 0 }
 
-  // 상한 계산 (최대 100)
-  const maxProduct = 100
+  // 상한 동적 계산: 가장 적은 에센스 기준 (최소 100, 최대 2000)
+  const minEss = Math.min(totalEss.guard, totalEss.wave, totalEss.chaos, totalEss.life, totalEss.decay)
+  const totalEssSum = totalEss.guard + totalEss.wave + totalEss.chaos + totalEss.life + totalEss.decay
+  const maxProduct = Math.min(2000, Math.max(100, Math.ceil(minEss)))
 
   for (let CORE = 0; CORE <= maxProduct; CORE++) {
+    const minEssForCORE = CORE * 2
+    if (minEssForCORE > totalEssSum) break
+    
     for (let POTION = 0; POTION <= maxProduct; POTION++) {
+      const minEssForCP = (CORE + POTION) * 2
+      if (minEssForCP > totalEssSum) break
+      
       for (let WING = 0; WING <= maxProduct; WING++) {
         if (CORE + POTION + WING === 0 && reservedCrystalDefense === 0) continue
 
@@ -693,11 +710,19 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
 
   let best = { gold: -1, AQUA: 0, NAUTILUS: 0, SPINE: 0 }
 
-  // 상한 계산 (최대 100)
-  const maxProduct = 100
+  // 상한 동적 계산: 가장 적은 엘릭서 기준 (최소 100, 최대 2000)
+  const minElix = Math.min(totalElix.guard, totalElix.wave, totalElix.chaos, totalElix.life, totalElix.decay)
+  const totalElixSum = totalElix.guard + totalElix.wave + totalElix.chaos + totalElix.life + totalElix.decay
+  const maxProduct = Math.min(2000, Math.max(100, Math.ceil(minElix)))
 
   for (let AQUA = 0; AQUA <= maxProduct; AQUA++) {
+    const minElixForAQUA = AQUA * 2
+    if (minElixForAQUA > totalElixSum) break
+    
     for (let NAUTILUS = 0; NAUTILUS <= maxProduct; NAUTILUS++) {
+      const minElixForAN = (AQUA + NAUTILUS) * 2
+      if (minElixForAN > totalElixSum) break
+      
       for (let SPINE = 0; SPINE <= maxProduct; SPINE++) {
         if (AQUA + NAUTILUS + SPINE === 0 && reservedPotionCorrupt === 0) continue
 
@@ -952,17 +977,17 @@ export function calculateAll(
   const hasInput1 = Object.values(input.star1).some(v => v > 0)
   const hasInput2 = Object.values(input.star2).some(v => v > 0)
   const hasInput3 = Object.values(input.star3).some(v => v > 0)
+  const hasAdvanced1 = advanced1 && Object.values(advanced1).some((v: any) => v > 0)
+  const hasAdvanced2 = advanced2 && Object.values(advanced2).some((v: any) => v > 0)
+  const hasAdvanced3 = advanced3 && Object.values(advanced3).some((v: any) => v > 0)
   
-  if (!hasInput1 && !hasInput2 && !hasInput3) {
+  // 어패류와 보유량 모두 없으면 빈 결과
+  if (!hasInput1 && !hasInput2 && !hasInput3 && !hasAdvanced1 && !hasAdvanced2 && !hasAdvanced3) {
     return {
       totalGold: 0, dilution: 0, result1: null, result2: null, result3: null,
       summary: { dilutionGold: 0, star1Gold: 0, star2Gold: 0, star3Gold: 0 }
     }
   }
-
-  const hasAdvanced1 = advanced1 && Object.values(advanced1).some((v: any) => v > 0)
-  const hasAdvanced2 = advanced2 && Object.values(advanced2).some((v: any) => v > 0)
-  const hasAdvanced3 = advanced3 && Object.values(advanced3).some((v: any) => v > 0)
 
   // 희석액 최대 개수 추정 (정수/에센스/엘릭서 기준)
   const ess1Guard = floorToTwo(input.star1.guard) + (advanced1?.essGuard || 0)
