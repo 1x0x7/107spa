@@ -633,10 +633,10 @@ export default function OceanGoldPage() {
                   <div className="gold-advanced-section">
                     <h4>보유 핵</h4>
                     <div className="gold-input-grid">
-                      {renderInput('파동 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }))}
-                      {renderInput('파동 생명', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }))}
-                      {renderInput('혼란 부식', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }))}
-                      {renderInput('생명 부식', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }))}
+                      {renderInput('물결 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }))}
+                      {renderInput('파동 오염', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }))}
+                      {renderInput('질서 파괴', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }))}
+                      {renderInput('활력 붕괴', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }))}
                       {renderInput('침식 방어', advanced1.coreED, v => setAdvanced1({ ...advanced1, coreED: v }))}
                     </div>
                   </div>
