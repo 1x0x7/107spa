@@ -227,14 +227,27 @@ export default function OceanGoldPage() {
     '3': { A: '아쿠아 펄스 파편', K: '나우틸러스의 손', L: '무저의 척추' }
   }
 
+  // 세트 표기 파싱 (예: "2/2" → 130, "1/5" → 69)
+  const parseSetNotation = (input: string): number => {
+    const trimmed = input.trim()
+    if (trimmed.includes('/')) {
+      const parts = trimmed.split('/')
+      const sets = parseInt(parts[0]) || 0
+      const remainder = parseInt(parts[1]) || 0
+      return sets * 64 + remainder
+    }
+    return parseInt(trimmed) || 0
+  }
+
   const renderInput = (label: string, value: number, onChange: (v: number) => void) => (
     <label className="gold-input-label">
       <span>{label}</span>
       <input 
-        type="number" 
-        min={0} 
+        type="text"
+        inputMode="numeric"
         value={value || ''} 
-        onChange={(e) => onChange(parseInt(e.target.value) || 0)} 
+        onChange={(e) => onChange(parseSetNotation(e.target.value))} 
+        placeholder="세트/개"
         style={{ userSelect: 'text' } as React.CSSProperties}
       />
       {setMode && <span className="input-set-display">{Math.floor(value / 64)} / {value % 64}</span>}
@@ -633,10 +646,10 @@ export default function OceanGoldPage() {
                   <div className="gold-advanced-section">
                     <h4>보유 핵</h4>
                     <div className="gold-input-grid">
-                      {renderInput('파동 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }))}
-                      {renderInput('파동 생명', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }))}
-                      {renderInput('혼란 부식', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }))}
-                      {renderInput('생명 부식', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }))}
+                      {renderInput('물결 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }))}
+                      {renderInput('파동 오염', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }))}
+                      {renderInput('질서 파괴', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }))}
+                      {renderInput('활력 붕괴', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }))}
                       {renderInput('침식 방어', advanced1.coreED, v => setAdvanced1({ ...advanced1, coreED: v }))}
                     </div>
                   </div>
