@@ -1,4 +1,9 @@
+import { useState } from 'react'
+import ContactModal from './ContactModal'
+
 export default function Footer() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <footer className="footer">
       <div>
@@ -11,6 +16,11 @@ export default function Footer() {
       <div className="disclaimer">
         본 사이트는 비공식 사이트로, 계산 결과는 참고용이며 실제 게임 내 수치와 차이가 발생할 수 있습니다.
       </div>
+      <button className="contact-btn" onClick={() => setIsModalOpen(true)}>
+        문의하기
+      </button>
+
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </footer>
   )
 }

@@ -1,0 +1,127 @@
+/* 문의하기 버튼 */
+.contact-btn {
+  background: none !important;
+  border: none !important;
+  color: #666 !important;
+  text-decoration: underline !important;
+  cursor: pointer !important;
+  font-size: inherit !important;
+  padding: 0 !important;
+  margin-top: 0.5rem !important;
+}
+
+.contact-btn:hover {
+  color: #2563eb !important;
+}
+
+/* 모달 오버레이 */
+.modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.226) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1000 !important;
+}
+
+/* 모달 컨텐츠 */
+.modal-overlay .modal-content {
+  background: #f5f5f5 !important;
+  padding: 2rem !important;
+  border-radius: 8px !important;
+  width: 90% !important;
+  max-width: 380px !important;
+  position: relative !important;
+  border: 1px solid #ddd !important;
+  color: #333 !important;
+}
+
+/* 닫기 버튼 */
+.modal-overlay .modal-content .modal-close {
+  position: absolute !important;
+  top: 0.75rem !important;
+  right: 1rem !important;
+  background: none !important;
+  border: none !important;
+  color: #999 !important;
+  font-size: 1.25rem !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+}
+
+.modal-overlay .modal-content .modal-close:hover {
+  color: #666 !important;
+}
+
+/* 모달 헤더 */
+.modal-overlay .modal-content h2 {
+  margin: 0 0 0.25rem !important;
+  font-size: 1.1rem !important;
+  font-weight: 500 !important;
+  color: #333 !important;
+  background: transparent !important;
+}
+
+.modal-overlay .modal-content .modal-desc {
+  color: #777 !important;
+  margin-bottom: 1.25rem !important;
+  font-size: 0.85rem !important;
+}
+
+/* 폼 요소 */
+.modal-overlay .modal-content label {
+  display: block !important;
+  margin-bottom: 1rem !important;
+  font-size: 0.85rem !important;
+  color: #555 !important;
+}
+
+.modal-overlay .modal-content input,
+.modal-overlay .modal-content select,
+.modal-overlay .modal-content textarea {
+  width: 100% !important;
+  padding: 0.6rem 0.75rem !important;
+  margin-top: 0.4rem !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #333 !important;
+  font-size: 0.9rem !important;
+  box-sizing: border-box !important;
+}
+
+.modal-overlay .modal-content input:focus,
+.modal-overlay .modal-content select:focus,
+.modal-overlay .modal-content textarea:focus {
+  outline: none !important;
+  border-color: #2563eb !important;
+}
+
+.modal-overlay .modal-content textarea {
+  resize: vertical !important;
+  min-height: 80px !important;
+}
+
+/* 제출 버튼 */
+.modal-overlay .modal-content button[type="submit"] {
+  width: 100% !important;
+  padding: 0.6rem !important;
+  margin-top: 0.5rem !important;
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+}
+
+.modal-overlay .modal-content button[type="submit"]:hover {
+  background: #0e41ad !important;
+}
+
+.modal-overlay .modal-content button[type="submit"]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
