@@ -211,7 +211,7 @@ export default function EfficiencyPage() {
         <div className="price-edit-header">
           <h3>
             시세 수정
-            <span className="price-date">01.24 ~ 01.27</span>
+            <span className="price-date">01.27 ~ 01.30</span>
           </h3>
           <button className="btn-reset-price" onClick={handleResetPrices}>
             초기화
