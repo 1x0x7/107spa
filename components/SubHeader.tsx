@@ -13,8 +13,8 @@ const tabs: Record<string, { href: string; label: string }[]> = {
   farming: [
     { href: '/farming/info', label: '정보' },
     { href: '/farming/stamina', label: '스태미나' },
-    /*{ href: '/farming/efficiency', label: '요리 효율' },
-    { href: '/farming/harvest', label: '수확' },*/
+    { href: '/farming/efficiency', label: '요리 효율' },
+    /*{ href: '/farming/harvest', label: '수확' },*/
   ],
   ocean: [
     { href: '/ocean/info', label: '정보' },

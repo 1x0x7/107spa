@@ -62,6 +62,53 @@ export const CROP_DATA: Record<string, { name: string }> = {
   garlic: { name: '마늘' }
 }
 
+// 작물별 수확 배율
+export const CROP_DROP_RATE: Record<string, number> = { 
+  tomato: 2.0, 
+  onion: 1.5, 
+  garlic: 2.5 
+}
+
+// 대왕 작물 기본 확률
+export const KING_CROP_BASE_CHANCE = 0.02
+export const KING_CROP_MULTIPLIER = 7
+
+// 전문가: 대왕 작물 확률
+export const EXPERT_KING_DATA = [
+  { bonus: 0, desc: "효과 없음" },
+  { bonus: 0.005, desc: "+0.5%" },
+  { bonus: 0.01, desc: "+1%" },
+  { bonus: 0.03, desc: "+3%" },
+  { bonus: 0.05, desc: "+5%" }
+]
+
+// 전문가: 요리 판매가 보너스
+export const EXPERT_MONEY_DATA = [
+  { bonus: 0, desc: "효과 없음" },
+  { bonus: 0.01, desc: "+1%" },
+  { bonus: 0.02, desc: "+2%" },
+  { bonus: 0.03, desc: "+3%" },
+  { bonus: 0.04, desc: "+4%" },
+  { bonus: 0.05, desc: "+5%" },
+  { bonus: 0.06, desc: "+6%" },
+  { bonus: 0.10, desc: "+10%" },
+  { bonus: 0.15, desc: "+15%" },
+  { bonus: 0.30, desc: "+30%" },
+  { bonus: 0.50, desc: "+50%" }
+]
+
+// 전문가: 수확 보너스 (효율 계산용)
+export const EXPERT_HARVEST_DATA = [
+  { rate: 0, count: 0, desc: "효과 없음" },
+  { rate: 0.01, count: 1, desc: "수확 시 1% 확률로 +1개" },
+  { rate: 0.02, count: 1, desc: "수확 시 2% 확률로 +1개" },
+  { rate: 0.03, count: 1, desc: "수확 시 3% 확률로 +1개" },
+  { rate: 0.04, count: 1, desc: "수확 시 4% 확률로 +1개" },
+  { rate: 0.05, count: 2, desc: "수확 시 5% 확률로 +2개" },
+  { rate: 0.07, count: 2, desc: "수확 시 7% 확률로 +2개" },
+  { rate: 0.10, count: 3, desc: "수확 시 10% 확률로 +3개" }
+]
+
 export const FARMING_EXPERT_DESC = {
   gift: [
     "채집 시 1% 확률로 씨앗 +1개",
@@ -84,12 +131,13 @@ export const FARMING_EXPERT_DESC = {
     "수확 시 7% 확률로 농작물 +2개",
     "수확 시 10% 확률로 농작물 +3개"
   ],
-
-  pot: ["3세트 이상 판매 시 1% 보너스",
+  pot: [
+    "3세트 이상 판매 시 1% 보너스",
     "3세트 이상 판매 시 2% 보너스",
     "3세트 이상 판매 시 3% 보너스",
     "3세트 이상 판매 시 4% 보너스",
-    "3세트 이상 판매 시 7% 보너스"],
+    "3세트 이상 판매 시 7% 보너스"
+  ],
   money: [
     "요리 판매가 +1%",
     "요리 판매가 +2%",
@@ -102,10 +150,12 @@ export const FARMING_EXPERT_DESC = {
     "요리 판매가 +30%",
     "요리 판매가 +50%"
   ],
-  king: ["대왕 작물 확률 +0.5%", 
+  king: [
+    "대왕 작물 확률 +0.5%", 
     "대왕 작물 확률 +1%", 
     "대왕 작물 확률 +3%",
-    "대왕 작물 확률 +5%"],
+    "대왕 작물 확률 +5%"
+  ],
   seedBonus: [
     "수확 시 1% 확률로 씨앗 드롭",
     "수확 시 2% 확률로 씨앗 드롭",
@@ -130,6 +180,67 @@ export const FARMING_EXPERT_DESC = {
     "채집 시 9% 확률로 베이스 5개 추가 드롭",
     "채집 시 15% 확률로 베이스 7개 추가 드롭"
   ]
+}
+
+// 기본 시세 설정 (3일마다 수정)
+export const DEFAULT_PRICES: Record<string, number> = {
+  "토마토 스파게티": 558,
+  "어니언 링": 828,
+  "갈릭 케이크": 285,
+  "삼겹살 토마토 찌개": 1514,
+  "삼색 아이스크림": 2881,
+  "마늘 양갈비 핫도그": 1041,
+  "달콤 시리얼": 1872,
+  "로스트 치킨 파이": 1616,
+  "스윗 치킨 햄버거": 1398,
+  "토마토 파인애플 피자": 2563,
+  "양파 수프": 1266,
+  "허브 삼겹살 찜": 1149,
+  "토마토 라자냐": 2538,
+  "딥 크림 빠네": 2833,
+  "트리플 소갈비 꼬치": 3222
+}
+
+// 효율 계산용 요리 레시피 데이터 (베이스 필요량 포함)
+export interface EfficiencyRecipe {
+  name: string
+  bases: { tomato: number; onion: number; garlic: number }
+  minPrice: number
+  maxPrice: number
+  img: string
+  ingredients: string
+}
+
+export const EFFICIENCY_RECIPES: EfficiencyRecipe[] = [
+  { name: "토마토 스파게티", bases: { tomato: 1, onion: 0, garlic: 0 }, minPrice: 259, maxPrice: 864, img: "food_tomato_spaghetti.png", ingredients: "토마토 베이스 1개 + 호박 묶음 1개" },
+  { name: "어니언 링", bases: { tomato: 0, onion: 1, garlic: 0 }, minPrice: 307, maxPrice: 1026, img: "food_onion_ring.png", ingredients: "양파 베이스 2개 + 요리용 소금 1개" },
+  { name: "갈릭 케이크", bases: { tomato: 0, onion: 0, garlic: 1 }, minPrice: 226, maxPrice: 756, img: "food_garlic_cake.png", ingredients: "마늘 베이스 1개 + 당근 묶음 1개" },
+  { name: "삼겹살 토마토 찌개", bases: { tomato: 2, onion: 0, garlic: 0 }, minPrice: 611, maxPrice: 2039, img: "food_pork_tomato_stew.png", ingredients: "토마토 베이스 2개 + 비트 묶음 1개 + 요리용 소금 1개 + 익힌 돼지고기 1개 + 익힌 돼지 삼겹살 1개" },
+  { name: "삼색 아이스크림", bases: { tomato: 0, onion: 2, garlic: 0 }, minPrice: 906, maxPrice: 3022, img: "food_icecream_triple.png", ingredients: "양파 베이스 2개 + 수박 묶음 1개 + 코코넛 1개 + 설탕 큐브 1개 + 요리용 우유 1개" },
+  { name: "마늘 양갈비 핫도그", bases: { tomato: 0, onion: 0, garlic: 2 }, minPrice: 513, maxPrice: 1713, img: "food_garlic_lamb_hotdog.png", ingredients: "마늘 베이스 2개 + 감자 묶음 1개 + 오일 1개 + 익힌 양고기 1개 + 익힌 양 갈비살 1개" },
+  { name: "달콤 시리얼", bases: { tomato: 2, onion: 0, garlic: 0 }, minPrice: 773, maxPrice: 2578, img: "food_sweet_cereal.png", ingredients: "토마토 베이스 2개 + 달콤한 열매 묶음 1개 + 파인애플 1개 + 밀가루 반죽 1개 + 오일 1개" },
+  { name: "로스트 치킨 파이", bases: { tomato: 0, onion: 0, garlic: 2 }, minPrice: 640, maxPrice: 2134, img: "food_roast_chicken_pie.png", ingredients: "마늘 베이스 2개 + 당근 묶음 1개 + 버터 조각 1개 + 익힌 닭고기 1개 + 익힌 닭 다리살 1개" },
+  { name: "스윗 치킨 햄버거", bases: { tomato: 1, onion: 1, garlic: 0 }, minPrice: 970, maxPrice: 3234, img: "food_sweet_chicken_burger.png", ingredients: "토마토 베이스 1개 + 양파 베이스 1개 + 비트 묶음 1개 + 달콤한 열매 묶음 1개 + 익힌 닭 가슴살 1개 + 익힌 닭 다리살 1개" },
+  { name: "토마토 파인애플 피자", bases: { tomato: 2, onion: 0, garlic: 2 }, minPrice: 1036, maxPrice: 3455, img: "food_tomato_pineapple_pizza.png", ingredients: "토마토 베이스 2개 + 마늘 베이스 2개 + 파인애플 1개 + 치즈 조각 1개 + 스테이크 1개 + 익힌 소 등심 1개" },
+  { name: "양파 수프", bases: { tomato: 0, onion: 2, garlic: 1 }, minPrice: 1139, maxPrice: 3797, img: "food_onion_soup.png", ingredients: "양파 베이스 2개 + 마늘 베이스 1개 + 감자 묶음 1개 + 코코넛 1개 + 버터 조각 1개 + 익힌 돼지 앞다리살 1개" },
+  { name: "허브 삼겹살 찜", bases: { tomato: 0, onion: 1, garlic: 2 }, minPrice: 894, maxPrice: 2982, img: "food_herb_pork_steam.png", ingredients: "마늘 베이스 2개 + 양파 베이스 1개 + 호박 묶음 1개 + 요리용 소금 1개 + 오일 1개 + 익힌 돼지 삼겹살 1개" },
+  { name: "토마토 라자냐", bases: { tomato: 1, onion: 1, garlic: 1 }, minPrice: 1253, maxPrice: 4177, img: "food_tomato_lasagna.png", ingredients: "토마토 베이스 1개 + 양파 베이스 1개 + 마늘 베이스 1개 + 당근 묶음 1개 + 호박 묶음 1개 + 밀가루 반죽 1개 + 익힌 양 다리살 1개" },
+  { name: "딥 크림 빠네", bases: { tomato: 1, onion: 1, garlic: 1 }, minPrice: 1151, maxPrice: 3837, img: "food_cream_pane.png", ingredients: "토마토 베이스 1개 + 양파 베이스 1개 + 마늘 베이스 1개 + 수박 묶음 1개 + 감자 묶음 1개 + 치즈 조각 1개 + 요리용 우유 1개" },
+  { name: "트리플 소갈비 꼬치", bases: { tomato: 1, onion: 1, garlic: 1 }, minPrice: 1291, maxPrice: 4307, img: "food_beef_rib_skewer.png", ingredients: "토마토 베이스 1개 + 양파 베이스 1개 + 마늘 베이스 1개 + 당근 묶음 1개 + 비트 묶음 1개 + 설탕 큐브 1개 + 익힌 소 갈비살 1개" }
+]
+
+// 씨앗 이미지
+export const SEED_IMAGES: Record<string, string> = {
+  tomato: "/img/farming/tomato_seed.png",
+  onion: "/img/farming/onion_seed.png",
+  garlic: "/img/farming/garlic_seed.png"
+}
+
+// 씨앗 이름
+export const SEED_NAMES: Record<string, string> = {
+  tomato: "토마토 씨앗",
+  onion: "양파 씨앗",
+  garlic: "마늘 씨앗"
 }
 
 export const COOKING_RECIPES = [

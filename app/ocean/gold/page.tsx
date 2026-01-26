@@ -227,27 +227,14 @@ export default function OceanGoldPage() {
     '3': { A: '아쿠아 펄스 파편', K: '나우틸러스의 손', L: '무저의 척추' }
   }
 
-  // 세트 표기 파싱 (예: "2/2" → 130, "1/5" → 69)
-  const parseSetNotation = (input: string): number => {
-    const trimmed = input.trim()
-    if (trimmed.includes('/')) {
-      const parts = trimmed.split('/')
-      const sets = parseInt(parts[0]) || 0
-      const remainder = parseInt(parts[1]) || 0
-      return sets * 64 + remainder
-    }
-    return parseInt(trimmed) || 0
-  }
-
   const renderInput = (label: string, value: number, onChange: (v: number) => void) => (
     <label className="gold-input-label">
       <span>{label}</span>
       <input 
-        type="text"
-        inputMode="numeric"
+        type="number" 
+        min={0} 
         value={value || ''} 
-        onChange={(e) => onChange(parseSetNotation(e.target.value))} 
-        placeholder="세트/개"
+        onChange={(e) => onChange(parseInt(e.target.value) || 0)} 
         style={{ userSelect: 'text' } as React.CSSProperties}
       />
       {setMode && <span className="input-set-display">{Math.floor(value / 64)} / {value % 64}</span>}
