@@ -30,7 +30,6 @@
   padding: 8px 20px;
   border-radius: var(--border-radius-full, 999px);
   border: 1px solid var(--color-border-light, #e0e0e0);
-  
   cursor: pointer;
   font-size: clamp(12px, 3vw, 14px);
   background: white;
@@ -74,7 +73,9 @@
   padding-bottom: 8px;
 }
 
-
+.gold-card-body {
+  /* 내부 컨텐츠 래퍼 */
+}
 
 /* ===== 입력 그리드 ===== */
 .gold-input-grid {
@@ -170,6 +171,19 @@
 .gold-btn-calculate:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+}
+
+.gold-btn-calculate:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.gold-btn-calculate:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 /* ===== 결과 카드 ===== */
@@ -270,42 +284,42 @@
 =========================================== */
 .gold-material-tags.with-image {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 9px;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
 }
 
 .gold-material-tag.with-image {
   background: var(--color-bg-card, #f8f9fa);
   border-radius: 9px;
-  padding: 10px 6px;
+  padding: 12px 8px;
   text-align: center;
   border: 1px solid rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 80px;
+  min-height: 90px;
 }
 
 .gold-material-tag.with-image .mat-icon {
-  width: 28px;
-  height: 28px;
-  margin-bottom: 4px;
+  width: 32px;
+  height: 32px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .gold-material-tag.with-image .mat-icon img {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
 .gold-material-tag.with-image .mat-name {
-  font-size: clamp(0.7rem, 2vw, 0.8rem);
-  color: #424242;
-  margin-bottom: 2px;
+  font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  color: #333;
+  margin-bottom: 3px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -314,9 +328,9 @@
 }
 
 .gold-material-tag.with-image .mat-value {
-  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
   font-weight: 600;
-  color: #666;
+  color: #555;
 }
 
 /* ===========================================
@@ -503,7 +517,7 @@
   border-top: 1px solid #e0e0e0;
 }
 
-/* 추출액 필요 재료 섹션 */
+/* 희석액 필요 재료 섹션 */
 .gold-dilution-materials {
   margin-top: 8px;
   padding: 14px;
@@ -516,14 +530,10 @@
   font-size: clamp(0.85rem, 2.5vw, 0.95rem);
   font-weight: 600;
   color: #333;
-
-  margin-top: 0;        /* 👈 위쪽 여백 제거 */
-  margin-bottom: 12px;  /* 필요하면 더 줄여도 됨 */
-
-  padding-bottom: 12px; /* 살짝 줄여도 깔끔 */
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #e0e0e0;
 }
-
 
 /* 세로 3열 그리드 */
 .dilution-tier-grid {
@@ -626,7 +636,7 @@
   margin-bottom: 8px;
 }
 
-/* 추출액 미포함 시 3열 */
+/* 희석액 미포함 시 3열 */
 .gold-unified-cards.no-dilution {
   grid-template-columns: repeat(3, 1fr);
 }
