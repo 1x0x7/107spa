@@ -906,7 +906,7 @@ html.theme-transition *::after {
 }
 /* 효율 계산 페이지 - TOP3 행 다크모드 */
 :root[data-theme="dark"] .ranking-table tbody tr.top3-row {
-  background: #222733;
+  background: #343c4b;
 }
 
 :root[data-theme="dark"] .ranking-table tbody tr.top3-row:hover {

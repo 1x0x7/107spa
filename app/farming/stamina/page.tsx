@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { useExpert } from '@/hooks/useExpert'
 import { 
   FARMING_STAMINA_PER_HARVEST, 
@@ -10,10 +11,17 @@ import {
   CROP_DATA 
 } from '@/data/farming'
 
+const CROP_IMAGES: Record<string, string> = {
+  tomato: '/img/farming/tomato_seed.png',
+  onion: '/img/farming/onion_seed.png',
+  garlic: '/img/farming/garlic_seed.png'
+}
+
 type CropType = keyof typeof CROP_DATA
 
 interface Input { id: number; stamina: string; cropType: CropType }
 interface Result {
+  cropType: string
   cropName: string
   gatherCount: number
   baseSeeds: number
@@ -75,6 +83,7 @@ export default function FarmingStaminaPage() {
 
       const crop = CROP_DATA[input.cropType]
       newResults.push({
+        cropType: input.cropType,
         cropName: crop.name,
         gatherCount,
         baseSeeds,
@@ -146,6 +155,13 @@ export default function FarmingStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
+                      <Image
+                        src={CROP_IMAGES[r.cropType]}
+                        alt={r.cropName}
+                        width={20}
+                        height={20}
+                        style={{ marginRight: '6px' }}
+                      />
                       {r.cropName}
                     </div>
                     <div className="result-row">

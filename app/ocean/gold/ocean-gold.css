@@ -73,9 +73,7 @@
   padding-bottom: 8px;
 }
 
-.gold-card-body {
-  /* 내부 컨텐츠 래퍼 */
-}
+
 
 /* ===== 입력 그리드 ===== */
 .gold-input-grid {
@@ -328,7 +326,7 @@
 }
 
 .gold-material-tag.with-image .mat-value {
-  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+  font-size: clamp(0.95rem, 3.2vw, 1.09rem);
   font-weight: 600;
   color: #555;
 }
