@@ -24,6 +24,9 @@ export default function OceanGoldPage() {
   const [independentMode, setIndependentMode] = useState(false) // 독립 계산 스위치
   const [isLoaded, setIsLoaded] = useState(false)
   
+  // 입력 필드 텍스트 상태 (세트 표기 유지용)
+  const [inputTexts, setInputTexts] = useState<Record<string, string>>({})
+  
   const [result1, setResult1] = useState<Result1Star | null>(null)
   const [result2, setResult2] = useState<Result2Star | null>(null)
   const [result3, setResult3] = useState<Result3Star | null>(null)
@@ -209,6 +212,7 @@ export default function OceanGoldPage() {
     setAdvanced1(emptyAdvanced1)
     setAdvanced2(emptyAdvanced2)
     setAdvanced3(emptyAdvanced3)
+    setInputTexts({}) // 입력 텍스트 초기화
     setResult1(null)
     setResult2(null)
     setResult3(null)
@@ -227,19 +231,62 @@ export default function OceanGoldPage() {
     '3': { A: '아쿠아 펄스 파편', K: '나우틸러스의 손', L: '무저의 척추' }
   }
 
-  const renderInput = (label: string, value: number, onChange: (v: number) => void) => (
-    <label className="gold-input-label">
-      <span>{label}</span>
-      <input 
-        type="number" 
-        min={0} 
-        value={value || ''} 
-        onChange={(e) => onChange(parseInt(e.target.value) || 0)} 
-        style={{ userSelect: 'text' } as React.CSSProperties}
-      />
-      {setMode && <span className="input-set-display">{Math.floor(value / 64)} / {value % 64}</span>}
-    </label>
-  )
+  // 세트 표기 파싱 (예: "2/2" → 130, "1/5" → 69)
+  const parseSetNotation = (input: string): number => {
+    const trimmed = input.trim()
+    if (trimmed.includes('/')) {
+      const parts = trimmed.split('/')
+      const sets = parseInt(parts[0]) || 0
+      const remainder = parseInt(parts[1]) || 0
+      return sets * 64 + remainder
+    }
+    return parseInt(trimmed) || 0
+  }
+
+  // 숫자를 세트 표기로 변환 (예: 130 → "2/2")
+  const toSetNotation = (value: number): string => {
+    if (value === 0) return ''
+    const sets = Math.floor(value / 64)
+    const remainder = value % 64
+    if (sets === 0) return String(remainder)
+    return `${sets}/${remainder}`
+  }
+
+  const renderInput = (label: string, value: number, onChange: (v: number) => void, inputKey: string) => {
+    // inputTexts에 값이 있으면 그것을, 없으면 세트 표기로 변환해서 표시
+    const displayValue = inputTexts[inputKey] !== undefined ? inputTexts[inputKey] : toSetNotation(value)
+    
+    return (
+      <label className="gold-input-label">
+        <span>{label}</span>
+        <input 
+          type="text"
+          inputMode="numeric"
+          value={displayValue}
+          onChange={(e) => {
+            // 입력 중에는 텍스트 그대로 저장
+            setInputTexts(prev => ({ ...prev, [inputKey]: e.target.value }))
+          }}
+          onBlur={(e) => {
+            // 포커스 벗어날 때 실제 값으로 변환
+            const parsed = parseSetNotation(e.target.value)
+            onChange(parsed)
+            // 입력 텍스트도 정리 (빈 값이면 지우고, 아니면 유지)
+            if (e.target.value.trim() === '') {
+              setInputTexts(prev => {
+                const newState = { ...prev }
+                delete newState[inputKey]
+                return newState
+              })
+            }
+          }}
+          placeholder="세트/개"
+          style={{ userSelect: 'text' } as React.CSSProperties}
+        />
+        {setMode && <span className="input-set-display">{Math.floor(value / 64)} / {value % 64}</span>}
+      </label>
+    )
+  }
 
   // 보유량 요약 표시 (0보다 큰 것만)
   const renderOwnedSummary1 = () => {
@@ -381,31 +428,31 @@ export default function OceanGoldPage() {
               <div className="gold-advanced-section">
                 <h4 className="section-header-with-owned">1성 어패류 {renderOwnedSummary1()}</h4>
                 <div className="gold-input-grid">
-                  {renderInput('굴 ★', shellfish.star1.guard, v => updateShellfish('star1', 'guard', v))}
-                  {renderInput('소라 ★', shellfish.star1.wave, v => updateShellfish('star1', 'wave', v))}
-                  {renderInput('문어 ★', shellfish.star1.chaos, v => updateShellfish('star1', 'chaos', v))}
-                  {renderInput('미역 ★', shellfish.star1.life, v => updateShellfish('star1', 'life', v))}
-                  {renderInput('성게 ★', shellfish.star1.decay, v => updateShellfish('star1', 'decay', v))}
+                  {renderInput('굴 ★', shellfish.star1.guard, v => updateShellfish('star1', 'guard', v), 's1-guard')}
+                  {renderInput('소라 ★', shellfish.star1.wave, v => updateShellfish('star1', 'wave', v), 's1-wave')}
+                  {renderInput('문어 ★', shellfish.star1.chaos, v => updateShellfish('star1', 'chaos', v), 's1-chaos')}
+                  {renderInput('미역 ★', shellfish.star1.life, v => updateShellfish('star1', 'life', v), 's1-life')}
+                  {renderInput('성게 ★', shellfish.star1.decay, v => updateShellfish('star1', 'decay', v), 's1-decay')}
                 </div>
               </div>
               <div className="gold-advanced-section">
                 <h4 className="section-header-with-owned">2성 어패류 {renderOwnedSummary2()}</h4>
                 <div className="gold-input-grid">
-                  {renderInput('굴 ★★', shellfish.star2.guard, v => updateShellfish('star2', 'guard', v))}
-                  {renderInput('소라 ★★', shellfish.star2.wave, v => updateShellfish('star2', 'wave', v))}
-                  {renderInput('문어 ★★', shellfish.star2.chaos, v => updateShellfish('star2', 'chaos', v))}
-                  {renderInput('미역 ★★', shellfish.star2.life, v => updateShellfish('star2', 'life', v))}
-                  {renderInput('성게 ★★', shellfish.star2.decay, v => updateShellfish('star2', 'decay', v))}
+                  {renderInput('굴 ★★', shellfish.star2.guard, v => updateShellfish('star2', 'guard', v), 's2-guard')}
+                  {renderInput('소라 ★★', shellfish.star2.wave, v => updateShellfish('star2', 'wave', v), 's2-wave')}
+                  {renderInput('문어 ★★', shellfish.star2.chaos, v => updateShellfish('star2', 'chaos', v), 's2-chaos')}
+                  {renderInput('미역 ★★', shellfish.star2.life, v => updateShellfish('star2', 'life', v), 's2-life')}
+                  {renderInput('성게 ★★', shellfish.star2.decay, v => updateShellfish('star2', 'decay', v), 's2-decay')}
                 </div>
               </div>
               <div className="gold-advanced-section">
                 <h4 className="section-header-with-owned">3성 어패류 {renderOwnedSummary3()}</h4>
                 <div className="gold-input-grid">
-                  {renderInput('굴 ★★★', shellfish.star3.guard, v => updateShellfish('star3', 'guard', v))}
-                  {renderInput('소라 ★★★', shellfish.star3.wave, v => updateShellfish('star3', 'wave', v))}
-                  {renderInput('문어 ★★★', shellfish.star3.chaos, v => updateShellfish('star3', 'chaos', v))}
-                  {renderInput('미역 ★★★', shellfish.star3.life, v => updateShellfish('star3', 'life', v))}
-                  {renderInput('성게 ★★★', shellfish.star3.decay, v => updateShellfish('star3', 'decay', v))}
+                  {renderInput('굴 ★★★', shellfish.star3.guard, v => updateShellfish('star3', 'guard', v), 's3-guard')}
+                  {renderInput('소라 ★★★', shellfish.star3.wave, v => updateShellfish('star3', 'wave', v), 's3-wave')}
+                  {renderInput('문어 ★★★', shellfish.star3.chaos, v => updateShellfish('star3', 'chaos', v), 's3-chaos')}
+                  {renderInput('미역 ★★★', shellfish.star3.life, v => updateShellfish('star3', 'life', v), 's3-life')}
+                  {renderInput('성게 ★★★', shellfish.star3.decay, v => updateShellfish('star3', 'decay', v), 's3-decay')}
                 </div>
               </div>
               <button className="gold-btn-calculate" onClick={calculate}>최대 골드 계산</button>
@@ -612,32 +659,32 @@ export default function OceanGoldPage() {
             <div className="gold-card-header">1성 계산기</div>
             <div className="gold-card-body">
               <div className="gold-input-grid">
-                {renderInput('굴 ★', shellfish.star1.guard, v => updateShellfish('star1', 'guard', v))}
-                {renderInput('소라 ★', shellfish.star1.wave, v => updateShellfish('star1', 'wave', v))}
-                {renderInput('문어 ★', shellfish.star1.chaos, v => updateShellfish('star1', 'chaos', v))}
-                {renderInput('미역 ★', shellfish.star1.life, v => updateShellfish('star1', 'life', v))}
-                {renderInput('성게 ★', shellfish.star1.decay, v => updateShellfish('star1', 'decay', v))}
+                {renderInput('굴 ★', shellfish.star1.guard, v => updateShellfish('star1', 'guard', v), 's1-guard')}
+                {renderInput('소라 ★', shellfish.star1.wave, v => updateShellfish('star1', 'wave', v), 's1-wave')}
+                {renderInput('문어 ★', shellfish.star1.chaos, v => updateShellfish('star1', 'chaos', v), 's1-chaos')}
+                {renderInput('미역 ★', shellfish.star1.life, v => updateShellfish('star1', 'life', v), 's1-life')}
+                {renderInput('성게 ★', shellfish.star1.decay, v => updateShellfish('star1', 'decay', v), 's1-decay')}
               </div>
               {advancedMode && (
                 <>
                   <div className="gold-advanced-section">
                     <h4>보유 정수</h4>
                     <div className="gold-input-grid">
-                      {renderInput('수호의 정수', advanced1.essGuard, v => setAdvanced1({ ...advanced1, essGuard: v }))}
-                      {renderInput('파동의 정수', advanced1.essWave, v => setAdvanced1({ ...advanced1, essWave: v }))}
-                      {renderInput('혼란의 정수', advanced1.essChaos, v => setAdvanced1({ ...advanced1, essChaos: v }))}
-                      {renderInput('생명의 정수', advanced1.essLife, v => setAdvanced1({ ...advanced1, essLife: v }))}
-                      {renderInput('부식의 정수', advanced1.essDecay, v => setAdvanced1({ ...advanced1, essDecay: v }))}
+                      {renderInput('수호의 정수', advanced1.essGuard, v => setAdvanced1({ ...advanced1, essGuard: v }), 'a1-essGuard')}
+                      {renderInput('파동의 정수', advanced1.essWave, v => setAdvanced1({ ...advanced1, essWave: v }), 'a1-essWave')}
+                      {renderInput('혼란의 정수', advanced1.essChaos, v => setAdvanced1({ ...advanced1, essChaos: v }), 'a1-essChaos')}
+                      {renderInput('생명의 정수', advanced1.essLife, v => setAdvanced1({ ...advanced1, essLife: v }), 'a1-essLife')}
+                      {renderInput('부식의 정수', advanced1.essDecay, v => setAdvanced1({ ...advanced1, essDecay: v }), 'a1-essDecay')}
                     </div>
                   </div>
                   <div className="gold-advanced-section">
                     <h4>보유 핵</h4>
                     <div className="gold-input-grid">
-                      {renderInput('물결 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }))}
-                      {renderInput('파동 오염', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }))}
-                      {renderInput('질서 파괴', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }))}
-                      {renderInput('활력 붕괴', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }))}
-                      {renderInput('침식 방어', advanced1.coreED, v => setAdvanced1({ ...advanced1, coreED: v }))}
+                      {renderInput('파동 수호', advanced1.coreWG, v => setAdvanced1({ ...advanced1, coreWG: v }), 'a1-coreWG')}
+                      {renderInput('파동 생명', advanced1.coreWP, v => setAdvanced1({ ...advanced1, coreWP: v }), 'a1-coreWP')}
+                      {renderInput('혼란 부식', advanced1.coreOD, v => setAdvanced1({ ...advanced1, coreOD: v }), 'a1-coreOD')}
+                      {renderInput('생명 부식', advanced1.coreVD, v => setAdvanced1({ ...advanced1, coreVD: v }), 'a1-coreVD')}
+                      {renderInput('침식 방어', advanced1.coreED, v => setAdvanced1({ ...advanced1, coreED: v }), 'a1-coreED')}
                     </div>
                   </div>
                 </>
@@ -700,32 +747,32 @@ export default function OceanGoldPage() {
             <div className="gold-card-header">2성 계산기</div>
             <div className="gold-card-body">
               <div className="gold-input-grid">
-                {renderInput('굴 ★★', shellfish.star2.guard, v => updateShellfish('star2', 'guard', v))}
-                {renderInput('소라 ★★', shellfish.star2.wave, v => updateShellfish('star2', 'wave', v))}
-                {renderInput('문어 ★★', shellfish.star2.chaos, v => updateShellfish('star2', 'chaos', v))}
-                {renderInput('미역 ★★', shellfish.star2.life, v => updateShellfish('star2', 'life', v))}
-                {renderInput('성게 ★★', shellfish.star2.decay, v => updateShellfish('star2', 'decay', v))}
+                {renderInput('굴 ★★', shellfish.star2.guard, v => updateShellfish('star2', 'guard', v), 's2-guard')}
+                {renderInput('소라 ★★', shellfish.star2.wave, v => updateShellfish('star2', 'wave', v), 's2-wave')}
+                {renderInput('문어 ★★', shellfish.star2.chaos, v => updateShellfish('star2', 'chaos', v), 's2-chaos')}
+                {renderInput('미역 ★★', shellfish.star2.life, v => updateShellfish('star2', 'life', v), 's2-life')}
+                {renderInput('성게 ★★', shellfish.star2.decay, v => updateShellfish('star2', 'decay', v), 's2-decay')}
               </div>
               {advancedMode && (
                 <>
                   <div className="gold-advanced-section">
                     <h4>보유 에센스</h4>
                     <div className="gold-input-grid">
-                      {renderInput('수호 에센스', advanced2.essGuard, v => setAdvanced2({ ...advanced2, essGuard: v }))}
-                      {renderInput('파동 에센스', advanced2.essWave, v => setAdvanced2({ ...advanced2, essWave: v }))}
-                      {renderInput('혼란 에센스', advanced2.essChaos, v => setAdvanced2({ ...advanced2, essChaos: v }))}
-                      {renderInput('생명 에센스', advanced2.essLife, v => setAdvanced2({ ...advanced2, essLife: v }))}
-                      {renderInput('부식 에센스', advanced2.essDecay, v => setAdvanced2({ ...advanced2, essDecay: v }))}
+                      {renderInput('수호 에센스', advanced2.essGuard, v => setAdvanced2({ ...advanced2, essGuard: v }), 'a2-essGuard')}
+                      {renderInput('파동 에센스', advanced2.essWave, v => setAdvanced2({ ...advanced2, essWave: v }), 'a2-essWave')}
+                      {renderInput('혼란 에센스', advanced2.essChaos, v => setAdvanced2({ ...advanced2, essChaos: v }), 'a2-essChaos')}
+                      {renderInput('생명 에센스', advanced2.essLife, v => setAdvanced2({ ...advanced2, essLife: v }), 'a2-essLife')}
+                      {renderInput('부식 에센스', advanced2.essDecay, v => setAdvanced2({ ...advanced2, essDecay: v }), 'a2-essDecay')}
                     </div>
                   </div>
                   <div className="gold-advanced-section">
                     <h4>보유 결정</h4>
                     <div className="gold-input-grid">
-                      {renderInput('활기 보존', advanced2.crystalVital, v => setAdvanced2({ ...advanced2, crystalVital: v }))}
-                      {renderInput('파도 침식', advanced2.crystalErosion, v => setAdvanced2({ ...advanced2, crystalErosion: v }))}
-                      {renderInput('방어 오염', advanced2.crystalDefense, v => setAdvanced2({ ...advanced2, crystalDefense: v }))}
-                      {renderInput('격류 재생', advanced2.crystalRegen, v => setAdvanced2({ ...advanced2, crystalRegen: v }))}
-                      {renderInput('맹독 혼란', advanced2.crystalPoison, v => setAdvanced2({ ...advanced2, crystalPoison: v }))}
+                      {renderInput('활기 보존', advanced2.crystalVital, v => setAdvanced2({ ...advanced2, crystalVital: v }), 'a2-crystalVital')}
+                      {renderInput('파도 침식', advanced2.crystalErosion, v => setAdvanced2({ ...advanced2, crystalErosion: v }), 'a2-crystalErosion')}
+                      {renderInput('방어 오염', advanced2.crystalDefense, v => setAdvanced2({ ...advanced2, crystalDefense: v }), 'a2-crystalDefense')}
+                      {renderInput('격류 재생', advanced2.crystalRegen, v => setAdvanced2({ ...advanced2, crystalRegen: v }), 'a2-crystalRegen')}
+                      {renderInput('맹독 혼란', advanced2.crystalPoison, v => setAdvanced2({ ...advanced2, crystalPoison: v }), 'a2-crystalPoison')}
                     </div>
                   </div>
                 </>
@@ -792,32 +839,32 @@ export default function OceanGoldPage() {
             <div className="gold-card-header">3성 계산기</div>
             <div className="gold-card-body">
               <div className="gold-input-grid">
-                {renderInput('굴 ★★★', shellfish.star3.guard, v => updateShellfish('star3', 'guard', v))}
-                {renderInput('소라 ★★★', shellfish.star3.wave, v => updateShellfish('star3', 'wave', v))}
-                {renderInput('문어 ★★★', shellfish.star3.chaos, v => updateShellfish('star3', 'chaos', v))}
-                {renderInput('미역 ★★★', shellfish.star3.life, v => updateShellfish('star3', 'life', v))}
-                {renderInput('성게 ★★★', shellfish.star3.decay, v => updateShellfish('star3', 'decay', v))}
+                {renderInput('굴 ★★★', shellfish.star3.guard, v => updateShellfish('star3', 'guard', v), 's3-guard')}
+                {renderInput('소라 ★★★', shellfish.star3.wave, v => updateShellfish('star3', 'wave', v), 's3-wave')}
+                {renderInput('문어 ★★★', shellfish.star3.chaos, v => updateShellfish('star3', 'chaos', v), 's3-chaos')}
+                {renderInput('미역 ★★★', shellfish.star3.life, v => updateShellfish('star3', 'life', v), 's3-life')}
+                {renderInput('성게 ★★★', shellfish.star3.decay, v => updateShellfish('star3', 'decay', v), 's3-decay')}
               </div>
               {advancedMode && (
                 <>
                   <div className="gold-advanced-section">
                     <h4>보유 엘릭서</h4>
                     <div className="gold-input-grid">
-                      {renderInput('수호 엘릭서', advanced3.elixGuard, v => setAdvanced3({ ...advanced3, elixGuard: v }))}
-                      {renderInput('파동 엘릭서', advanced3.elixWave, v => setAdvanced3({ ...advanced3, elixWave: v }))}
-                      {renderInput('혼란 엘릭서', advanced3.elixChaos, v => setAdvanced3({ ...advanced3, elixChaos: v }))}
-                      {renderInput('생명 엘릭서', advanced3.elixLife, v => setAdvanced3({ ...advanced3, elixLife: v }))}
-                      {renderInput('부식 엘릭서', advanced3.elixDecay, v => setAdvanced3({ ...advanced3, elixDecay: v }))}
+                      {renderInput('수호 엘릭서', advanced3.elixGuard, v => setAdvanced3({ ...advanced3, elixGuard: v }), 'a3-elixGuard')}
+                      {renderInput('파동 엘릭서', advanced3.elixWave, v => setAdvanced3({ ...advanced3, elixWave: v }), 'a3-elixWave')}
+                      {renderInput('혼란 엘릭서', advanced3.elixChaos, v => setAdvanced3({ ...advanced3, elixChaos: v }), 'a3-elixChaos')}
+                      {renderInput('생명 엘릭서', advanced3.elixLife, v => setAdvanced3({ ...advanced3, elixLife: v }), 'a3-elixLife')}
+                      {renderInput('부식 엘릭서', advanced3.elixDecay, v => setAdvanced3({ ...advanced3, elixDecay: v }), 'a3-elixDecay')}
                     </div>
                   </div>
                   <div className="gold-advanced-section">
                     <h4>보유 영약</h4>
                     <div className="gold-input-grid">
-                      {renderInput('불멸 재생', advanced3.potionImmortal, v => setAdvanced3({ ...advanced3, potionImmortal: v }))}
-                      {renderInput('파동 장벽', advanced3.potionBarrier, v => setAdvanced3({ ...advanced3, potionBarrier: v }))}
-                      {renderInput('타락 침식', advanced3.potionCorrupt, v => setAdvanced3({ ...advanced3, potionCorrupt: v }))}
-                      {renderInput('생명 광란', advanced3.potionFrenzy, v => setAdvanced3({ ...advanced3, potionFrenzy: v }))}
-                      {renderInput('맹독 파동', advanced3.potionVenom, v => setAdvanced3({ ...advanced3, potionVenom: v }))}
+                      {renderInput('불멸 재생', advanced3.potionImmortal, v => setAdvanced3({ ...advanced3, potionImmortal: v }), 'a3-potionImmortal')}
+                      {renderInput('파동 장벽', advanced3.potionBarrier, v => setAdvanced3({ ...advanced3, potionBarrier: v }), 'a3-potionBarrier')}
+                      {renderInput('타락 침식', advanced3.potionCorrupt, v => setAdvanced3({ ...advanced3, potionCorrupt: v }), 'a3-potionCorrupt')}
+                      {renderInput('생명 광란', advanced3.potionFrenzy, v => setAdvanced3({ ...advanced3, potionFrenzy: v }), 'a3-potionFrenzy')}
+                      {renderInput('맹독 파동', advanced3.potionVenom, v => setAdvanced3({ ...advanced3, potionVenom: v }), 'a3-potionVenom')}
                     </div>
                   </div>
                 </>
