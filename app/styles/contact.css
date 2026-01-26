@@ -18,7 +18,9 @@
 .modal-overlay {
   position: fixed !important;
   inset: 0 !important;
-  background: rgba(0, 0, 0, 0.226) !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(3px) !important;
+  -webkit-backdrop-filter: blur(3px) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -118,7 +120,7 @@
 }
 
 .modal-overlay .modal-content button[type="submit"]:hover {
-  background: #0e41ad !important;
+  background: #154abe !important;
 }
 
 .modal-overlay .modal-content button[type="submit"]:disabled {
