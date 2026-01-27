@@ -25,6 +25,8 @@ export const UPDATE_HISTORY: UpdateItem[] = [
         "최신 업데이트 상세 정보 표시 "
       ],
       fixes: [
+        "정보탭 드래그 삭제 불가 -> 가능",
+        "연금 보유량 입력 시 천장값 존재 -> 천장값 삭제"
       ],
       notes: [
         "다음 업데이트 : 01.28 예정"
