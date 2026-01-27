@@ -442,8 +442,8 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const materialNeedProduct = {
     seaSquirt: totalElixToMakeProduct, glassBottle: totalElixToMakeProduct,
     driedKelp: totalPotionToMakeProduct * 2, glowBerry: totalPotionToMakeProduct * 2,
-    netherrack: elixToMakeProduct.guard * 4, magmaBlock: elixToMakeProduct.wave * 2,
-    soulSoil: elixToMakeProduct.chaos * 4, crimsonStem: elixToMakeProduct.life * 2, warpedStem: elixToMakeProduct.decay * 4
+    netherrack: elixToMakeProduct.guard * 8, magmaBlock: elixToMakeProduct.wave * 4,
+    soulSoil: elixToMakeProduct.chaos * 4, crimsonStem: elixToMakeProduct.life * 4, warpedStem: elixToMakeProduct.decay * 4
   }
   const deadCoralNeedProduct = {
     deadTubeCoral: potionToMakeProduct.immortal, deadBrainCoral: potionToMakeProduct.barrier,
