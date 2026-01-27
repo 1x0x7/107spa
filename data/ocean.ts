@@ -12,7 +12,8 @@ export const FISH_IMAGES: Record<string, string> = {
 export const OCEAN_STAMINA_PER_GATHER = 15
 
 export const ROD_DATA: Record<number, { drop: number; clamRate: number }> = {
-  1: { drop: 2, clamRate: 0.01 }, 2: { drop: 2, clamRate: 0.01 }, 3: { drop: 3, clamRate: 0.02 },
+  1: { drop: 2, clamRate: 0.01 },
+  2: { drop: 2, clamRate: 0.01 }, 3: { drop: 3, clamRate: 0.02 },
   4: { drop: 3, clamRate: 0.02 }, 5: { drop: 3, clamRate: 0.02 }, 6: { drop: 4, clamRate: 0.03 },
   7: { drop: 4, clamRate: 0.03 }, 8: { drop: 4, clamRate: 0.03 }, 9: { drop: 5, clamRate: 0.05 },
   10: { drop: 5, clamRate: 0.05 }, 11: { drop: 5, clamRate: 0.07 }, 12: { drop: 6, clamRate: 0.07 },
