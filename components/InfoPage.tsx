@@ -14,7 +14,7 @@ export interface RecipeTab {
   id: string
   label: string
   columns: string[]
-  data: Record<string, string | number>[]
+  data: Record<string, ReactNode>[] 
 }
 
 export interface InfoPageProps {

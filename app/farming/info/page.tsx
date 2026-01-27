@@ -4,7 +4,7 @@ import { useExpert } from '@/hooks/useExpert'
 import InfoPage from '@/components/InfoPage'
 import { 
   FARMING_EXPERT_DESC, 
-  COOKING_RECIPES, 
+  EFFICIENCY_RECIPES,  // ← 변경
   PROCESSING_RECIPES 
 } from '@/data/farming'
 
@@ -26,8 +26,13 @@ export default function FarmingInfoPage() {
       id: 'cooking',
       label: '요리',
       columns: ['요리명', '재료', '최저가', '최고가'],
-      data: COOKING_RECIPES.map(r => ({
-        '요리명': r.name,
+      data: EFFICIENCY_RECIPES.map(r => ({
+        '요리명': (
+          <span className="recipe-name-cell">
+            <img src={`/img/farming/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
         '재료': r.ingredients,
         '최저가': r.minPrice,
         '최고가': r.maxPrice

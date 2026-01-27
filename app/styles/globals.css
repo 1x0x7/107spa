@@ -150,6 +150,21 @@
   color: var(--color-text-muted);
 }
 
+/* globals.css에 추가 */
+.recipe-name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recipe-name-cell img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
 /* =========================
    반응형
 ========================= */
