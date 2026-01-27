@@ -50,8 +50,13 @@ export function useSecurityLock() {
       }
     }
     
-    // 드래그 방지
-    const preventDrag = (e: Event) => e.preventDefault()
+    // 드래그 방지 (input/textarea 제외)
+    const preventDrag = (e: Event) => {
+      const target = e.target as HTMLElement
+      if (target.tagName !== 'INPUT' && target.tagName !== 'TEXTAREA') {
+        e.preventDefault()
+      }
+    }
     
     document.addEventListener('copy', preventCopy)
     document.addEventListener('cut', preventCopy)
