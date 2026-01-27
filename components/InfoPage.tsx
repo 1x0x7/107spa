@@ -102,6 +102,7 @@ export default function InfoPage({
             </div>
             <div className="card-body">
               {/* 도구 스펙 */}
+              {/* 도구 스펙 */}
               <div className="setting-row tool-spec-row">
                 <span className="setting-label tool-spec-label">{toolName} 스펙</span>
                 <input
@@ -110,9 +111,18 @@ export default function InfoPage({
                   min={toolMin}
                   max={toolMax}
                   value={toolValue}
-                  onChange={(e) => onToolChange(
-                    Math.min(toolMax, Math.max(toolMin, +e.target.value || toolMin))
-                  )}
+                  onChange={(e) => {
+                    const val = e.target.value === '' ? 0 : +e.target.value
+                    onToolChange(Math.min(toolMax, Math.max(0, val)))
+                  }}
+                  onFocus={(e) => {
+                    if (e.target.value === String(toolMin)) e.target.value = ''
+                  }}
+                  onBlur={(e) => {
+                    if (e.target.value === '' || +e.target.value < toolMin) {
+                      onToolChange(toolMin)
+                    }
+                  }}
                 />
               </div>
 
@@ -139,10 +149,16 @@ export default function InfoPage({
                       min={0}
                       max={skill.max}
                       value={skillValues[skill.key] ?? 0}
-                      onChange={(e) => onSkillChange(
-                        skill.key,
-                        Math.min(skill.max, Math.max(0, +e.target.value || 0))
-                      )}
+                      onChange={(e) => {
+                        const val = e.target.value === '' ? 0 : +e.target.value
+                        onSkillChange(skill.key, Math.min(skill.max, Math.max(0, val)))
+                      }}
+                      onFocus={(e) => {
+                        if (e.target.value === '0') e.target.value = ''
+                      }}
+                      onBlur={(e) => {
+                        if (e.target.value === '') onSkillChange(skill.key, 0)
+                      }}
                     />
                   </div>
                   {expandedDesc === skill.key && (
