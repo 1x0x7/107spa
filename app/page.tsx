@@ -15,7 +15,14 @@ export default function HomePage() {
       {latestUpdate && (
         <section className="content-block">
           <div className="update-banner">
-            <div className="update-banner-badge">최신 업데이트</div>
+            {/* 상단: 배지 + 힌트를 같은 줄에 */}
+            <div className="update-banner-header">
+              <div className="update-banner-badge">최신 업데이트</div>
+              {latestUpdate.details && (
+                <div className="update-banner-hint">마우스를 올려 자세히 보기 ▼</div>
+              )}
+            </div>
+
             <div className="update-banner-title">{latestUpdate.title}</div>
 
             {latestUpdate.desc && (
@@ -23,6 +30,44 @@ export default function HomePage() {
             )}
 
             <div className="update-banner-date">{latestUpdate.date}</div>
+
+            {/* 호버 시 보이는 상세 내용 */}
+            {latestUpdate.details && (
+              <div className="update-banner-details">
+                {latestUpdate.details.changes && latestUpdate.details.changes.length > 0 && (
+                  <div className="update-detail-section">
+                    <div className="update-detail-title">변경사항</div>
+                    <ul className="update-detail-list">
+                      {latestUpdate.details.changes.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {latestUpdate.details.fixes && latestUpdate.details.fixes.length > 0 && (
+                  <div className="update-detail-section">
+                    <div className="update-detail-title">버그 수정</div>
+                    <ul className="update-detail-list">
+                      {latestUpdate.details.fixes.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {latestUpdate.details.notes && latestUpdate.details.notes.length > 0 && (
+                  <div className="update-detail-section">
+                    <div className="update-detail-title">예정</div>
+                    <ul className="update-detail-list">
+                      {latestUpdate.details.notes.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </section>
       )}
