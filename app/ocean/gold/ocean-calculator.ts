@@ -100,20 +100,15 @@ export function calculate1Star(input: Input1Star, isAdvanced: boolean, reservedC
 
   let best = { gold: -1, A: 0, K: 0, L: 0 }
 
-  // 상한 동적 계산: 가장 적은 정수 기준 (최소 100, 최대 2000)
+  // 상한 동적 계산: 가장 적은 정수 기준 + 보유 핵 (최소 100, 최대 2000)
+  const totalOwnedCore = ownedCore.WG + ownedCore.WP + ownedCore.OD + ownedCore.VD + ownedCore.ED
   const minEss = Math.min(totalEss.guard, totalEss.wave, totalEss.chaos, totalEss.life, totalEss.decay)
   const totalEssSum = totalEss.guard + totalEss.wave + totalEss.chaos + totalEss.life + totalEss.decay
-  const maxProduct = Math.min(2000, Math.max(100, Math.ceil(minEss)))
+  const maxOwnedCore = Math.max(ownedCore.WG, ownedCore.WP, ownedCore.OD, ownedCore.VD, ownedCore.ED)
+  const maxProduct = Math.min(2000, Math.max(100, minEss, maxOwnedCore, Math.ceil(totalOwnedCore / 3)))
 
   for (let A = 0; A <= maxProduct; A++) {
-    // A만으로도 정수 초과하면 break
-    const minEssForA = A * 2
-    if (minEssForA > totalEssSum) break
-    
     for (let K = 0; K <= maxProduct; K++) {
-      const minEssForAK = (A + K) * 2
-      if (minEssForAK > totalEssSum) break
-      
       for (let L = 0; L <= maxProduct; L++) {
         if (A + K + L === 0 && reservedCoreED === 0) continue
 
@@ -401,19 +396,15 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
 
   let best = { gold: -1, CORE: 0, POTION: 0, WING: 0 }
 
-  // 상한 동적 계산: 가장 적은 에센스 기준 (최소 100, 최대 2000)
+  // 상한 동적 계산: 가장 적은 에센스 기준 + 보유 결정 (최소 100, 최대 2000)
+  const totalOwnedCrystal = ownedCrystal.vital + ownedCrystal.erosion + ownedCrystal.defense + ownedCrystal.regen + ownedCrystal.poison
   const minEss = Math.min(totalEss.guard, totalEss.wave, totalEss.chaos, totalEss.life, totalEss.decay)
   const totalEssSum = totalEss.guard + totalEss.wave + totalEss.chaos + totalEss.life + totalEss.decay
-  const maxProduct = Math.min(2000, Math.max(100, Math.ceil(minEss)))
+  const maxOwnedCrystal = Math.max(ownedCrystal.vital, ownedCrystal.erosion, ownedCrystal.defense, ownedCrystal.regen, ownedCrystal.poison)
+  const maxProduct = Math.min(2000, Math.max(100, minEss, maxOwnedCrystal, Math.ceil(totalOwnedCrystal / 3)))
 
   for (let CORE = 0; CORE <= maxProduct; CORE++) {
-    const minEssForCORE = CORE * 2
-    if (minEssForCORE > totalEssSum) break
-    
     for (let POTION = 0; POTION <= maxProduct; POTION++) {
-      const minEssForCP = (CORE + POTION) * 2
-      if (minEssForCP > totalEssSum) break
-      
       for (let WING = 0; WING <= maxProduct; WING++) {
         if (CORE + POTION + WING === 0 && reservedCrystalDefense === 0) continue
 
@@ -710,19 +701,15 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
 
   let best = { gold: -1, AQUA: 0, NAUTILUS: 0, SPINE: 0 }
 
-  // 상한 동적 계산: 가장 적은 엘릭서 기준 (최소 100, 최대 2000)
+  // 상한 동적 계산: 가장 적은 엘릭서 기준 + 보유 영약 (최소 100, 최대 2000)
+  const totalOwnedPotion = ownedPotion.immortal + ownedPotion.barrier + ownedPotion.corrupt + ownedPotion.frenzy + ownedPotion.venom
   const minElix = Math.min(totalElix.guard, totalElix.wave, totalElix.chaos, totalElix.life, totalElix.decay)
   const totalElixSum = totalElix.guard + totalElix.wave + totalElix.chaos + totalElix.life + totalElix.decay
-  const maxProduct = Math.min(2000, Math.max(100, Math.ceil(minElix)))
+  const maxOwnedPotion = Math.max(ownedPotion.immortal, ownedPotion.barrier, ownedPotion.corrupt, ownedPotion.frenzy, ownedPotion.venom)
+  const maxProduct = Math.min(2000, Math.max(100, minElix, maxOwnedPotion, Math.ceil(totalOwnedPotion / 3)))
 
   for (let AQUA = 0; AQUA <= maxProduct; AQUA++) {
-    const minElixForAQUA = AQUA * 2
-    if (minElixForAQUA > totalElixSum) break
-    
     for (let NAUTILUS = 0; NAUTILUS <= maxProduct; NAUTILUS++) {
-      const minElixForAN = (AQUA + NAUTILUS) * 2
-      if (minElixForAN > totalElixSum) break
-      
       for (let SPINE = 0; SPINE <= maxProduct; SPINE++) {
         if (AQUA + NAUTILUS + SPINE === 0 && reservedPotionCorrupt === 0) continue
 
