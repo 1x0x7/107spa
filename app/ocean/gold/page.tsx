@@ -670,13 +670,13 @@ export default function OceanGoldPage() {
                         <div className="tier-card-body">
                           <div className="tier-material-row">
                             <span className="material-label">정수</span>
-                            <span>부식 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.decay || 0) : resultAll.result1?.essNeedDilution?.decay || 0}</span>
                             <span>수호 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.guard || 0) : resultAll.result1?.essNeedDilution?.guard || 0}</span>
+                            <span>부식 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.decay || 0) : resultAll.result1?.essNeedDilution?.decay || 0}</span>
                           </div>
                           <div className="tier-material-row">
                             <span className="material-label">블록</span>
-                            <span>화강암 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.granite || 0) : resultAll.result1?.blockNeedDilution?.granite || 0}</span>
                             <span>점토 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.clay || 0) : resultAll.result1?.blockNeedDilution?.clay || 0}</span>
+                            <span>화강암 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.granite || 0) : resultAll.result1?.blockNeedDilution?.granite || 0}</span>
                           </div>
                           <div className="tier-material-row">
                             <span className="material-label">물고기</span>
