@@ -657,7 +657,7 @@ export default function OceanGoldPage() {
                 {/* 추출액 필요 재료 - 3열 카드 */}
                 {resultAll.dilution > 0 && (
                   <div className="gold-dilution-materials">
-                    <h5>희석액 {resultAll.dilution}개 제작 재료</h5>
+                    <h5>추출액 {resultAll.dilution}개 제작</h5>
 
                     <div className="dilution-tier-grid">
                       {/* 1성: 침식 방어 핵 */}
