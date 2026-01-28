@@ -73,7 +73,9 @@
   padding-bottom: 8px;
 }
 
-
+.gold-card-body {
+  /* 내부 컨텐츠 래퍼 */
+}
 
 /* ===== 입력 그리드 ===== */
 .gold-input-grid {
@@ -326,7 +328,7 @@
 }
 
 .gold-material-tag.with-image .mat-value {
-  font-size: clamp(0.95rem, 3.2vw, 1.09rem);
+  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
   font-weight: 600;
   color: #555;
 }
@@ -526,14 +528,108 @@
 
 .gold-dilution-materials h5 {
   font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  margin-top: 4px;
   font-weight: 600;
   color: #333;
   margin-bottom: 12px;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* 세로 3열 그리드 */
+/* 간단한 희석액 재료 그리드 */
+.dilution-simple-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.dilution-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  min-width: 200px;
+}
+
+.dilution-item img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.dilution-item-name {
+  font-size: 0.85rem;
+  color: #333;
+  flex: 1;
+}
+
+.dilution-item-count {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a90e2;
+}
+
+.dilution-note {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #888;
+  text-align: center;
+}
+
+/* 희석액 티어별 섹션 */
+.dilution-tier-section {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.dilution-tier-section:last-child {
+  margin-bottom: 0;
+}
+
+.dilution-tier-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.dilution-tier-header img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.dilution-tier-count {
+  margin-left: auto;
+  color: #4a90e2;
+  font-weight: 700;
+}
+
+.dilution-tier-materials {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.dilution-tier-materials span {
+  padding: 2px 0;
+}
+
+/* 세로 3열 그리드 (기존 호환) */
 .dilution-tier-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -585,6 +681,30 @@
 
 .tier-card-body {
   padding: 10px 12px;
+}
+
+/* 새로운 재료 행 스타일 */
+.tier-material-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  font-size: clamp(0.65rem, 1.8vw, 0.73rem);
+}
+
+.tier-material-row .material-label {
+  font-weight: 600;
+  color: #666;
+  min-width: 45px;
+  font-size: clamp(0.6rem, 1.6vw, 0.68rem);
+}
+
+.tier-material-row span:not(.material-label) {
+  color: #333;
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .tier-card-row {

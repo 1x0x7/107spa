@@ -471,7 +471,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   }
   const deadCoralNeedDilution = {
     deadTubeCoral: 0, deadBrainCoral: 0,
-    deadBubbleCoral: potionToMakeDilution, deadFireCoral: 0, deadHornCoral: 0
+    deadBubbleCoral: potionToMakeDilution * 2, deadFireCoral: 0, deadHornCoral: 0
   }
 
   // 총합
