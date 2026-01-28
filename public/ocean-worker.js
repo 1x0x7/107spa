@@ -440,7 +440,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const totalPotionToMakeProduct = potionToMakeProduct.immortal + potionToMakeProduct.barrier + potionToMakeProduct.corrupt + potionToMakeProduct.frenzy + potionToMakeProduct.venom
   const totalElixToMakeProduct = elixToMakeProduct.guard + elixToMakeProduct.wave + elixToMakeProduct.chaos + elixToMakeProduct.life + elixToMakeProduct.decay
   const materialNeedProduct = {
-    seaSquirt: totalElixToMakeProduct, glassBottle: totalElixToMakeProduct,
+    seaSquirt: totalElixToMakeProduct * 2, glassBottle: totalElixToMakeProduct * 3,
     driedKelp: totalPotionToMakeProduct * 12, glowBerry: totalPotionToMakeProduct * 4,
     netherrack: elixToMakeProduct.guard * 8, magmaBlock: elixToMakeProduct.wave * 4,
     soulSoil: elixToMakeProduct.chaos * 4, crimsonStem: elixToMakeProduct.life * 4, warpedStem: elixToMakeProduct.decay * 4
@@ -464,7 +464,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const elixNeedDilution = { guard: 0, wave: 0, chaos: elixToMakeDilutionRaw.chaos, life: 0, decay: elixToMakeDilutionRaw.decay }
   const totalElixToMakeDilution = elixToMakeDilutionRaw.chaos + elixToMakeDilutionRaw.decay
   const materialNeedDilution = {
-    seaSquirt: totalElixToMakeDilution, glassBottle: totalElixToMakeDilution,
+    seaSquirt: totalElixToMakeDilution * 2, glassBottle: totalElixToMakeDilution * 3,
     driedKelp: potionToMakeDilution * 12, glowBerry: potionToMakeDilution * 4,
     netherrack: 0, magmaBlock: 0,
     soulSoil: elixToMakeDilutionRaw.chaos * 4, crimsonStem: 0, warpedStem: elixToMakeDilutionRaw.decay * 4
@@ -504,7 +504,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const totalPotionToMake = potionToMake.immortal + potionToMake.barrier + potionToMake.corrupt + potionToMake.frenzy + potionToMake.venom
   const totalElixToMake = elixToMake.guard + elixToMake.wave + elixToMake.chaos + elixToMake.life + elixToMake.decay
   const materialNeed = {
-    seaSquirt: totalElixToMake, glassBottle: totalElixToMake,
+    seaSquirt: totalElixToMake * 2, glassBottle: totalElixToMake * 3,
     driedKelp: totalPotionToMake * 12, glowBerry: totalPotionToMake * 4,
     netherrack: elixToMake.guard * 8, magmaBlock: elixToMake.wave * 2,
     soulSoil: elixToMake.chaos * 4, crimsonStem: elixToMake.life * 2, warpedStem: elixToMake.decay * 4
