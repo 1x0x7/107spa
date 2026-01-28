@@ -87,8 +87,11 @@ a {
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: transform 0.2s ease;
 }
-
+.logo:hover {
+  transform: scale(1.1);
+}
 /* 네비게이션 */
 /* ===== 메인 네비게이션 ===== */
 .main-nav {
