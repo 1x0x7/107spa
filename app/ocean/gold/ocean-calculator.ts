@@ -11,8 +11,8 @@ export const GOLD_PRICES = {
 
 // 프리미엄 가격 비율
 export const PREMIUM_PRICE_RATE: Record<number, number> = {
-  0: 0, 1: 0.05, 2: 0.07, 3: 0.10, 4: 0.15,
-  5: 0.20, 6: 0.30, 7: 0.40, 8: 0.50
+  0: 0, 1: 0.05, 2: 0.07, 3: 0.09, 4: 0.12,
+  5: 0.15, 6: 0.20, 7: 0.25, 8: 0.30
 }
 
 // 희석액 1개당 필요 중간재료
@@ -501,10 +501,10 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
   const totalEssToMakeProduct = essToMakeProduct.guard + essToMakeProduct.wave + essToMakeProduct.chaos + essToMakeProduct.life + essToMakeProduct.decay
 
   const materialNeedProduct = {
-    seaweed: Math.ceil(totalEssToMakeProduct / 2) * 4,
+    seaweed: Math.ceil(totalEssToMakeProduct / 2) * 6,
     oakLeaves: craftCountProduct.guard * 6, spruceLeaves: craftCountProduct.wave * 6,
     birchLeaves: craftCountProduct.chaos * 6, acaciaLeaves: craftCountProduct.life * 6, cherryLeaves: craftCountProduct.decay * 6,
-    kelp: totalCrystalToMakeProduct * 4, lapisBlock: crystalToMakeProduct.vital, redstoneBlock: crystalToMakeProduct.erosion,
+    kelp: totalCrystalToMakeProduct * 8, lapisBlock: crystalToMakeProduct.vital, redstoneBlock: crystalToMakeProduct.erosion,
     ironIngot: crystalToMakeProduct.defense * 3, goldIngot: crystalToMakeProduct.regen * 2, diamond: crystalToMakeProduct.poison
   }
 
@@ -542,13 +542,13 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
   }
 
   const materialNeedDilution = {
-    seaweed: Math.ceil((craftCountDilution.guard + craftCountDilution.chaos)) * 4,
+    seaweed: Math.ceil((craftCountDilution.guard + craftCountDilution.chaos)) * 6,
     oakLeaves: craftCountDilution.guard * 6,
     spruceLeaves: 0,
     birchLeaves: craftCountDilution.chaos * 6,
     acaciaLeaves: 0,
     cherryLeaves: 0,
-    kelp: crystalToMakeDilution * 4,
+    kelp: crystalToMakeDilution * 8,
     lapisBlock: 0, redstoneBlock: 0,
     ironIngot: crystalToMakeDilution * 3,
     goldIngot: 0, diamond: 0
@@ -604,10 +604,10 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
   const totalEssToMake = essToMake.guard + essToMake.wave + essToMake.chaos + essToMake.life + essToMake.decay
 
   const materialNeed = {
-    seaweed: Math.ceil(totalEssToMake / 2) * 4,
+    seaweed: Math.ceil(totalEssToMake / 2) * 6,
     oakLeaves: craftCountTotal.guard * 6, spruceLeaves: craftCountTotal.wave * 6,
     birchLeaves: craftCountTotal.chaos * 6, acaciaLeaves: craftCountTotal.life * 6, cherryLeaves: craftCountTotal.decay * 6,
-    kelp: totalCrystalToMake * 4, lapisBlock: crystalToMake.vital, redstoneBlock: crystalToMake.erosion,
+    kelp: totalCrystalToMake * 8, lapisBlock: crystalToMake.vital, redstoneBlock: crystalToMake.erosion,
     ironIngot: crystalToMake.defense * 3, goldIngot: crystalToMake.regen * 2, diamond: crystalToMake.poison
   }
 
@@ -615,10 +615,10 @@ export function calculate2Star(input: Input2Star, isAdvanced: boolean, reservedC
   const totalCrystalNeed = crystalNeed.vital + crystalNeed.erosion + crystalNeed.defense + crystalNeed.regen + crystalNeed.poison
 
   const materialNeedTotal = {
-    seaweed: Math.ceil(totalEssNeed / 2) * 4,
+    seaweed: Math.ceil(totalEssNeed / 2) * 6,
     oakLeaves: craftCountTotal.guard * 6, spruceLeaves: craftCountTotal.wave * 6,
     birchLeaves: craftCountTotal.chaos * 6, acaciaLeaves: craftCountTotal.life * 6, cherryLeaves: craftCountTotal.decay * 6,
-    kelp: totalCrystalNeed * 4, lapisBlock: crystalNeed.vital, redstoneBlock: crystalNeed.erosion,
+    kelp: totalCrystalNeed * 8, lapisBlock: crystalNeed.vital, redstoneBlock: crystalNeed.erosion,
     ironIngot: crystalNeed.defense * 3, goldIngot: crystalNeed.regen * 2, diamond: crystalNeed.poison
   }
 
@@ -794,7 +794,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     seaSquirt: totalElixToMakeProduct * 2, glassBottle: totalElixToMakeProduct * 3,
     netherrack: elixToMakeProduct.guard * 8, magmaBlock: elixToMakeProduct.wave * 4, soulSoil: elixToMakeProduct.chaos * 4, 
     crimsonStem: elixToMakeProduct.life * 4, warpedStem: elixToMakeProduct.decay * 4,
-    driedKelp: totalPotionToMakeProduct * 6, glowBerry: totalPotionToMakeProduct * 4
+    driedKelp: totalPotionToMakeProduct * 12, glowBerry: totalPotionToMakeProduct * 4
   }
 
   const deadCoralNeedProduct = {
@@ -837,7 +837,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     soulSoil: elixToMakeDilution.chaos * 4,
     crimsonStem: 0,
     warpedStem: elixToMakeDilution.decay * 4,
-    driedKelp: potionToMakeDilution * 6,
+    driedKelp: potionToMakeDilution * 12,
     glowBerry: potionToMakeDilution * 4
   }
 
@@ -892,7 +892,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     seaSquirt: totalElixToMake * 2, glassBottle: totalElixToMake * 3,
     netherrack: elixToMake.guard * 8, magmaBlock: elixToMake.wave * 4, soulSoil: elixToMake.chaos * 4, 
     crimsonStem: elixToMake.life * 4, warpedStem: elixToMake.decay * 4,
-    driedKelp: totalPotionToMake * 6, glowBerry: totalPotionToMake * 4
+    driedKelp: totalPotionToMake * 12, glowBerry: totalPotionToMake * 4
   }
 
   const deadCoralNeed = {
@@ -907,7 +907,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     seaSquirt: totalElixNeed * 2, glassBottle: totalElixNeed * 3,
     netherrack: elixNeedTotal.guard * 8, magmaBlock: elixNeedTotal.wave * 4, soulSoil: elixNeedTotal.chaos * 4, 
     crimsonStem: elixNeedTotal.life * 4, warpedStem: elixNeedTotal.decay * 4,
-    driedKelp: totalPotionNeed * 6, glowBerry: totalPotionNeed * 4
+    driedKelp: totalPotionNeed * 12, glowBerry: totalPotionNeed * 4
   }
 
   const deadCoralNeedTotal = {

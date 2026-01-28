@@ -275,10 +275,10 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   const totalCrystalToMakeProduct = crystalToMakeProduct.vital + crystalToMakeProduct.erosion + crystalToMakeProduct.defense + crystalToMakeProduct.regen + crystalToMakeProduct.poison
   const totalEssToMakeProduct = essToMakeProduct.guard + essToMakeProduct.wave + essToMakeProduct.chaos + essToMakeProduct.life + essToMakeProduct.decay
   const materialNeedProduct = {
-    seaweed: Math.ceil(totalEssToMakeProduct / 2) * 4,
+    seaweed: Math.ceil(totalEssToMakeProduct / 2) * 6,
     oakLeaves: craftCountProduct.guard * 6, spruceLeaves: craftCountProduct.wave * 6,
     birchLeaves: craftCountProduct.chaos * 6, acaciaLeaves: craftCountProduct.life * 6, cherryLeaves: craftCountProduct.decay * 6,
-    kelp: totalCrystalToMakeProduct * 4, lapisBlock: crystalToMakeProduct.vital, redstoneBlock: crystalToMakeProduct.erosion,
+    kelp: totalCrystalToMakeProduct * 8, lapisBlock: crystalToMakeProduct.vital, redstoneBlock: crystalToMakeProduct.erosion,
     ironIngot: crystalToMakeProduct.defense * 3, goldIngot: crystalToMakeProduct.regen * 2, diamond: crystalToMakeProduct.poison
   }
 
@@ -299,9 +299,9 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   }
   const essNeedDilution = { guard: craftCountDilution.guard * 2, wave: 0, chaos: craftCountDilution.chaos * 2, life: 0, decay: 0 }
   const materialNeedDilution = {
-    seaweed: Math.ceil((craftCountDilution.guard + craftCountDilution.chaos)) * 4,
+    seaweed: Math.ceil((craftCountDilution.guard + craftCountDilution.chaos)) * 6,
     oakLeaves: craftCountDilution.guard * 6, spruceLeaves: 0, birchLeaves: craftCountDilution.chaos * 6,
-    acaciaLeaves: 0, cherryLeaves: 0, kelp: crystalToMakeDilution * 4, lapisBlock: 0, redstoneBlock: 0,
+    acaciaLeaves: 0, cherryLeaves: 0, kelp: crystalToMakeDilution * 8, lapisBlock: 0, redstoneBlock: 0,
     ironIngot: crystalToMakeDilution * 3, goldIngot: 0, diamond: 0
   }
 
@@ -337,10 +337,10 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   const totalCrystalToMake = crystalToMake.vital + crystalToMake.erosion + crystalToMake.defense + crystalToMake.regen + crystalToMake.poison
   const totalEssToMake = essToMake.guard + essToMake.wave + essToMake.chaos + essToMake.life + essToMake.decay
   const materialNeed = {
-    seaweed: Math.ceil(totalEssToMake / 2) * 4,
+    seaweed: Math.ceil(totalEssToMake / 2) * 6,
     oakLeaves: craftCountTotal.guard * 6, spruceLeaves: craftCountTotal.wave * 6,
     birchLeaves: craftCountTotal.chaos * 6, acaciaLeaves: craftCountTotal.life * 6, cherryLeaves: craftCountTotal.decay * 6,
-    kelp: totalCrystalToMake * 4, lapisBlock: crystalToMake.vital, redstoneBlock: crystalToMake.erosion,
+    kelp: totalCrystalToMake * 8, lapisBlock: crystalToMake.vital, redstoneBlock: crystalToMake.erosion,
     ironIngot: crystalToMake.defense * 3, goldIngot: crystalToMake.regen * 2, diamond: crystalToMake.poison
   }
   const materialNeedTotal = { ...materialNeed }
@@ -441,13 +441,13 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const totalElixToMakeProduct = elixToMakeProduct.guard + elixToMakeProduct.wave + elixToMakeProduct.chaos + elixToMakeProduct.life + elixToMakeProduct.decay
   const materialNeedProduct = {
     seaSquirt: totalElixToMakeProduct, glassBottle: totalElixToMakeProduct,
-    driedKelp: totalPotionToMakeProduct * 2, glowBerry: totalPotionToMakeProduct * 2,
+    driedKelp: totalPotionToMakeProduct * 12, glowBerry: totalPotionToMakeProduct * 4,
     netherrack: elixToMakeProduct.guard * 8, magmaBlock: elixToMakeProduct.wave * 4,
     soulSoil: elixToMakeProduct.chaos * 4, crimsonStem: elixToMakeProduct.life * 4, warpedStem: elixToMakeProduct.decay * 4
   }
   const deadCoralNeedProduct = {
-    deadTubeCoral: potionToMakeProduct.immortal, deadBrainCoral: potionToMakeProduct.barrier,
-    deadBubbleCoral: potionToMakeProduct.corrupt, deadFireCoral: potionToMakeProduct.frenzy, deadHornCoral: potionToMakeProduct.venom
+    deadTubeCoral: potionToMakeProduct.immortal * 2, deadBrainCoral: potionToMakeProduct.barrier * 2,
+    deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2, deadHornCoral: potionToMakeProduct.venom * 2
   }
 
   // 희석액용 재료 계산
@@ -465,7 +465,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const totalElixToMakeDilution = elixToMakeDilutionRaw.chaos + elixToMakeDilutionRaw.decay
   const materialNeedDilution = {
     seaSquirt: totalElixToMakeDilution, glassBottle: totalElixToMakeDilution,
-    driedKelp: potionToMakeDilution * 2, glowBerry: potionToMakeDilution * 2,
+    driedKelp: potionToMakeDilution * 12, glowBerry: potionToMakeDilution * 4,
     netherrack: 0, magmaBlock: 0,
     soulSoil: elixToMakeDilutionRaw.chaos * 4, crimsonStem: 0, warpedStem: elixToMakeDilutionRaw.decay * 4
   }
@@ -505,13 +505,13 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const totalElixToMake = elixToMake.guard + elixToMake.wave + elixToMake.chaos + elixToMake.life + elixToMake.decay
   const materialNeed = {
     seaSquirt: totalElixToMake, glassBottle: totalElixToMake,
-    driedKelp: totalPotionToMake * 2, glowBerry: totalPotionToMake * 2,
-    netherrack: elixToMake.guard * 4, magmaBlock: elixToMake.wave * 2,
+    driedKelp: totalPotionToMake * 12, glowBerry: totalPotionToMake * 4,
+    netherrack: elixToMake.guard * 8, magmaBlock: elixToMake.wave * 2,
     soulSoil: elixToMake.chaos * 4, crimsonStem: elixToMake.life * 2, warpedStem: elixToMake.decay * 4
   }
   const deadCoralNeed = {
-    deadTubeCoral: potionToMake.immortal, deadBrainCoral: potionToMake.barrier,
-    deadBubbleCoral: potionToMake.corrupt, deadFireCoral: potionToMake.frenzy, deadHornCoral: potionToMake.venom
+    deadTubeCoral: potionToMake.immortal * 2, deadBrainCoral: potionToMake.barrier * 2,
+    deadBubbleCoral: potionToMake.corrupt * 2, deadFireCoral: potionToMake.frenzy * 2, deadHornCoral: potionToMake.venom * 2
   }
   const materialNeedTotal = { ...materialNeed }
   const deadCoralNeedTotal = { ...deadCoralNeed }
