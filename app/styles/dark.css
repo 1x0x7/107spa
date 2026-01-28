@@ -917,3 +917,11 @@ html.theme-transition *::after {
   background: #2d3a4d;
 }
 
+:root[data-theme="dark"] .tier-material-row .material-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .tier-material-row span:not(.material-label) {
+  color: var(--color-text);
+  background: #3f3f46;
+}
