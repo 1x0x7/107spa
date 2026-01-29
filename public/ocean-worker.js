@@ -436,7 +436,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
     life: Math.max(0, elixNeedRaw.life - ownedElix.life),
     decay: Math.max(0, elixNeedRaw.decay - ownedElix.decay)
   }
-  const elixNeedProduct = { ...elixNeedRaw }
+  const elixNeedProduct = { ...elixToMakeProduct }
   const totalPotionToMakeProduct = potionToMakeProduct.immortal + potionToMakeProduct.barrier + potionToMakeProduct.corrupt + potionToMakeProduct.frenzy + potionToMakeProduct.venom
   const totalElixToMakeProduct = elixToMakeProduct.guard + elixToMakeProduct.wave + elixToMakeProduct.chaos + elixToMakeProduct.life + elixToMakeProduct.decay
   const materialNeedProduct = {
@@ -447,8 +447,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   }
   const deadCoralNeedProduct = {
     deadTubeCoral: potionToMakeProduct.immortal * 2, deadBrainCoral: potionToMakeProduct.barrier * 2,
-    deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2,
-    deadHornCoral: potionToMakeProduct.venom * 2
+    deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2, deadHornCoral: potionToMakeProduct.venom * 2
   }
 
   // 희석액용 재료 계산
