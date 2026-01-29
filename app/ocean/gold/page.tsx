@@ -657,7 +657,7 @@ export default function OceanGoldPage() {
                 {/* 추출액 필요 재료 - 3열 카드 */}
                 {resultAll.dilution > 0 && (
                   <div className="gold-dilution-materials">
-                    <h5>추출액 {resultAll.dilution}개 제작</h5>
+                    <h5>희석액 {resultAll.dilution}개 제작 </h5>
 
                     <div className="dilution-tier-grid">
                       {/* 1성: 침식 방어 핵 */}
@@ -670,13 +670,13 @@ export default function OceanGoldPage() {
                         <div className="tier-card-body">
                           <div className="tier-material-row">
                             <span className="material-label">정수</span>
-                            <span>수호 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.guard || 0) : resultAll.result1?.essNeedDilution?.guard || 0}</span>
                             <span>부식 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.decay || 0) : resultAll.result1?.essNeedDilution?.decay || 0}</span>
+                            <span>수호 {setMode ? formatSet(resultAll.result1?.essNeedDilution?.guard || 0) : resultAll.result1?.essNeedDilution?.guard || 0}</span>
                           </div>
                           <div className="tier-material-row">
                             <span className="material-label">블록</span>
-                            <span>점토 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.clay || 0) : resultAll.result1?.blockNeedDilution?.clay || 0}</span>
                             <span>화강암 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.granite || 0) : resultAll.result1?.blockNeedDilution?.granite || 0}</span>
+                            <span>점토 {setMode ? formatSet(resultAll.result1?.blockNeedDilution?.clay || 0) : resultAll.result1?.blockNeedDilution?.clay || 0}</span>
                           </div>
                           <div className="tier-material-row">
                             <span className="material-label">물고기</span>
@@ -704,7 +704,7 @@ export default function OceanGoldPage() {
                             <span>자작나무 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.birchLeaves || 0) : resultAll.result2?.materialNeedDilution?.birchLeaves || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">재료</span>
+                            <span className="material-label">기타</span>
                             <span>해초 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.seaweed || 0) : resultAll.result2?.materialNeedDilution?.seaweed || 0}</span>
                             <span>켈프 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.kelp || 0) : resultAll.result2?.materialNeedDilution?.kelp || 0}</span>
                             <span>철 {setMode ? formatSet(resultAll.result2?.materialNeedDilution?.ironIngot || 0) : resultAll.result2?.materialNeedDilution?.ironIngot || 0}</span>
@@ -726,22 +726,22 @@ export default function OceanGoldPage() {
                             <span>부식 {setMode ? formatSet(resultAll.result3?.elixNeedDilution?.decay || 0) : resultAll.result3?.elixNeedDilution?.decay || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">엘릭서 재료</span>
+                            <span className="material-label">재료1</span>
                             <span>불우렁쉥이 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.seaSquirt || 0) : resultAll.result3?.materialNeedDilution?.seaSquirt || 0}</span>
                             <span>유리병 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glassBottle || 0) : resultAll.result3?.materialNeedDilution?.glassBottle || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">엘릭서 블록</span>
+                            <span className="material-label">재료2</span>
                             <span>영혼흙 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.soulSoil || 0) : resultAll.result3?.materialNeedDilution?.soulSoil || 0}</span>
                             <span>뒤틀린자루 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.warpedStem || 0) : resultAll.result3?.materialNeedDilution?.warpedStem || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">결정 재료</span>
+                            <span className="material-label">재료3</span>
                             <span>말린켈프 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.driedKelp || 0) : resultAll.result3?.materialNeedDilution?.driedKelp || 0}</span>
                             <span>발광열매 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glowBerry || 0) : resultAll.result3?.materialNeedDilution?.glowBerry || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">결정 블록</span>
+                            <span className="material-label">산호</span>
                             <span>죽은거품 {setMode ? formatSet(resultAll.result3?.deadCoralNeedDilution?.deadBubbleCoral || 0) : resultAll.result3?.deadCoralNeedDilution?.deadBubbleCoral || 0}</span>
                           </div>
                         </div>
@@ -819,11 +819,11 @@ export default function OceanGoldPage() {
                   { name: '부식', value: ceilToTwo(result1.essNeedProduct.decay), icon: '/img/ocean/essence_decay.png' }
                 ])}
                 {renderSectionWithImage('🔹 제작할 핵 ', [
-                  { name: '물결 수호', value: result1.coreToMake.WG, icon: '/img/ocean/core_wg.png' },
-                  { name: '파동 오염', value: result1.coreToMake.WP, icon: '/img/ocean/core_wp.png' },
-                  { name: '질서 파괴', value: result1.coreToMake.OD, icon: '/img/ocean/core_od.png' },
-                  { name: '활력 붕괴', value: result1.coreToMake.VD, icon: '/img/ocean/core_vd.png' },
-                  { name: '침식 방어', value: result1.coreToMake.ED, icon: '/img/ocean/core_ed.png' }
+                  { name: '물결 수호', value: result1.coreToMakeProduct.WG, icon: '/img/ocean/core_wg.png' },
+                  { name: '파동 오염', value: result1.coreToMakeProduct.WP, icon: '/img/ocean/core_wp.png' },
+                  { name: '질서 파괴', value: result1.coreToMakeProduct.OD, icon: '/img/ocean/core_od.png' },
+                  { name: '활력 붕괴', value: result1.coreToMakeProduct.VD, icon: '/img/ocean/core_vd.png' },
+                  { name: '침식 방어', value: result1.coreToMakeProduct.ED, icon: '/img/ocean/core_ed.png' }
                 ])}
                 {renderSection('🔹 필요 블록 ', [
                   { name: '점토', value: result1.blockNeedProduct.clay },
@@ -909,11 +909,11 @@ export default function OceanGoldPage() {
                   { name: '부식', value: ceilToTwo(result2.essNeedProduct.decay), icon: '/img/ocean/essence_decay_2.png' }
                 ])}
                 {renderSectionWithImage('🔹 제작할 결정 ', [
-                  { name: '활기 보존', value: result2.crystalToMake.vital, icon: '/img/ocean/crystal_vital.png' },
-                  { name: '파도 침식', value: result2.crystalToMake.erosion, icon: '/img/ocean/crystal_erosion.png' },
-                  { name: '방어 오염', value: result2.crystalToMake.defense, icon: '/img/ocean/crystal_defense.png' },
-                  { name: '격류 재생', value: result2.crystalToMake.regen, icon: '/img/ocean/crystal_regen.png' },
-                  { name: '맹독 혼란', value: result2.crystalToMake.poison, icon: '/img/ocean/crystal_poison.png' }
+                  { name: '활기 보존', value: result2.crystalToMakeProduct.vital, icon: '/img/ocean/crystal_vital.png' },
+                  { name: '파도 침식', value: result2.crystalToMakeProduct.erosion, icon: '/img/ocean/crystal_erosion.png' },
+                  { name: '방어 오염', value: result2.crystalToMakeProduct.defense, icon: '/img/ocean/crystal_defense.png' },
+                  { name: '격류 재생', value: result2.crystalToMakeProduct.regen, icon: '/img/ocean/crystal_regen.png' },
+                  { name: '맹독 혼란', value: result2.crystalToMakeProduct.poison, icon: '/img/ocean/crystal_poison.png' }
                 ])}
                 {renderSection('🔹 필요 재료 ', [
                   { name: '해초', value: result2.materialNeedProduct.seaweed },
@@ -1003,11 +1003,11 @@ export default function OceanGoldPage() {
                   { name: '부식', value: (result3.elixNeedProduct.decay), icon: '/img/ocean/elixir-decay.png' }
                 ])}
                 {renderSectionWithImage('🔹 제작할 영약 ', [
-                  { name: '불멸 재생', value: result3.potionToMake.immortal, icon: '/img/ocean/potion-immortal.png' },
-                  { name: '파동 장벽', value: result3.potionToMake.barrier, icon: '/img/ocean/potion-barrier.png' },
-                  { name: '타락 침식', value: result3.potionToMake.corrupt, icon: '/img/ocean/potion-corrupt.png' },
-                  { name: '생명 광란', value: result3.potionToMake.frenzy, icon: '/img/ocean/potion-frenzy.png' },
-                  { name: '맹독 파동', value: result3.potionToMake.venom, icon: '/img/ocean/potion-venom.png' }
+                  { name: '불멸 재생', value: result3.potionToMakeProduct.immortal, icon: '/img/ocean/potion-immortal.png' },
+                  { name: '파동 장벽', value: result3.potionToMakeProduct.barrier, icon: '/img/ocean/potion-barrier.png' },
+                  { name: '타락 침식', value: result3.potionToMakeProduct.corrupt, icon: '/img/ocean/potion-corrupt.png' },
+                  { name: '생명 광란', value: result3.potionToMakeProduct.frenzy, icon: '/img/ocean/potion-frenzy.png' },
+                  { name: '맹독 파동', value: result3.potionToMakeProduct.venom, icon: '/img/ocean/potion-venom.png' }
                 ])}
                 {renderSection('🔹 필요 재료 ', [
                   { name: '불우렁쉥이', value: result3.materialNeedProduct.seaSquirt },

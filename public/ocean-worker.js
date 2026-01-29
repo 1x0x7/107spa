@@ -172,7 +172,7 @@ function calculate1Star(input, isAdvanced, reservedCoreED = 0) {
   const fishNeedTotal = { shrimp: coreNeed.WG, domi: coreNeed.WP, herring: coreNeed.OD, goldfish: coreNeed.VD, bass: coreNeed.ED }
 
   return { 
-    best, coreNeedProduct, essNeedProduct, blockNeedProduct, fishNeedProduct,
+    best, coreNeedProduct, coreToMakeProduct, essNeedProduct, blockNeedProduct, fishNeedProduct,
     reservedCoreED, essNeedDilution, blockNeedDilution, fishNeedDilution,
     coreNeed, coreToMake, essNeedTotal, essToMake, blockNeed, blockNeedTotal, fishNeed, fishNeedTotal
   }
@@ -346,7 +346,7 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   const materialNeedTotal = { ...materialNeed }
 
   return {
-    best, crystalNeedProduct, essNeedProduct, materialNeedProduct,
+    best, crystalNeedProduct, crystalToMakeProduct, essNeedProduct, materialNeedProduct,
     reservedCrystalDefense, essNeedDilution, materialNeedDilution,
     crystalNeed, crystalToMake, essNeedTotal, essToMake, materialNeed, materialNeedTotal
   }
@@ -447,7 +447,8 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   }
   const deadCoralNeedProduct = {
     deadTubeCoral: potionToMakeProduct.immortal * 2, deadBrainCoral: potionToMakeProduct.barrier * 2,
-    deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2, deadHornCoral: potionToMakeProduct.venom * 2
+    deadBubbleCoral: potionToMakeProduct.corrupt * 2, deadFireCoral: potionToMakeProduct.frenzy * 2,
+    deadHornCoral: potionToMakeProduct.venom * 2
   }
 
   // 희석액용 재료 계산
@@ -506,8 +507,8 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const materialNeed = {
     seaSquirt: totalElixToMake * 2, glassBottle: totalElixToMake * 3,
     driedKelp: totalPotionToMake * 12, glowBerry: totalPotionToMake * 4,
-    netherrack: elixToMake.guard * 8, magmaBlock: elixToMake.wave * 2,
-    soulSoil: elixToMake.chaos * 4, crimsonStem: elixToMake.life * 2, warpedStem: elixToMake.decay * 4
+    netherrack: elixToMake.guard * 8, magmaBlock: elixToMake.wave * 4,
+    soulSoil: elixToMake.chaos * 4, crimsonStem: elixToMake.life * 4, warpedStem: elixToMake.decay * 4
   }
   const deadCoralNeed = {
     deadTubeCoral: potionToMake.immortal * 2, deadBrainCoral: potionToMake.barrier * 2,
@@ -517,7 +518,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   const deadCoralNeedTotal = { ...deadCoralNeed }
 
   return {
-    best, potionNeedProduct, elixNeedProduct, materialNeedProduct, deadCoralNeedProduct,
+    best, potionNeedProduct, potionToMakeProduct, elixNeedProduct, materialNeedProduct, deadCoralNeedProduct,
     reservedPotionCorrupt, elixNeedDilution, materialNeedDilution, deadCoralNeedDilution,
     potionNeed, potionToMake, elixNeedTotal, elixToMake, materialNeed, materialNeedTotal,
     deadCoralNeed, deadCoralNeedTotal
