@@ -811,7 +811,7 @@ export default function OceanGoldPage() {
                   <div><div className="product-name">{productNames['1'].L}</div><div className="product-count">{result1.best.L}</div></div>
                 </div>
 
-                {renderSectionWithImage('🔹 필요 정수 ', [
+                {renderSectionWithImage('🔹 제작할 정수 ', [
                   { name: '수호', value: ceilToTwo(result1.essNeedProduct.guard), icon: '/img/ocean/essence_guard.png' },
                   { name: '파동', value: ceilToTwo(result1.essNeedProduct.wave), icon: '/img/ocean/essence_wave.png' },
                   { name: '혼란', value: ceilToTwo(result1.essNeedProduct.chaos), icon: '/img/ocean/essence_chaos.png' },
@@ -901,7 +901,7 @@ export default function OceanGoldPage() {
                   <div><div className="product-name">{productNames['2'].L}</div><div className="product-count">{result2.best.WING}</div></div>
                 </div>
 
-                {renderSectionWithImage('🔹 필요 에센스 ', [
+                {renderSectionWithImage('🔹 제작할 에센스 ', [
                   { name: '수호', value: ceilToTwo(result2.essNeedProduct.guard), icon: '/img/ocean/essence_guard_2.png' },
                   { name: '파동', value: ceilToTwo(result2.essNeedProduct.wave), icon: '/img/ocean/essence_wave_2.png' },
                   { name: '혼란', value: ceilToTwo(result2.essNeedProduct.chaos), icon: '/img/ocean/essence_chaos_2.png' },
@@ -995,7 +995,7 @@ export default function OceanGoldPage() {
                   <div><div className="product-name">{productNames['3'].L}</div><div className="product-count">{result3.best.SPINE}</div></div>
                 </div>
 
-                {renderSectionWithImage('🔹 필요 엘릭서 ', [
+                {renderSectionWithImage('🔹 제작할 엘릭서 ', [
                   { name: '수호', value: (result3.elixNeedProduct.guard), icon: '/img/ocean/elixir-guard.png' },
                   { name: '파동', value: (result3.elixNeedProduct.wave), icon: '/img/ocean/elixir-wave.png' },
                   { name: '혼란', value: (result3.elixNeedProduct.chaos), icon: '/img/ocean/elixir-chaos.png' },
