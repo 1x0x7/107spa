@@ -726,22 +726,22 @@ export default function OceanGoldPage() {
                             <span>부식 {setMode ? formatSet(resultAll.result3?.elixNeedDilution?.decay || 0) : resultAll.result3?.elixNeedDilution?.decay || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">재료1</span>
+                            <span className="material-label">엘릭서 재료</span>
                             <span>불우렁쉥이 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.seaSquirt || 0) : resultAll.result3?.materialNeedDilution?.seaSquirt || 0}</span>
                             <span>유리병 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glassBottle || 0) : resultAll.result3?.materialNeedDilution?.glassBottle || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">재료2</span>
+                            <span className="material-label">엘릭서 블록</span>
                             <span>영혼흙 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.soulSoil || 0) : resultAll.result3?.materialNeedDilution?.soulSoil || 0}</span>
                             <span>뒤틀린자루 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.warpedStem || 0) : resultAll.result3?.materialNeedDilution?.warpedStem || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">재료3</span>
+                            <span className="material-label">영약 재료</span>
                             <span>말린켈프 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.driedKelp || 0) : resultAll.result3?.materialNeedDilution?.driedKelp || 0}</span>
                             <span>발광열매 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glowBerry || 0) : resultAll.result3?.materialNeedDilution?.glowBerry || 0}</span>
                           </div>
                           <div className="tier-material-row">
-                            <span className="material-label">산호</span>
+                            <span className="material-label">영약 블록</span>
                             <span>죽은거품 {setMode ? formatSet(resultAll.result3?.deadCoralNeedDilution?.deadBubbleCoral || 0) : resultAll.result3?.deadCoralNeedDilution?.deadBubbleCoral || 0}</span>
                           </div>
                         </div>
