@@ -19,7 +19,7 @@ export default function HomePage() {
             <div className="update-banner-header">
               <div className="update-banner-badge">최신 업데이트</div>
               {latestUpdate.details && (
-                <div className="update-banner-hint">마우스를 올려 자세히 보기 ▼</div>
+                <div className="update-banner-hint">자세히 보기 ▼</div>
               )}
             </div>
 
