@@ -583,10 +583,10 @@ export default function OceanGoldPage() {
                 <div className="gold-unified-cards">
                   {/* 추출액 (0성) - 항상 표시 */}
                   <div className="gold-result-mini-card">
-                    <div className="mini-card-header">추출액 (0성)</div>
+                    <div className="mini-card-header">희석액 (0성)</div>
                     <div className="mini-card-products">
                       <div className="mini-product">
-                        <span className="mini-product-name">희석된 추출액</span>
+                        <span className="mini-product-name">추출된 희석액</span>
                         <span className="mini-product-count">{resultAll.dilution}</span>
                       </div>
                     </div>
