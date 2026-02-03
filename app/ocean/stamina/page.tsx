@@ -219,7 +219,7 @@ export default function OceanStaminaPage() {
             className={`mode-toggle-btn ${mode === 'optimize' ? 'active' : ''}`}
             onClick={() => setMode('optimize')}
           >
-            최적 배분
+            최적 계산
           </button>
         </div>
 
@@ -477,6 +477,8 @@ export default function OceanStaminaPage() {
 
               <div className="optimize-note">
                 보유량 + 예상 드롭량을 기반으로 계산합니다
+                <br/>
+                확률 기반 기댓값 계산 결과이므로 실제 골드 수익은 달라질 수 있습니다
               </div>
             </div>
           </div>

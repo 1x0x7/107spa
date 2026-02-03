@@ -12,13 +12,14 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
   { 
-    title: "재배 업데이트", 
-    desc: "요리가격 변동", 
+    title: "재배/해양 업데이트", 
+    desc: "요리가격 변동, 해양 스태미나 계산기 추가", 
     date: "2025.02.03", 
     isLatest: true,
     details: {
       changes: [
         "요리 가격 변경",
+        "해양 스태미나 계산기 추가 - 연금품의 보유량을 토대로 어떤 어패류를 채집해야 하는지 알려줍니다",
       ],
       fixes: [
       ],
