@@ -925,3 +925,97 @@ html.theme-transition *::after {
   color: var(--color-text);
   background: #3f3f46;
 }
+/* =========================
+   스태미나 최적화 모드 다크모드
+========================= */
+:root[data-theme="dark"] .mode-toggle-container {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .mode-toggle-btn {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .mode-toggle-btn:hover {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .mode-toggle-btn.active {
+  background: var(--color-bg-tertiary);
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .inventory-status.has-data {
+  background: rgba(74, 145, 226, 0.137);
+  color: rgb(45, 119, 204);
+  border: 1px solid rgba(74, 145, 226, 0.137);
+}
+
+:root[data-theme="dark"] .inventory-status.no-data {
+  background: rgba(74, 145, 226, 0.137);
+  color: rgb(45, 119, 204);
+  border: 1px solid rgba(74, 145, 226, 0.137);
+}
+
+:root[data-theme="dark"] .optimize-section-title {
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .allocation-item {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .allocation-name {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .allocation-value {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .drops-table {
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .drops-header {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .drops-row {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .drops-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .gold-row {
+  background: var(--color-bg-secondary);
+}
+
+:root[data-theme="dark"] .gold-row.total {
+  background: rgba(74, 144, 226, 0.2);
+}
+
+:root[data-theme="dark"] .gold-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .gold-count {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .gold-value {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .optimize-note {
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}

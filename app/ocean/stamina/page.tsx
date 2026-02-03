@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useExpert } from '@/hooks/useExpert'
 import { 
   OCEAN_STAMINA_PER_GATHER, 
@@ -11,8 +11,15 @@ import {
   FISH_DATA, 
   FISH_IMAGES 
 } from '@/data/ocean'
+import { 
+  optimizeAllocation, 
+  getEmptyInventory,
+  type Inventory,
+  type OptimizeResult 
+} from './stamina-optimizer'
 
 type FishType = keyof typeof FISH_DATA
+type Mode = 'basic' | 'optimize'
 
 interface Input { id: number; stamina: string; fishType: FishType }
 interface Result {
@@ -30,33 +37,22 @@ interface Result {
   baseClamRate: number
 }
 
-// 등급별 분배 함수 (원본 JS와 동일)
+// localStorage 키 (골드 계산기와 공유)
+const GOLD_STORAGE_KEY = 'ocean-gold-data'
+
+// 등급별 분배 함수
 function distributeByRarity(totalDrops: number, starLevel: number) {
   const starBonus = EXPERT_STAR[starLevel] || 0
-
-  // 기본 가중치
-  const base1 = 60
-  const base2 = 30
-  const base3 = 10
-
-  // 3성 보너스는 가중치로 추가
+  const base1 = 60, base2 = 30, base3 = 10
   const bonusWeight = starBonus * 100
-
-  const weight1 = base1
-  const weight2 = base2
-  const weight3 = base3 + bonusWeight
-
+  const weight1 = base1, weight2 = base2, weight3 = base3 + bonusWeight
   const totalWeight = weight1 + weight2 + weight3
-
-  const rate1 = weight1 / totalWeight
-  const rate2 = weight2 / totalWeight
-  const rate3 = weight3 / totalWeight
+  const rate1 = weight1 / totalWeight, rate2 = weight2 / totalWeight, rate3 = weight3 / totalWeight
 
   let count1 = Math.floor(totalDrops * rate1)
   let count2 = Math.floor(totalDrops * rate2)
   let count3 = Math.floor(totalDrops * rate3)
 
-  // 소수점 나머지 분배
   let remainder = totalDrops - (count1 + count2 + count3)
   const fracs = [
     { key: 'count3', frac: (totalDrops * rate3) % 1 },
@@ -79,11 +75,49 @@ function distributeByRarity(totalDrops: number, starLevel: number) {
 
 export default function OceanStaminaPage() {
   const { ocean } = useExpert()
+  const [mode, setMode] = useState<Mode>('basic')
+  
+  // 기본 계산 상태
   const [inputs, setInputs] = useState<Input[]>([{ id: 1, stamina: '', fishType: 'oyster' }])
   const [results, setResults] = useState<Result[]>([])
   const [grandTotal, setGrandTotal] = useState(0)
   const [showResult, setShowResult] = useState(false)
 
+  // 최적화 모드 상태
+  const [optimizeStamina, setOptimizeStamina] = useState('')
+  const [inventory, setInventory] = useState<Inventory>(getEmptyInventory())
+  const [optimizeResult, setOptimizeResult] = useState<OptimizeResult | null>(null)
+  const [hasInventory, setHasInventory] = useState(false)
+
+  // localStorage에서 보유량 불러오기
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(GOLD_STORAGE_KEY)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.shellfish) {
+          setInventory({
+            shellfish: parsed.shellfish,
+            advanced1: parsed.advanced1 || getEmptyInventory().advanced1,
+            advanced2: parsed.advanced2 || getEmptyInventory().advanced2,
+            advanced3: parsed.advanced3 || getEmptyInventory().advanced3
+          })
+          // 보유량이 있는지 체크 (어패류 + 중간재료)
+          const hasShellfish = Object.values(parsed.shellfish.star1).some((v: unknown) => (v as number) > 0) ||
+                               Object.values(parsed.shellfish.star2).some((v: unknown) => (v as number) > 0) ||
+                               Object.values(parsed.shellfish.star3).some((v: unknown) => (v as number) > 0)
+          const hasAdvanced = parsed.advanced1 && Object.values(parsed.advanced1).some((v: unknown) => (v as number) > 0) ||
+                              parsed.advanced2 && Object.values(parsed.advanced2).some((v: unknown) => (v as number) > 0) ||
+                              parsed.advanced3 && Object.values(parsed.advanced3).some((v: unknown) => (v as number) > 0)
+          setHasInventory(hasShellfish || hasAdvanced)
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load inventory:', e)
+    }
+  }, [mode]) // 모드 전환 시 다시 로드
+
+  // 기본 계산 함수들
   const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', fishType: 'oyster' }])
   const removeInput = (id: number) => inputs.length > 1 && setInputs(inputs.filter(i => i.id !== id))
   const updateInput = (id: number, field: 'stamina' | 'fishType', value: string) => {
@@ -94,7 +128,7 @@ export default function OceanStaminaPage() {
     }
   }
 
-  const calculate = () => {
+  const calculateBasic = () => {
     const newResults: Result[] = []
     let total = 0
 
@@ -103,25 +137,17 @@ export default function OceanStaminaPage() {
       if (!stamina || stamina <= 0) continue
 
       const gatherCount = Math.floor(stamina / OCEAN_STAMINA_PER_GATHER)
-      
-      // ROD_DATA 사용 (기존 데이터)
       const rodStats = ROD_DATA[ocean.rodLevel] || ROD_DATA[1]
-      const dropsPerGather = rodStats.drop
-      let totalDrops = gatherCount * dropsPerGather
+      let totalDrops = gatherCount * rodStats.drop
       
-      // 심해 채집꾼 보너스 (추가 드롭)
       const deepSeaBonus = EXPERT_DEEP_SEA[ocean.deepSea] || 0
-      const deepSeaDrops = Math.floor(gatherCount * deepSeaBonus)
-      totalDrops += deepSeaDrops
+      totalDrops += Math.floor(gatherCount * deepSeaBonus)
       
-      // 등급별 분배
       const { count1, count2, count3, starBonus } = distributeByRarity(totalDrops, ocean.star)
       
-      // 조개 계산 (ROD_DATA.clamRate 사용)
       const baseClamRate = rodStats.clamRate
       const clamBonus = EXPERT_CLAM_REFILL[ocean.clamRefill] || 0
-      const totalClamRate = baseClamRate + clamBonus
-      const clamCount = Math.floor(gatherCount * totalClamRate)
+      const clamCount = Math.floor(gatherCount * (baseClamRate + clamBonus))
       
       total += totalDrops
 
@@ -130,12 +156,8 @@ export default function OceanStaminaPage() {
         fishType: input.fishType, 
         fishName: fish.name,
         gatherCount,
-        star1: count1,
-        star2: count2,
-        star3: count3,
-        clamCount,
-        totalDrops,
-        starBonus,
+        star1: count1, star2: count2, star3: count3,
+        clamCount, totalDrops, starBonus,
         clamBonusPercent: Math.round(clamBonus * 100),
         deepSeaBonusPercent: Math.round(deepSeaBonus * 100),
         baseClamRate: Math.round(baseClamRate * 100)
@@ -148,9 +170,26 @@ export default function OceanStaminaPage() {
     setShowResult(true)
   }
 
+  // 최적화 계산 함수
+  const calculateOptimize = () => {
+    const stamina = parseInt(optimizeStamina)
+    if (!stamina || stamina <= 0) {
+      alert('스태미나를 입력해주세요.')
+      return
+    }
+
+    const result = optimizeAllocation(stamina, inventory, {
+      rodLevel: ocean.rodLevel,
+      deepSea: ocean.deepSea,
+      star: ocean.star,
+      premiumPrice: ocean.premiumPrice
+    })
+
+    setOptimizeResult(result)
+  }
+
   const fmt = (n: number) => n.toLocaleString()
 
-  // 보너스 텍스트 생성
   const getBonusTexts = (r: Result): string[] => {
     const texts: string[] = []
     if (r.starBonus > 0) texts.push(`3성 확률 10% → <strong>${10 + r.starBonus}%</strong> (별별별 +${r.starBonus}%)`)
@@ -159,48 +198,113 @@ export default function OceanStaminaPage() {
     return texts
   }
 
+  const fishNames: Record<string, string> = {
+    oyster: '굴', conch: '소라', octopus: '문어', seaweed: '미역', urchin: '성게'
+  }
+
   return (
     <section className="ocean-page">
       <h2 className="content-title">스태미나 계산</h2>
 
       <div className="stamina-container">
+        {/* 모드 토글 */}
+        <div className="mode-toggle-container">
+          <button 
+            className={`mode-toggle-btn ${mode === 'basic' ? 'active' : ''}`}
+            onClick={() => setMode('basic')}
+          >
+            기본 계산
+          </button>
+          <button 
+            className={`mode-toggle-btn ${mode === 'optimize' ? 'active' : ''}`}
+            onClick={() => setMode('optimize')}
+          >
+            최적 배분
+          </button>
+        </div>
+
         <div className="card">
           <div className="card-body">
             <div className="expert-info-text">
-              낚싯대 {ocean.rodLevel}강 · 심해 채집꾼 LV{ocean.deepSea} · 별별별 LV{ocean.star} · 조개리필 LV{ocean.clamRefill}
+              낚싯대 {ocean.rodLevel}강 · 심해 채집꾼 LV{ocean.deepSea} · 별별별 LV{ocean.star}
+              {mode === 'optimize' && ` · 프리미엄 LV${ocean.premiumPrice}`}
             </div>
 
-            <div className="stamina-inputs-container">
-              {inputs.map(input => (
-                <div key={input.id} className="stamina-input-row">
-                  <div className="stamina-input-group">
-                    <span className="stamina-label">스태미나</span>
-                    <input type="number" className="stamina-input" placeholder="3000" value={input.stamina}
-                      onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && calculate()} />
-                    <span className="stamina-label">어패류</span>
-                    <select className="stamina-select" value={input.fishType}
-                      onChange={(e) => updateInput(input.id, 'fishType', e.target.value)}>
-                      <option value="oyster">굴</option>
-                      <option value="conch">소라</option>
-                      <option value="octopus">문어</option>
-                      <option value="seaweed">미역</option>
-                      <option value="urchin">성게</option>
-                    </select>
-                  </div>
-                  {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
+            {mode === 'basic' ? (
+              <>
+                {/* 기본 계산 모드 */}
+                <div className="stamina-inputs-container">
+                  {inputs.map(input => (
+                    <div key={input.id} className="stamina-input-row">
+                      <div className="stamina-input-group">
+                        <span className="stamina-label">스태미나</span>
+                        <input type="number" className="stamina-input" placeholder="3000" value={input.stamina}
+                          onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && calculateBasic()} />
+                        <span className="stamina-label">어패류</span>
+                        <select className="stamina-select" value={input.fishType}
+                          onChange={(e) => updateInput(input.id, 'fishType', e.target.value)}>
+                          <option value="oyster">굴</option>
+                          <option value="conch">소라</option>
+                          <option value="octopus">문어</option>
+                          <option value="seaweed">미역</option>
+                          <option value="urchin">성게</option>
+                        </select>
+                      </div>
+                      {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            <div className="btn-actions">
-              <button className="btn-add" onClick={addInput}>+ 추가</button>
-              <button className="btn-calculate" onClick={calculate}>계산하기</button>
-            </div>
+                <div className="btn-actions">
+                  <button className="btn-add" onClick={addInput}>+ 추가</button>
+                  <button className="btn-calculate" onClick={calculateBasic}>계산하기</button>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* 최적화 모드 */}
+                <div className="optimize-input-section">
+                  <div className="stamina-input-row">
+                    <div className="stamina-input-group">
+                      <span className="stamina-label">총 스태미나</span>
+                      <input 
+                        type="number" 
+                        className="stamina-input optimize-stamina-input" 
+                        placeholder="3000" 
+                        value={optimizeStamina}
+                        onChange={(e) => setOptimizeStamina(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && calculateOptimize()} 
+                      />
+                    </div>
+                  </div>
+
+                  {/* 보유량 상태 표시 */}
+                  <div className={`inventory-status ${hasInventory ? 'has-data' : 'no-data'}`}>
+                    {hasInventory ? (
+                      <>
+                        <span className="status-icon">✓</span>
+                        <span>연금품의 보유량이 적용됩니다</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="status-icon">!</span>
+                        <span>연금품이 초기화 상태입니다</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="btn-actions">
+                  <button className="btn-calculate" onClick={calculateOptimize}>계산하기</button>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {showResult && results.length > 0 && (
+        {/* 기본 계산 결과 */}
+        {mode === 'basic' && showResult && results.length > 0 && (
           <div className="result-card">
             <div className="result-section-title">
               <span>예상 획득량</span>
@@ -211,13 +315,10 @@ export default function OceanStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
-                      <img
-                        src={FISH_IMAGES[r.fishType]}
-                        alt={r.fishName}
+                      <img src={FISH_IMAGES[r.fishType]} alt={r.fishName}
                         style={{ width: 22, height: 22, objectFit: 'contain' }}/>
                       {r.fishName}
                     </div>
-
                     <div className="result-row">
                       <span className="result-label">★</span>
                       <span className="result-value">{fmt(r.star1)}</span>
@@ -256,6 +357,127 @@ export default function OceanStaminaPage() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* 최적화 결과 */}
+        {mode === 'optimize' && optimizeResult && (
+          <div className="result-card optimize-result">
+            <div className="result-section-title">
+              <span>최적 배분 결과</span>
+              <span>예상 {fmt(optimizeResult.totalGold)} G</span>
+            </div>
+            <div className="result-body">
+              {/* 배분 권장 */}
+              <div className="optimize-allocation">
+                <div className="allocation-grid">
+                  {(['oyster', 'conch', 'octopus', 'seaweed', 'urchin'] as const).map(fish => {
+                    const stamina = optimizeResult.allocation[fish]
+                    const gathers = optimizeResult.gatherCounts[fish]
+                    if (stamina === 0) return null
+                    return (
+                      <div key={fish} className="allocation-item">
+                        <img src={FISH_IMAGES[fish]} alt={fishNames[fish]}
+                          style={{ width: 24, height: 24, objectFit: 'contain' }}/>
+                        <div className="allocation-info">
+                          <span className="allocation-name">{fishNames[fish]}</span>
+                          <span className="allocation-value">{fmt(stamina)} ({gathers}회)</span>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* 예상 드롭량 */}
+              <div className="optimize-drops">
+                <div className="optimize-section-title">예상 드롭량</div>
+                <div className="drops-table">
+                  <div className="drops-header">
+                    <span></span>
+                    <span>굴</span>
+                    <span>소라</span>
+                    <span>문어</span>
+                    <span>미역</span>
+                    <span>성게</span>
+                  </div>
+                  <div className="drops-row">
+                    <span className="drops-label">★</span>
+                    <span>{fmt(optimizeResult.drops.star1.guard)}</span>
+                    <span>{fmt(optimizeResult.drops.star1.wave)}</span>
+                    <span>{fmt(optimizeResult.drops.star1.chaos)}</span>
+                    <span>{fmt(optimizeResult.drops.star1.life)}</span>
+                    <span>{fmt(optimizeResult.drops.star1.decay)}</span>
+                  </div>
+                  <div className="drops-row">
+                    <span className="drops-label">★★</span>
+                    <span>{fmt(optimizeResult.drops.star2.guard)}</span>
+                    <span>{fmt(optimizeResult.drops.star2.wave)}</span>
+                    <span>{fmt(optimizeResult.drops.star2.chaos)}</span>
+                    <span>{fmt(optimizeResult.drops.star2.life)}</span>
+                    <span>{fmt(optimizeResult.drops.star2.decay)}</span>
+                  </div>
+                  <div className="drops-row">
+                    <span className="drops-label">★★★</span>
+                    <span>{fmt(optimizeResult.drops.star3.guard)}</span>
+                    <span>{fmt(optimizeResult.drops.star3.wave)}</span>
+                    <span>{fmt(optimizeResult.drops.star3.chaos)}</span>
+                    <span>{fmt(optimizeResult.drops.star3.life)}</span>
+                    <span>{fmt(optimizeResult.drops.star3.decay)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* 예상 제작 & 골드 */}
+              <div className="optimize-gold">
+                <div className="optimize-section-title">예상 제작 + 수익</div>
+                <div className="gold-breakdown">
+                  {optimizeResult.productCounts.dilution > 0 && (
+                    <div className="gold-row">
+                      <span className="gold-label">희석액</span>
+                      <span className="gold-count">{optimizeResult.productCounts.dilution}개</span>
+                      <span className="gold-value">{fmt(optimizeResult.goldBreakdown.dilution)}</span>
+                    </div>
+                  )}
+                  {(optimizeResult.productCounts.star1.A > 0 || optimizeResult.productCounts.star1.K > 0 || optimizeResult.productCounts.star1.L > 0) && (
+                    <div className="gold-row">
+                      <span className="gold-label">1성</span>
+                      <span className="gold-count">
+                        아쿠티스{optimizeResult.productCounts.star1.A} 광란체{optimizeResult.productCounts.star1.K} 깃털{optimizeResult.productCounts.star1.L}
+                      </span>
+                      <span className="gold-value">{fmt(optimizeResult.goldBreakdown.star1)}</span>
+                    </div>
+                  )}
+                  {(optimizeResult.productCounts.star2.CORE > 0 || optimizeResult.productCounts.star2.POTION > 0 || optimizeResult.productCounts.star2.WING > 0) && (
+                    <div className="gold-row">
+                      <span className="gold-label">2성</span>
+                      <span className="gold-count">
+                        코어{optimizeResult.productCounts.star2.CORE} 침묵{optimizeResult.productCounts.star2.POTION} 날개{optimizeResult.productCounts.star2.WING}
+                      </span>
+                      <span className="gold-value">{fmt(optimizeResult.goldBreakdown.star2)}</span>
+                    </div>
+                  )}
+                  {(optimizeResult.productCounts.star3.AQUA > 0 || optimizeResult.productCounts.star3.NAUTILUS > 0 || optimizeResult.productCounts.star3.SPINE > 0) && (
+                    <div className="gold-row">
+                      <span className="gold-label">3성</span>
+                      <span className="gold-count">
+                        파편{optimizeResult.productCounts.star3.AQUA} 손{optimizeResult.productCounts.star3.NAUTILUS} 척추{optimizeResult.productCounts.star3.SPINE}
+                      </span>
+                      <span className="gold-value">{fmt(optimizeResult.goldBreakdown.star3)}</span>
+                    </div>
+                  )}
+                  <div className="gold-row total">
+                    <span className="gold-label">총 수익</span>
+                    <span></span>
+                    <span className="gold-value primary">{fmt(optimizeResult.totalGold)} G</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="optimize-note">
+                보유량 + 예상 드롭량을 기반으로 계산합니다
+              </div>
             </div>
           </div>
         )}
