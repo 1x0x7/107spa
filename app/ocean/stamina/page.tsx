@@ -219,7 +219,7 @@ export default function OceanStaminaPage() {
             className={`mode-toggle-btn ${mode === 'optimize' ? 'active' : ''}`}
             onClick={() => setMode('optimize')}
           >
-            최적 계산
+            최적 계산(TEST)
           </button>
         </div>
 
