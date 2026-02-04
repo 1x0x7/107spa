@@ -37,8 +37,9 @@ interface Result {
   baseClamRate: number
 }
 
-// localStorage 키 (골드 계산기와 공유)
+// localStorage 키
 const GOLD_STORAGE_KEY = 'ocean-gold-data'
+const STAMINA_STORAGE_KEY = 'ocean-stamina-data'
 
 // 등급별 분배 함수
 function distributeByRarity(totalDrops: number, starLevel: number) {
@@ -75,6 +76,7 @@ function distributeByRarity(totalDrops: number, starLevel: number) {
 
 export default function OceanStaminaPage() {
   const { ocean } = useExpert()
+  const [isLoaded, setIsLoaded] = useState(false)
   const [mode, setMode] = useState<Mode>('basic')
   
   // 기본 계산 상태
@@ -89,8 +91,40 @@ export default function OceanStaminaPage() {
   const [optimizeResult, setOptimizeResult] = useState<OptimizeResult | null>(null)
   const [hasInventory, setHasInventory] = useState(false)
 
+  // localStorage에서 스태미나 탭 상태 불러오기
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STAMINA_STORAGE_KEY)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.mode) setMode(parsed.mode)
+        if (parsed.inputs) setInputs(parsed.inputs)
+        if (parsed.optimizeStamina) setOptimizeStamina(parsed.optimizeStamina)
+      }
+    } catch (e) {
+      console.error('Failed to load stamina data:', e)
+    }
+    setIsLoaded(true)
+  }, [])
+
+  // 스태미나 탭 상태 저장
+  useEffect(() => {
+    if (isLoaded) {
+      try {
+        localStorage.setItem(STAMINA_STORAGE_KEY, JSON.stringify({
+          mode,
+          inputs,
+          optimizeStamina
+        }))
+      } catch (e) {
+        console.error('Failed to save stamina data:', e)
+      }
+    }
+  }, [mode, inputs, optimizeStamina, isLoaded])
+
   // localStorage에서 보유량 불러오기
   useEffect(() => {
+    if (!isLoaded) return
     try {
       const saved = localStorage.getItem(GOLD_STORAGE_KEY)
       if (saved) {
@@ -115,7 +149,7 @@ export default function OceanStaminaPage() {
     } catch (e) {
       console.error('Failed to load inventory:', e)
     }
-  }, [mode]) // 모드 전환 시 다시 로드
+  }, [isLoaded, mode])
 
   // 기본 계산 함수들
   const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', fishType: 'oyster' }])
@@ -206,6 +240,13 @@ export default function OceanStaminaPage() {
     <section className="ocean-page">
       <h2 className="content-title">스태미나 계산</h2>
 
+      {!isLoaded ? (
+        <div className="stamina-container">
+          <div className="card">
+            <div className="card-body" style={{ minHeight: '200px' }} />
+          </div>
+        </div>
+      ) : (
       <div className="stamina-container">
         {/* 모드 토글 */}
         <div className="mode-toggle-container">
@@ -230,76 +271,74 @@ export default function OceanStaminaPage() {
               {mode === 'optimize' && ` · 프리미엄 LV${ocean.premiumPrice}`}
             </div>
 
-            {mode === 'basic' ? (
-              <>
-                {/* 기본 계산 모드 */}
-                <div className="stamina-inputs-container">
-                  {inputs.map(input => (
-                    <div key={input.id} className="stamina-input-row">
-                      <div className="stamina-input-group">
-                        <span className="stamina-label">스태미나</span>
-                        <input type="number" className="stamina-input" placeholder="3000" value={input.stamina}
-                          onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && calculateBasic()} />
-                        <span className="stamina-label">어패류</span>
-                        <select className="stamina-select" value={input.fishType}
-                          onChange={(e) => updateInput(input.id, 'fishType', e.target.value)}>
-                          <option value="oyster">굴</option>
-                          <option value="conch">소라</option>
-                          <option value="octopus">문어</option>
-                          <option value="seaweed">미역</option>
-                          <option value="urchin">성게</option>
-                        </select>
-                      </div>
-                      {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="btn-actions">
-                  <button className="btn-add" onClick={addInput}>+ 추가</button>
-                  <button className="btn-calculate" onClick={calculateBasic}>계산하기</button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* 최적화 모드 */}
-                <div className="optimize-input-section">
-                  <div className="stamina-input-row">
+            {/* 기본 계산 모드 */}
+            <div style={{ display: mode === 'basic' ? 'block' : 'none' }}>
+              <div className="stamina-inputs-container">
+                {inputs.map(input => (
+                  <div key={input.id} className="stamina-input-row">
                     <div className="stamina-input-group">
-                      <span className="stamina-label">총 스태미나</span>
-                      <input 
-                        type="number" 
-                        className="stamina-input optimize-stamina-input" 
-                        placeholder="3000" 
-                        value={optimizeStamina}
-                        onChange={(e) => setOptimizeStamina(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && calculateOptimize()} 
-                      />
+                      <span className="stamina-label">스태미나</span>
+                      <input type="number" className="stamina-input" placeholder="3000" value={input.stamina}
+                        onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && calculateBasic()} />
+                      <span className="stamina-label">어패류</span>
+                      <select className="stamina-select" value={input.fishType}
+                        onChange={(e) => updateInput(input.id, 'fishType', e.target.value)}>
+                        <option value="oyster">굴</option>
+                        <option value="conch">소라</option>
+                        <option value="octopus">문어</option>
+                        <option value="seaweed">미역</option>
+                        <option value="urchin">성게</option>
+                      </select>
                     </div>
+                    {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
                   </div>
+                ))}
+              </div>
 
-                  {/* 보유량 상태 표시 */}
-                  <div className={`inventory-status ${hasInventory ? 'has-data' : 'no-data'}`}>
-                    {hasInventory ? (
-                      <>
-                        <span className="status-icon">✓</span>
-                        <span>연금품의 보유량이 적용됩니다</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="status-icon">!</span>
-                        <span>연금품이 초기화 상태입니다</span>
-                      </>
-                    )}
+              <div className="btn-actions">
+                <button className="btn-add" onClick={addInput}>+ 추가</button>
+                <button className="btn-calculate" onClick={calculateBasic}>계산하기</button>
+              </div>
+            </div>
+
+            {/* 최적화 모드 */}
+            <div style={{ display: mode === 'optimize' ? 'block' : 'none' }}>
+              <div className="optimize-input-section">
+                <div className="stamina-input-row">
+                  <div className="stamina-input-group">
+                    <span className="stamina-label">총 스태미나</span>
+                    <input 
+                      type="number" 
+                      className="stamina-input optimize-stamina-input" 
+                      placeholder="3000" 
+                      value={optimizeStamina}
+                      onChange={(e) => setOptimizeStamina(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && calculateOptimize()} 
+                    />
                   </div>
                 </div>
 
-                <div className="btn-actions">
-                  <button className="btn-calculate" onClick={calculateOptimize}>계산하기</button>
+                {/* 보유량 상태 표시 */}
+                <div className={`inventory-status ${hasInventory ? 'has-data' : 'no-data'}`}>
+                  {hasInventory ? (
+                    <>
+                      <span className="status-icon">✓</span>
+                      <span>연금품의 보유량이 적용됩니다</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="status-icon">!</span>
+                      <span>연금품이 초기화 상태입니다</span>
+                    </>
+                  )}
                 </div>
-              </>
-            )}
+              </div>
+
+              <div className="btn-actions">
+                <button className="btn-calculate" onClick={calculateOptimize}>최적 배분 계산</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -484,6 +523,7 @@ export default function OceanStaminaPage() {
           </div>
         )}
       </div>
+      )}
     </section>
   )
 }
