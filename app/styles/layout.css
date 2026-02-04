@@ -95,7 +95,7 @@ a {
 
 /* 네비게이션 */
 /* ===== 메인 네비게이션 ===== */
-.main-nav {
+.main-nav { 
   display: flex;
   gap: 20px;
   flex-wrap: wrap;

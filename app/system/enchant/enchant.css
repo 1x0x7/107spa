@@ -1,0 +1,495 @@
+/* =========================
+   강화 견적 계산기 스타일
+========================= */
+
+.enchant-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== 카드 공통 ===== */
+.enchant-card {
+  background: white;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.enchant-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+.enchant-card-body {
+  padding: 14px;
+}
+
+/* ===== 단계별 데이터 토글 ===== */
+.data-card {
+  background: white;
+}
+
+.data-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.data-toggle:hover {
+  background: #eee;
+}
+
+.toggle-icon {
+  font-size: 0.65rem;
+  color: #aaa;
+}
+
+.data-toggle.open .toggle-icon {
+  color: #888;
+}
+
+/* ===== 입력 영역 2열 그리드 ===== */
+.enchant-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ===== 라이프스톤 시세 입력 ===== */
+.price-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.price-input-row:last-child {
+  margin-bottom: 0;
+}
+
+.price-label {
+  width: 32px;
+  font-weight: 600;
+  color: #555;
+}
+
+.price-input {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #4c7de9;
+}
+
+.price-unit {
+  color: #999;
+  font-size: 0.75rem;
+}
+
+.price-date {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #999;
+}
+
+/* ===== 강화 단계 선택 ===== */
+.level-select-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.level-select-row:last-child {
+  margin-bottom: 0;
+}
+
+.level-label {
+  width: 50px;
+}
+
+.level-select {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  font-size: 0.85rem;
+  background: white;
+}
+
+.level-select:focus {
+  outline: none;
+  border-color: #4c7de9;
+}
+
+/* ===== 단계별 데이터 테이블 ===== */
+.data-table-wrapper {
+  padding: 0 8px;
+  max-height: 0;
+  overflow-y: auto;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.data-table-wrapper.open {
+  padding: 0 8px 8px;
+  max-height: 200px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.75rem;
+}
+
+.data-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-table th {
+  padding: 6px 4px;
+  text-align: center;
+  background: #e9ecef;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 1px solid #ddd;
+}
+
+.data-table td {
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  background: white;
+}
+
+.data-table td.center {
+  text-align: center;
+}
+
+.data-table td.right {
+  text-align: right;
+}
+
+.data-table .level {
+  font-weight: 600;
+  color: #333;
+}
+
+.data-table .chance-100 { color: #40c057; }
+.data-table .chance-high { color: #fab005; }
+.data-table .chance-low { color: #fa5252; }
+
+.data-table .stone-info {
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.data-empty {
+  text-align: center;
+  color: #999;
+  padding: 16px;
+  font-size: 0.8rem;
+}
+
+/* ===== 확률 구간 선택 ===== */
+.tier-selector {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tier-btn {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 8px 6px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 0.8rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tier-btn:hover:not(:disabled) {
+  background: rgba(76, 125, 233, 0.06);
+  color: #555;
+}
+
+.tier-btn.active {
+  background: #e0e9fc;
+  color: #3a6cd6;
+  font-weight: 600;
+}
+
+.tier-btn.active:hover {
+  background: #c5d5fa;
+}
+
+.tier-btn:disabled {
+  background: transparent;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 퍼지는 효과 */
+.ripple-fade {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(76, 125, 233, 0.2);
+  transform: scale(0);
+  animation: ripple-expand 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.4;
+    transform: scale(0);
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+    margin-top: -100px;
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* ===== 예상 시도 횟수 & 성공 확률 (합쳐진 블록) ===== */
+.stats-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #eee);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 20px;
+  background: #ddd;
+}
+
+/* ===== 결과 카드 ===== */
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--color-primary, #4a90e2);
+  color: white;
+}
+
+.result-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.result-tier-badge {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  opacity: 0.85;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.result-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.result-body {
+  padding: 16px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ===== 결과 섹션 ===== */
+.result-section {
+  padding: 12px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #f0f0f0);
+}
+
+.result-section-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 0.8rem;
+}
+
+.result-row-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #999;
+}
+
+.result-row-label img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.result-row-value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.result-row-count {
+  font-weight: 500;
+  color: #333;
+}
+
+.result-row-count.ruby { 
+  color: #c2185b; 
+}
+
+.result-row-cost {
+  font-size: 0.75rem;
+  color: #aaa;
+}
+
+.result-row.total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  font-weight: 600;
+}
+
+.result-row.total .result-row-label {
+  color: #666;
+}
+
+.result-row.total .result-row-value {
+  color: var(--color-text-primary, #333);
+}
+
+.result-row.grand-total {
+  font-size: 0.9rem;
+}
+
+.result-row.grand-total .result-row-label {
+  color: var(--color-text-primary, #333);
+}
+
+.result-row.grand-total .result-row-value {
+  color: var(--color-danger, #e74c3c);
+}
+
+/* ===== 빈 결과 ===== */
+.result-empty {
+  text-align: center;
+  color: #999;
+  padding: 40px 20px;
+  font-size: 0.85rem;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 480px) {
+  .enchant-input-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tier-selector {
+    flex-wrap: wrap;
+  }
+  
+  .tier-btn {
+    flex: 1 1 45%;
+  }
+  
+  .stats-box {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .stat-divider {
+    width: 80%;
+    height: 1px;
+  }
+  
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}

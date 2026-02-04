@@ -145,7 +145,7 @@ html.theme-transition *::after {
 }
 
 :root[data-theme="dark"] .update-banner-badge {
-  color: #60a5fa;
+  color: #4c7de9;
 }
 
 :root[data-theme="dark"] .update-banner-title {
@@ -264,7 +264,7 @@ html.theme-transition *::after {
 }
 
 :root[data-theme="dark"] .recipe-table-compact td:nth-child(3) {
-  color: #60a5fa;
+  color: #4c7de9;
 }
 
 :root[data-theme="dark"] .recipe-table-compact td:nth-child(4) {
@@ -717,7 +717,7 @@ html.theme-transition *::after {
 }
 
 :root[data-theme="dark"] .gold-detail-tier.dilution-detail h5 {
-  color: #60a5fa;
+  color: #4c7de9;
 }
 
 :root[data-theme="dark"] .gold-detail-tier.star1-detail {
@@ -1018,4 +1018,297 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .optimize-note {
   color: var(--color-text-muted);
   border-color: var(--color-border);
+}
+/* =========================
+   강화 견적 계산기 다크모드
+========================= */
+:root[data-theme="dark"] .enchant-card,
+:root[data-theme="dark"] .data-card {
+  background-color: #27272a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .enchant-card-header,
+:root[data-theme="dark"] .data-toggle {
+  background-color: #1f1f23;
+  border-bottom-color: #3f3f46;
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .data-toggle:hover {
+  background-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .toggle-icon {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .data-toggle.open .toggle-icon {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .price-label {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .price-input,
+:root[data-theme="dark"] .level-select {
+  background-color: #1f1f23;
+  border-color: #3f3f46;
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .price-input:focus,
+:root[data-theme="dark"] .level-select:focus {
+  border-color: #4c7de9;
+  box-shadow: 0 0 0 3px rgba(76, 125, 233, 0.2);
+}
+
+:root[data-theme="dark"] .price-unit,
+:root[data-theme="dark"] .price-date {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .level-select-row {
+  color: var(--color-text-secondary);
+}
+
+/* 단계별 데이터 테이블 다크모드 */
+:root[data-theme="dark"] .data-table th {
+  background-color: #1f1f23;
+  color: var(--color-text-secondary);
+  border-bottom-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .data-table td {
+  background-color: #27272a;
+  border-bottom-color: #3f3f46;
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .data-table .level {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .data-table .stone-info {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .data-empty {
+  color: var(--color-text-muted);
+}
+
+/* 확률 구간 선택 다크모드 */
+:root[data-theme="dark"] .tier-selector {
+  background-color: #27272a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .tier-btn {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .tier-btn:hover:not(:disabled) {
+  background-color: rgba(76, 125, 233, 0.15);
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .tier-btn.active {
+  background-color: rgba(76, 125, 233, 0.25);
+  color: #4c7de9;
+}
+
+:root[data-theme="dark"] .tier-btn.active:hover {
+  background-color: rgba(76, 125, 233, 0.35);
+}
+
+:root[data-theme="dark"] .tier-btn:disabled {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .ripple-fade {
+  background: rgba(96, 165, 250, 0.3);
+}
+
+/* 통계 박스 다크모드 */
+:root[data-theme="dark"] .stats-box {
+  background-color: #1f1f23;
+  border-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .stat-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .stat-value {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .stat-divider {
+  background-color: #3f3f46;
+}
+
+/* 결과 카드 다크모드 */
+:root[data-theme="dark"] .enchant-card .result-body {
+  background-color: #27272a;
+}
+
+:root[data-theme="dark"] .result-section {
+  background-color: #1f1f23;
+  border-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .result-section-header {
+  border-bottom-color: #3f3f46;
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .result-row-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .result-row-count {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .result-row-cost {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .result-row.total {
+  border-top-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .result-row.total .result-row-label {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .result-empty {
+  color: var(--color-text-muted);
+}
+
+/* =========================
+   수수료 계산기 다크모드
+========================= */
+:root[data-theme="dark"] .fee-card,
+:root[data-theme="dark"] .summary-card {
+  background-color: #27272a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .fee-card-header,
+:root[data-theme="dark"] .summary-toggle {
+  background-color: #1f1f23;
+  border-bottom-color: #3f3f46;
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .summary-toggle:hover {
+  background-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .summary-toggle .toggle-icon {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .summary-toggle.open .toggle-icon {
+  color: var(--color-text-secondary);
+}
+
+/* 요약 테이블 다크모드 */
+:root[data-theme="dark"] .summary-table th {
+  background-color: #1f1f23;
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .summary-table td {
+  background-color: #27272a;
+  border-bottom-color: #3f3f46;
+  color: var(--color-text-secondary);
+}
+
+/* 금액 입력 다크모드 */
+:root[data-theme="dark"] .amount-input {
+  background-color: #1f1f23;
+  border-color: #3f3f46;
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .amount-input:focus {
+  border-color: #4c7de9;
+  box-shadow: 0 0 0 3px rgba(76, 125, 233, 0.2);
+}
+
+:root[data-theme="dark"] .amount-unit {
+  color: var(--color-text-muted);
+}
+
+/* 수수료 종류 선택 다크모드 */
+:root[data-theme="dark"] .type-selector {
+  background-color: #27272a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .type-btn {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .type-btn:hover {
+  background-color: rgba(76, 125, 233, 0.15);
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .type-btn.active {
+  background-color: rgba(76, 125, 233, 0.25);
+  color: #4c7de9;
+}
+
+:root[data-theme="dark"] .type-btn.active:hover {
+  background-color: rgba(76, 125, 233, 0.35);
+}
+
+/* 설명 다크모드 */
+:root[data-theme="dark"] .fee-description {
+  background-color: #1f1f23;
+}
+
+:root[data-theme="dark"] .fee-usecase {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .fee-formula {
+  color: var(--color-text-muted);
+}
+
+/* 결과 다크모드 */
+:root[data-theme="dark"] .fee-card .result-body {
+  background-color: #27272a;
+}
+
+:root[data-theme="dark"] .fee-card .result-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .fee-card .result-value {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .fee-card .result-row.fee .result-value {
+  color: #f87171;
+}
+
+:root[data-theme="dark"] .fee-card .result-row.total {
+  border-top-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .fee-card .result-row.total .result-label {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .fee-card .result-row.total .result-value.highlight {
+  color: #4c7de9;
+}
+
+:root[data-theme="dark"] .fee-card .result-empty {
+  color: var(--color-text-muted);
 }

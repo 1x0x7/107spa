@@ -1,0 +1,319 @@
+/* =========================
+   수수료 계산기 스타일
+========================= */
+
+.fee-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ===== 카드 공통 ===== */
+.fee-card {
+  background: white;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.fee-card-header {
+  padding: 10px 14px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+.fee-card-body {
+  padding: 14px;
+}
+
+/* ===== 요약 테이블 (토글) ===== */
+.summary-card {
+  background: white;
+}
+
+.summary-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.summary-toggle:hover {
+  background: #eee;
+}
+
+.toggle-icon {
+  font-size: 0.65rem;
+  color: #aaa;
+}
+
+.summary-toggle.open .toggle-icon {
+  color: #888;
+}
+
+.summary-table-wrapper {
+  padding: 0 8px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.summary-table-wrapper.open {
+  padding: 0 8px 8px;
+  max-height: 150px;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.75rem;
+}
+
+.summary-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.summary-table th {
+  padding: 8px 6px;
+  text-align: left;
+  background: #e9ecef;
+  font-weight: 600;
+  color: #555;
+}
+
+.summary-table th:not(:first-child) {
+  text-align: center;
+}
+
+.summary-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #eee;
+  color: #555;
+  background: white;
+}
+
+.summary-table td.center {
+  text-align: center;
+}
+
+.summary-table td.none {
+  color: #40c057;
+  font-weight: 500;
+}
+
+/* ===== 금액 입력 ===== */
+.amount-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.amount-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  font-size: 1rem;
+  text-align: right;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.amount-input:focus {
+  outline: none;
+  border-color: #4c7de9;
+  box-shadow: 0 0 0 3px rgba(76, 125, 233, 0.1);
+}
+
+.amount-unit {
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ===== 수수료 종류 선택 ===== */
+.type-selector {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.type-btn {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 8px 4px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.type-btn:hover {
+  background: rgba(76, 125, 233, 0.06);
+  color: #555;
+}
+
+.type-btn.active {
+  background: #e0e9fc;
+  color: #3a6cd6;
+  font-weight: 600;
+}
+
+.type-btn.active:hover {
+  background: #c5d5fa;
+}
+
+/* 리플 효과 */
+.ripple-fade {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(76, 125, 233, 0.2);
+  transform: scale(0);
+  animation: ripple-expand 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.4;
+    transform: scale(0);
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+    margin-top: -100px;
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* ===== 설명 ===== */
+.fee-description {
+  padding: 12px 14px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.fee-usecase {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.fee-formula {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* ===== 결과 ===== */
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--color-primary, #4a90e2);
+
+  color: white;
+}
+
+.result-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.result-badge {
+  margin-left: 8px;
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.result-body {
+  padding: 16px;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.85rem;
+}
+
+.result-label {
+  color: #888;
+}
+
+.result-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.result-row.fee .result-value {
+  color: #e53935;
+}
+
+.result-row.total {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+.result-row.total .result-label {
+  font-weight: 600;
+  color: #333;
+}
+
+.result-row.total .result-value.highlight {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3a6cd6;
+}
+
+.result-empty {
+  text-align: center;
+  color: #999;
+  padding: 40px 20px;
+  font-size: 0.85rem;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 480px) {
+  .type-selector {
+    flex-wrap: wrap;
+  }
+  
+  .type-btn {
+    flex: 1 1 30%;
+  }
+}
