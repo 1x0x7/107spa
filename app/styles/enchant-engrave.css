@@ -1,5 +1,5 @@
 /* =========================
-   강화 견적 계산기 스타일
+   강화/각인 견적 계산기 공통 스타일
 ========================= */
 
 .enchant-container {
@@ -35,7 +35,7 @@
   padding: 14px;
 }
 
-/* ===== 단계별 데이터 토글 ===== */
+/* ===== 가이드/데이터 토글 ===== */
 .data-card {
   background: white;
 }
@@ -68,90 +68,7 @@
   color: #888;
 }
 
-/* ===== 입력 영역 2열 그리드 ===== */
-.enchant-input-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-/* ===== 라이프스톤 시세 입력 ===== */
-.price-input-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-  font-size: 0.8rem;
-}
-
-.price-input-row:last-child {
-  margin-bottom: 0;
-}
-
-.price-label {
-  width: 32px;
-  font-weight: 600;
-  color: #555;
-}
-
-.price-input {
-  flex: 1;
-  padding: 6px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--color-border, #e0e0e0);
-  font-size: 0.85rem;
-  text-align: right;
-}
-
-.price-input:focus {
-  outline: none;
-  border-color: #4c7de9;
-}
-
-.price-unit {
-  color: #999;
-  font-size: 0.75rem;
-}
-
-.price-date {
-  font-size: 0.7rem;
-  font-weight: 400;
-  color: #999;
-}
-
-/* ===== 강화 단계 선택 ===== */
-.level-select-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-.level-select-row:last-child {
-  margin-bottom: 0;
-}
-
-.level-label {
-  width: 50px;
-}
-
-.level-select {
-  flex: 1;
-  padding: 6px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--color-border, #e0e0e0);
-  font-size: 0.85rem;
-  background: white;
-}
-
-.level-select:focus {
-  outline: none;
-  border-color: #4c7de9;
-}
-
-/* ===== 단계별 데이터 테이블 ===== */
+/* ===== 가이드 컨텐츠 ===== */
 .data-table-wrapper {
   padding: 0 8px;
   max-height: 0;
@@ -161,9 +78,57 @@
 
 .data-table-wrapper.open {
   padding: 0 8px 8px;
-  max-height: 200px;
+  max-height: 400px;
 }
 
+.guide-content {
+  padding: 8px;
+}
+
+.guide-section {
+  margin-bottom: 16px;
+}
+
+.guide-section:last-child {
+  margin-bottom: 0;
+}
+
+.guide-section h4 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.guide-section p {
+  font-size: 0.75rem;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.guide-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.guide-section li {
+  font-size: 0.72rem;
+  color: #888;
+  padding: 3px 0;
+  padding-left: 12px;
+  position: relative;
+}
+
+.guide-section li:before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #4a90e2;
+}
+
+/* ===== 단계별 데이터 테이블 ===== */
 .data-table {
   width: 100%;
   border-collapse: separate;
@@ -215,11 +180,109 @@
   color: #888;
 }
 
+.data-table .probability {
+  font-weight: 600;
+  color: #4a90e2;
+}
+
 .data-empty {
   text-align: center;
   color: #999;
   padding: 16px;
   font-size: 0.8rem;
+}
+
+/* ===== 입력 영역 2열 그리드 ===== */
+.enchant-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ===== 시세 입력 ===== */
+.price-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
+.price-input-row:last-child {
+  margin-bottom: 0;
+}
+
+.price-label {
+  width: 48px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.price-label img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.price-input {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #4c7de9;
+}
+
+.price-unit {
+  color: #999;
+  font-size: 0.75rem;
+}
+
+.price-date {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #999;
+}
+
+/* ===== 단계 선택 ===== */
+.level-select-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.level-select-row:last-child {
+  margin-bottom: 0;
+}
+
+.level-label {
+  width: 50px;
+}
+
+.level-select {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border, #e0e0e0);
+  font-size: 0.85rem;
+  background: white;
+}
+
+.level-select:focus {
+  outline: none;
+  border-color: #4c7de9;
 }
 
 /* ===== 확률 구간 선택 ===== */
@@ -295,7 +358,7 @@
   }
 }
 
-/* ===== 예상 시도 횟수 & 성공 확률 (합쳐진 블록) ===== */
+/* ===== 통계 박스 ===== */
 .stats-box {
   display: flex;
   align-items: center;
@@ -421,9 +484,7 @@
   color: #333;
 }
 
-.result-row-count.ruby { 
-  color: #c2185b; 
-}
+
 
 .result-row-cost {
   font-size: 0.75rem;

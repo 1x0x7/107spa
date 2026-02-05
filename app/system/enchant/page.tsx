@@ -1,14 +1,15 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { ENCHANT_DATA, DEFAULT_PRICES } from '../../../data/enchant-data'
+import { ENCHANT_DATA, DEFAULT_PRICES } from '@/data/enchant-data'
 import { 
   TierType, 
   calculateEnchant, 
   calculateConsecutiveChance,
   formatChance 
 } from './enchant-calculator'
-import './enchant.css'
+import '@/app/styles/enchant-engrave.css'
+import Image from 'next/image'
 
 export default function EnchantPage() {
   const [startLevel, setStartLevel] = useState(0)
@@ -118,11 +119,14 @@ export default function EnchantPage() {
         <div className="enchant-card">
           <div className="enchant-card-header">
             라이프스톤 시세
-            <span className="price-date">02.05 03:00AM 기준</span>
+            <span className="price-date">02.05 기준</span>
           </div>
           <div className="enchant-card-body">
             <div className="price-input-row">
-              <span className="price-label">하급</span>
+              <span className="price-label">
+                <Image src="/img/mining/low.png" alt="하급" width={20} height={20} />
+                하급
+              </span>
               <input
                 type="number"
                 className="price-input"
@@ -132,7 +136,10 @@ export default function EnchantPage() {
               <span className="price-unit">G</span>
             </div>
             <div className="price-input-row">
-              <span className="price-label">중급</span>
+              <span className="price-label">
+                <Image src="/img/mining/mid.png" alt="중급" width={20} height={20} />
+                중급
+              </span>
               <input
                 type="number"
                 className="price-input"
@@ -142,7 +149,10 @@ export default function EnchantPage() {
               <span className="price-unit">G</span>
             </div>
             <div className="price-input-row">
-              <span className="price-label">상급</span>
+              <span className="price-label">
+                <Image src="/img/mining/high.png" alt="상급" width={20} height={20} />
+                상급
+              </span>
               <input
                 type="number"
                 className="price-input"

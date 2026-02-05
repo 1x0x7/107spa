@@ -26,7 +26,8 @@ export default function OceanInfoPage() {
       id: '1star',
       label: '1성',
       columns: ['결과물', '재료', '가격'],
-      data: RECIPES_1STAR.map(r => ({ '결과물': r.name, '재료': r.ingredients, '가격': r.price }))
+      data: RECIPES_1STAR.map(r => ({ 
+        '결과물': r.name, '재료': r.ingredients, '가격': r.price }))
     },
     {
       id: '2star',

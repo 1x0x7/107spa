@@ -75,6 +75,9 @@ export default function Header() {
             <Link href="/ocean/info" className={isActive('/ocean') ? 'active' : ''}>
               해양
             </Link>
+            <Link href="/hunting/info" className={isActive('/hunting') ? 'active' : ''}>
+              사냥
+            </Link>
             <Link href="/system/enchant" className={isActive('/system') ? 'active' : ''}>
               시스템
             </Link>

@@ -21,8 +21,12 @@ const tabs: Record<string, { href: string; label: string }[]> = {
     { href: '/ocean/stamina', label: '스태미나' },
     { href: '/ocean/gold', label: '연금품' },
   ],
+  hunting: [
+    { href: '/hunting/info', label: '정보' },
+  ],
   system: [
     { href: '/system/enchant', label: '강화' },
+    { href: '/system/engrave', label: '각인' },
     { href: '/system/fee', label: '수수료' },
   ],
 }
