@@ -23,6 +23,8 @@ export const UPDATE_HISTORY: UpdateItem[] = [
         "세이지 괭이 씨앗 드랍 수치 변경",
       ],
       fixes: [
+        "각인 이미지 출력 오류 수정",
+
 
       ],
       notes: [
