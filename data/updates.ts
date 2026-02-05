@@ -20,6 +20,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       changes: [
         "시스템 - 각인 추가",
         "신규 사냥 탭 추가",
+        "시스템 - 각인 옵션 정보 추가",
         "세이지 괭이 씨앗 드랍 수치 변경",
       ],
       fixes: [
@@ -29,7 +30,6 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       ],
       notes: [
         "모든 전문가 정보 탭 이미지 추가 예정",
-        "시스템 - 각인 : 각인 옵션 정보 추가 예정",
         "해양 제작 아이템에 마우스를 올리면 조합법이 표시 예정",
         "다음 업데이트 : 02.06 예정(내용 수정)"
       ]

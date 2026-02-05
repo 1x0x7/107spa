@@ -2,12 +2,36 @@
    강화/각인 견적 계산기 공통 스타일
 ========================= */
 
+/* ===== 페이지 래퍼 ===== */
+.engrave-page-wrapper {
+  position: relative;
+}
+
 .enchant-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* ===== 왼쪽 사이드 패널 (추가) ===== */
+.side-panel-left {
+  position: absolute;
+  left: -220px;
+  top: 0;
+  width: 200px;
+  z-index: 100;
+}
+
+/* 화면 작을 때 상단에 표시 */
+@media (max-width: 1100px) {
+  .side-panel-left {
+    position: static;
+    width: 100%;
+    margin-bottom: 12px;
+  }
 }
 
 /* ===== 카드 공통 ===== */

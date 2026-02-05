@@ -8,6 +8,10 @@ import { useEffect } from 'react'
  */
 export function useSecurityLock() {
   useEffect(() => {
+    // localhost 여부 확인
+    const isLocalhost = window.location.hostname === 'localhost' || 
+                        window.location.hostname === '127.0.0.1'
+    
     // 스크롤 방지
     document.body.style.overflow = 'hidden'
     
@@ -40,13 +44,17 @@ export function useSecurityLock() {
       if ((e.ctrlKey || e.metaKey) && ['c', 'a', 'x', 's', 'u'].includes(e.key.toLowerCase())) {
         e.preventDefault()
       }
-      // F12 (개발자도구) 차단
-      if (e.key === 'F12') {
-        e.preventDefault()
-      }
-      // Ctrl+Shift+I (개발자도구) 차단
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'i') {
-        e.preventDefault()
+      
+      // localhost에서는 개발자 도구 허용
+      if (!isLocalhost) {
+        // F12 (개발자도구) 차단
+        if (e.key === 'F12') {
+          e.preventDefault()
+        }
+        // Ctrl+Shift+I (개발자도구) 차단
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'i') {
+          e.preventDefault()
+        }
       }
     }
     
