@@ -222,7 +222,7 @@ export default function EngravingPage() {
               >
                 {[...Array(4)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>
-                    Lv.{i} → Lv.{i + 1}
+                    Lv{i} → Lv{i + 1}
                   </option>
                 ))}
               </select>
