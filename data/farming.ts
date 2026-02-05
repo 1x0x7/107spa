@@ -5,30 +5,49 @@ export const MINING_IMAGES: Record<string, string> = {
 export const FARMING_STAMINA_PER_HARVEST = 7
 
 // 괭이 레벨별 씨앗 드롭 수 (아일랜드 채집용) - 원본 JS 기준
+// 괭이 레벨별 씨앗 드롭 수 (아일랜드 채집용)
 export const HOE_DROPS: Record<number, number> = {
-  0: 1, 1: 1, 2: 2, 3: 2, 4: 2, 5: 3,
-  6: 3, 7: 3, 8: 4, 9: 4, 10: 4,
-  11: 5, 12: 5, 13: 6, 14: 6, 15: 10
+  0: 1,
+  1: 2,
+  2: 3,
+  3: 3,
+  4: 3,
+  5: 4,
+  6: 4,
+  7: 4,
+  8: 5,
+  9: 5,
+  10: 6,
+  11: 8,
+  12: 8,
+  13: 10,
+  14: 10,
+  15: 15
 }
 
+
 // 괭이 강화 스펙 (위키 기준 - 마을 수확용)
+// 괭이 강화 스펙 (위키/표 기준 - 마을 수확용)
 export const HOE_STATS: Record<number, { drops: number; seed: number }> = {
-  1: { drops: 2, seed: 0 }, 
-  2: { drops: 3, seed: 0.01 },
-  3: { drops: 3, seed: 0.01 },
-  4: { drops: 3, seed: 0.02 }, 
-  5: { drops: 4, seed: 0.02 },
-  6: { drops: 4, seed: 0.03 },
-  7: { drops: 4, seed: 0.03 }, 
-  8: { drops: 5, seed: 0.04 },
-  9: { drops: 5, seed: 0.05 },
-  10: { drops: 5, seed: 0.05 }, 
-  11: { drops: 6, seed: 0.07 },
-  12: { drops: 6, seed: 0.07 },
-  13: { drops: 7, seed: 0.09 },
-  14: { drops: 7, seed: 0.09 }, 
-  15: { drops: 12, seed: 0.15 }
+  1:  { drops: 2, seed: 0 },
+  2:  { drops: 3, seed: 0 },
+  3:  { drops: 3, seed: 0 },
+  4:  { drops: 3, seed: 0 },
+  5:  { drops: 4, seed: 0 },
+
+  6:  { drops: 4, seed: 0 },
+  7:  { drops: 4, seed: 0 },
+  8:  { drops: 5, seed: 0 },
+  9:  { drops: 5, seed: 0 },
+  10: { drops: 6, seed: 0 },
+
+  11: { drops: 8, seed: 0 },
+  12: { drops: 8, seed: 0 },
+  13: { drops: 10, seed: 0 },
+  14: { drops: 10, seed: 0 },
+  15: { drops: 15, seed: 0 }
 }
+
 
 // 전문가: 자연이 주는 선물 (아일랜드 채집 시 씨앗 추가)
 export const EXPERT_GIFT: Record<number, { rate: number; count: number }> = {
