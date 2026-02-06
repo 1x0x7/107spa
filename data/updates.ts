@@ -12,16 +12,13 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
   { 
-    title: "사냥 전문가 및 정기 점검 업데이트", 
-    desc: "사냥 전문가, 각인 시스템 추가", 
+    title: "요리 가격 업데이트", 
+    desc: "삼겹살 토마토 찌개 > 마늘 양갈비 핫도그 > 스윗 치킨 햄버거", 
     date: "2025.02.05", 
     isLatest: true,
     details: {
       changes: [
-        "시스템 - 각인 추가",
-        "신규 사냥 탭 추가",
-        "시스템 - 각인 옵션 정보 추가",
-        "세이지 괭이 씨앗 드랍 수치 변경",
+        "요리 가격 변동",
       ],
       fixes: [
         "각인 이미지 출력 오류 수정",
@@ -35,7 +32,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       ]
     }
   },
+  { title: "사냥 전문가, 각인 시스템 추가", date: "2025.02.05" },
   { title: "강화 / 수수료 계산 추가", date: "2025.02.03" },
   { title: "재배/해양 업데이트", date: "2025.02.03" },
-  { title: "재배 업데이트", date: "2025.02.01" },
 ]

@@ -69,6 +69,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               <option>기능 건의</option>
               <option>질문</option>
               <option>기타 문의</option>
+              <option>이름 제안하기</option>
             </select>
           </label>
 
@@ -76,7 +77,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             작성자 (선택)
             <input
               type="text"
-              placeholder="이름"
+              placeholder="닉네임"
               value={nickname}
               onChange={e => setNickname(e.target.value)}
             />
