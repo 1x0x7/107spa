@@ -1,6 +1,7 @@
 'use client'
 
 import { useExpert } from '@/hooks/useExpert'
+import { useImagePreloader } from '@/hooks/useImagePreloader'
 import InfoPage from '@/components/InfoPage'
 import { 
   HUNTING_EXPERT_DESC,
@@ -11,6 +12,10 @@ import {
 export default function HuntingInfoPage() {
   const { hunting, updateHunting } = useExpert()
 
+  useImagePreloader([
+    ...SOUL_PROCESSING.map(r => `/img/hunting/${r.img}`),
+    ...SOUL_CONTRACTS.map(r => `/img/hunting/${r.img}`),
+  ])
   const skills = [
     { key: 'allTheWay', name: '끝까지 간다!', max: 5, desc: HUNTING_EXPERT_DESC.allTheWay },
     { key: 'worthProof', name: '값어치 증명', max: 6, desc: HUNTING_EXPERT_DESC.worthProof },

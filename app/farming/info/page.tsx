@@ -1,6 +1,7 @@
 'use client'
 
 import { useExpert } from '@/hooks/useExpert'
+import { useImagePreloader } from '@/hooks/useImagePreloader'
 import InfoPage from '@/components/InfoPage'
 import { 
   FARMING_EXPERT_DESC, 
@@ -11,6 +12,10 @@ import {
 export default function FarmingInfoPage() {
   const { farming, updateFarming } = useExpert()
 
+  useImagePreloader([
+    ...EFFICIENCY_RECIPES.filter(r => r.img).map(r => `/img/farming/${r.img}`),
+    ...PROCESSING_RECIPES.filter(r => r.img).map(r => `/img/farming/${r.img}`),
+  ])
   const skills = [
     { key: 'gift', name: '자연이 주는 선물', max: 10, desc: FARMING_EXPERT_DESC.gift },
     { key: 'harvest', name: '오늘도 풍년이다!', max: 7, desc: FARMING_EXPERT_DESC.harvest },

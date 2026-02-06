@@ -1,6 +1,7 @@
 'use client'
 
 import { useExpert } from '@/hooks/useExpert'
+import { useImagePreloader } from '@/hooks/useImagePreloader'
 import InfoPage from '@/components/InfoPage'
 import { 
   MINING_EXPERT_DESC, 
@@ -12,6 +13,11 @@ import {
 export default function MiningInfoPage() {
   const { mining, updateMining } = useExpert()
 
+
+  useImagePreloader([
+    ...MINING_PROCESS_RECIPES.filter(r => r.img).map(r => `/img/mining/${r.img}`),
+    ...MINING_CRAFT_RECIPES.filter(r => r.img).map(r => `/img/mining/${r.img}`),
+  ])
   const skills = [
     { key: 'cobi', name: '코비타임', max: 7, desc: MINING_EXPERT_DESC.cobi },
     { key: 'ingot', name: '주괴 좀 사주괴', max: 6, desc: MINING_EXPERT_DESC.ingot },

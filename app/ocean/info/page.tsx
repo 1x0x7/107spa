@@ -1,6 +1,7 @@
 'use client'
 
 import { useExpert } from '@/hooks/useExpert'
+import { useImagePreloader } from '@/hooks/useImagePreloader'
 import InfoPage from '@/components/InfoPage'
 import { 
   OCEAN_EXPERT_DESC, 
@@ -13,6 +14,14 @@ import {
 export default function OceanInfoPage() {
   const { ocean, updateOcean } = useExpert()
 
+  useImagePreloader([
+    ...RECIPES_1STAR.map(r => `/img/ocean/${r.img}`),
+    ...RECIPES_2STAR.map(r => `/img/ocean/${r.img}`),
+    ...RECIPES_3STAR.map(r => `/img/ocean/${r.img}`),
+    ...RECIPES_CRAFT.map(r => `/img/ocean/${r.img}`),
+  ])
+
+  
   const skills = [
     { key: 'clamSell', name: '조개 좀 사조개', max: 8, desc: OCEAN_EXPERT_DESC.clamSell },
     { key: 'premiumPrice', name: '프리미엄 한정가', max: 8, desc: OCEAN_EXPERT_DESC.premium },
