@@ -4,7 +4,7 @@ import { useExpert } from '@/hooks/useExpert'
 import InfoPage from '@/components/InfoPage'
 import { 
   FARMING_EXPERT_DESC, 
-  EFFICIENCY_RECIPES,  // ← 변경
+  EFFICIENCY_RECIPES,
   PROCESSING_RECIPES 
 } from '@/data/farming'
 
@@ -42,7 +42,15 @@ export default function FarmingInfoPage() {
       id: 'processing',
       label: '가공',
       columns: ['결과물', '재료'],
-      data: PROCESSING_RECIPES.map(r => ({ '결과물': r.name, '재료': r.materials }))
+      data: PROCESSING_RECIPES.map(r => ({ 
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/farming/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.materials
+      }))
     }
   ]
 
@@ -56,12 +64,6 @@ export default function FarmingInfoPage() {
     fire: farming.fire,
   }
 
-  const sortOptions = [
-    { value: 'name', label: '이름순' },
-    { value: '최저가', label: '최저가↑' },
-    { value: '최고가', label: '최고가↓' }
-  ]
-
   return (
     <InfoPage
       toolName="괭이"
@@ -74,9 +76,6 @@ export default function FarmingInfoPage() {
       skillValues={skillValues}
       onSkillChange={(key, value) => updateFarming(key as keyof typeof farming, value)}
       recipeTabs={recipeTabs}
-      showSearch={true}
-      searchPlaceholder="요리 검색..."
-      sortOptions={sortOptions}
     />
   )
 }

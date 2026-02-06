@@ -27,25 +27,59 @@ export default function OceanInfoPage() {
       label: '1성',
       columns: ['결과물', '재료', '가격'],
       data: RECIPES_1STAR.map(r => ({ 
-        '결과물': r.name, '재료': r.ingredients, '가격': r.price }))
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.ingredients,
+        '가격': r.price
+      }))
     },
     {
       id: '2star',
       label: '2성',
       columns: ['결과물', '재료', '가격'],
-      data: RECIPES_2STAR.map(r => ({ '결과물': r.name, '재료': r.ingredients, '가격': r.price }))
+      data: RECIPES_2STAR.map(r => ({ 
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.ingredients,
+        '가격': r.price
+      }))
     },
     {
       id: '3star',
       label: '3성',
       columns: ['결과물', '재료', '가격'],
-      data: RECIPES_3STAR.map(r => ({ '결과물': r.name, '재료': r.ingredients, '가격': r.price }))
+      data: RECIPES_3STAR.map(r => ({ 
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.ingredients,
+        '가격': r.price
+      }))
     },
     {
       id: 'craft',
       label: '공예',
       columns: ['결과물', '재료'],
-      data: RECIPES_CRAFT.map(r => ({ '결과물': r.name, '재료': r.ingredients }))
+      data: RECIPES_CRAFT.map(r => ({ 
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.ingredients
+      }))
     }
   ]
 

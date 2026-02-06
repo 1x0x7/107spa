@@ -132,22 +132,23 @@ export const MINING_EXPERT_DESC = {
 export interface Recipe {
   name: string
   ingredients: string
+  img?:string
 }
 
 export const MINING_PROCESS_RECIPES: Recipe[] = [
-  { name: '강화 횃불', ingredients: '횃불 4개' },
-  { name: '코룸 주괴', ingredients: '코룸 16개 + 강화 횃불 2개' },
-  { name: '리프톤 주괴', ingredients: '리프톤 15개 + 강화 횃불 4개' },
-  { name: '세렌트 주괴', ingredients: '세렌트 16개 + 강화 횃불 8개' },
+  { name: '강화 횃불', ingredients: '횃불 4개', img: "toach.png" },
+  { name: '코룸 주괴', ingredients: '코룸 16개 + 강화 횃불 2개', img : "corum2.png" },
+  { name: '리프톤 주괴', ingredients: '리프톤 15개 + 강화 횃불 4개', img : "lifton2.png" },
+  { name: '세렌트 주괴', ingredients: '세렌트 16개 + 강화 횃불 8개', img : "serent2.png" },
 ]
 
 export const MINING_CRAFT_RECIPES: Recipe[] = [
-  { name: '조약돌 뭉치', ingredients: '조약돌 64개' },
-  { name: '심층암 조약돌 뭉치', ingredients: '심층암 조약돌 64개' },
-  { name: '어빌리티 스톤', ingredients: '코룸 주괴 1개 + 리프톤 주괴 1개 + 세렌트 주괴 1개' },
-  { name: '하급 라이프스톤', ingredients: '조약돌 뭉치 2개 + 구리 블록 8개 + 레드스톤 블록 3개 + 코룸 주괴 1개' },
-  { name: '중급 라이프스톤', ingredients: '심층암 조약돌 뭉치 2개 + 청금석 블록 5개 + 철 블록 5개 + 다이아몬드 블록 3개 + 리프톤 주괴 2개' },
-  { name: '상급 라이프스톤', ingredients: '구리 블록 30개 + 자수정 블록 20개 + 철 블록 7개 + 금 블록 7개 + 다이아몬드 블록 5개 + 세렌트 주괴 3개' },
+  { name: '조약돌 뭉치', ingredients: '조약돌 64개', img : "stone1.png" },
+  { name: '심층암 조약돌 뭉치', ingredients: '심층암 조약돌 64개', img : "stone2.png" },
+  { name: '어빌리티 스톤', ingredients: '코룸 주괴 1개 + 리프톤 주괴 1개 + 세렌트 주괴 1개', img : "a.png" },
+  { name: '하급 라이프스톤', ingredients: '조약돌 뭉치 2개 + 구리 블록 8개 + 레드스톤 블록 3개 + 코룸 주괴 1개', img : "low.png" },
+  { name: '중급 라이프스톤', ingredients: '심층암 조약돌 뭉치 2개 + 청금석 블록 5개 + 철 블록 5개 + 다이아몬드 블록 3개 + 리프톤 주괴 2개', img : "mid.png" },
+  { name: '상급 라이프스톤', ingredients: '구리 블록 30개 + 자수정 블록 20개 + 철 블록 7개 + 금 블록 7개 + 다이아몬드 블록 5개 + 세렌트 주괴 3개', img : "high.png" },
 ]
 
 

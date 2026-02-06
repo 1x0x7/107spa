@@ -26,13 +26,29 @@ export default function MiningInfoPage() {
       id: 'process',
       label: '가공',
       columns: ['결과물', '재료'],
-      data: MINING_PROCESS_RECIPES.map(r => ({ '결과물': r.name, '재료': r.ingredients }))
+      data: MINING_PROCESS_RECIPES.map(r => ({ 
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/mining/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.ingredients
+      }))
     },
     {
       id: 'craft',
       label: '제작',
       columns: ['결과물', '재료'],
-      data: MINING_CRAFT_RECIPES.map(r => ({ '결과물': r.name, '재료': r.ingredients }))
+      data: MINING_CRAFT_RECIPES.map(r => ({ 
+        '결과물': (
+          <span className="recipe-name-cell">
+            <img src={`/img/mining/${r.img}`} alt={r.name} />
+            {r.name}
+          </span>
+        ),
+        '재료': r.ingredients
+      }))
     }
   ]
 

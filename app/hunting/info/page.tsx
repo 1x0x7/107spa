@@ -27,7 +27,12 @@ export default function HuntingInfoPage() {
       label: '영혼 가공',
       columns: ['항목', '재료', '가격'],
       data: SOUL_PROCESSING.map(s => ({ 
-        '항목': s.name, 
+        '항목': (
+          <span className="recipe-name-cell">
+            <img src={`/img/hunting/${s.img}`} alt={s.name} />
+            {s.name}
+          </span>
+        ),
         '재료': s.ingredients,
         '가격': s.price
       }))
@@ -37,7 +42,12 @@ export default function HuntingInfoPage() {
       label: '계약서',
       columns: ['항목', '재료'],
       data: SOUL_CONTRACTS.map(s => ({ 
-        '항목': s.name, 
+        '항목': (
+          <span className="recipe-name-cell">
+            <img src={`/img/hunting/${s.img}`} alt={s.name} />
+            {s.name}
+          </span>
+        ),
         '재료': s.ingredients
       }))
     }

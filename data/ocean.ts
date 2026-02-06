@@ -61,75 +61,75 @@ export const OCEAN_EXPERT_DESC = {
 }
 
 export const RECIPES_1STAR = [
-  { name: "추출된 희석액", ingredients: "침식 방어의 핵 ★ 3개 + 방어 오염의 결정 ★★ 2개 + 타락 침식의 영약 ★★★ 1개", price: "17,566G" },
-  { name: "수호의 정수 (2개)", ingredients: "굴★ 2개 + 점토 2개", price: "" },
-  { name: "파동의 정수 (2개)", ingredients: "소라★ 2개 + 모래 4개", price: "" },
-  { name: "혼란의 정수 (2개)", ingredients: "문어★ 2개 + 흙 8개", price: "" },
-  { name: "생명의 정수 (2개)", ingredients: "미역★ 2개 + 자갈 4개", price: "" },
-  { name: "부식의 정수 (2개)", ingredients: "성게★ 2개 + 화강암 2개", price: "" },
+  { name: "(0성) 추출된 희석액", ingredients: "침식방어의 핵★3개 + 방어오염의 결정★★2개 + 타락침식의 영약★★★1개", price: "17,566G", img: "hehe.png" },
+  { name: "수호의 정수 (2개)", ingredients: "굴★ 2개 + 점토 2개", price: "", img : "essence_guard.png" },
+  { name: "파동의 정수 (2개)", ingredients: "소라★ 2개 + 모래 4개", price: "", img : "essence_wave.png" },
+  { name: "혼란의 정수 (2개)", ingredients: "문어★ 2개 + 흙 8개", price: "", img : "essence_chaos.png" },
+  { name: "생명의 정수 (2개)", ingredients: "미역★ 2개 + 자갈 4개", price: "", img : "essence_life.png" },
+  { name: "부식의 정수 (2개)", ingredients: "성게★ 2개 + 화강암 2개", price: "", img : "essence_decay.png" },
 
-  { name: "물결 수호의 핵", ingredients: "수호의 정수 + 파동의 정수 + 익히지 않은 새우", price: "" },
-  { name: "파동 오염의 핵", ingredients: "파동의 정수 + 혼란의 정수 + 익히지 않은 도미", price: "" },
-  { name: "질서 파괴의 핵", ingredients: "혼란의 정수 + 생명의 정수 + 익히지 않은 청어", price: "" },
-  { name: "활력 붕괴의 핵", ingredients: "생명의 정수 + 부식의 정수 + 금붕어", price: "" },
-  { name: "침식 방어의 핵", ingredients: "부식의 정수 + 수호의 정수 + 농어", price: "" },
+  { name: "물결 수호의 핵", ingredients: "수호의 정수 + 파동의 정수 + 익히지 않은 새우", price: "", img : "core_wg.png" },
+  { name: "파동 오염의 핵", ingredients: "파동의 정수 + 혼란의 정수 + 익히지 않은 도미", price: "", img : "core_wp.png" },
+  { name: "질서 파괴의 핵", ingredients: "혼란의 정수 + 생명의 정수 + 익히지 않은 청어", price: "", img : "core_od.png" },
+  { name: "활력 붕괴의 핵", ingredients: "생명의 정수 + 부식의 정수 + 금붕어", price: "", img : "core_vd.png" },
+  { name: "침식 방어의 핵", ingredients: "부식의 정수 + 수호의 정수 + 농어", price: "", img : "core_ed.png" },
 
-  { name: "영생의 아쿠티스", ingredients: "물결 수호의 핵 + 질서 파괴의 핵 + 활력 붕괴의 핵", price: "5,669G" },
-  { name: "크라켄의 광란체", ingredients: "질서 파괴의 핵 + 활력 붕괴의 핵 + 파동 오염의 핵", price: "5,752G" },
-  { name: "리바이던의 깃털", ingredients: "침식 방어의 핵 + 파동 오염의 핵 + 물결 수호의 핵", price: "5,927G" },
+  { name: "영생의 아쿠티스", ingredients: "물결 수호의 핵 + 질서 파괴의 핵 + 활력 붕괴의 핵", price: "5,669G", img : "akutis.png" },
+  { name: "크라켄의 광란체", ingredients: "질서 파괴의 핵 + 활력 붕괴의 핵 + 파동 오염의 핵", price: "5,752G", img : "kraken.png" },
+  { name: "리바이던의 깃털", ingredients: "침식 방어의 핵 + 파동 오염의 핵 + 물결 수호의 핵", price: "5,927G", img : "feather.png" },
 ]
 
 
 export const RECIPES_2STAR = [
-  { name: "수호 에센스 (2개)", ingredients: "굴★★ 2개 + 해초 6개 + 참나무 잎 6개", price: "" },
-  { name: "파동 에센스 (2개)", ingredients: "소라★★ 2개 + 해초 6개 + 가문비나무 잎 6개", price: "" },
-  { name: "혼란 에센스 (2개)", ingredients: "문어★★ 2개 + 해초 6개 + 자작나무 잎 6개", price: "" },
-  { name: "생명 에센스 (2개)", ingredients: "미역★★ 2개 + 해초 6개 + 아카시아나무 잎 6개", price: "" },
-  { name: "부식 에센스 (2개)", ingredients: "성게★★ 2개 + 해초 6개 + 벚나무 잎 6개", price: "" },
+  { name: "수호 에센스 (2개)", ingredients: "굴★★ 2개 + 해초 6개 + 참나무 잎 6개", price: "", img : "essence_guard_2.png" },
+  { name: "파동 에센스 (2개)", ingredients: "소라★★ 2개 + 해초 6개 + 가문비나무 잎 6개", price: "", img : "essence_wave_2.png" },
+  { name: "혼란 에센스 (2개)", ingredients: "문어★★ 2개 + 해초 6개 + 자작나무 잎 6개", price: "", img : "essence_chaos_2.png" },
+  { name: "생명 에센스 (2개)", ingredients: "미역★★ 2개 + 해초 6개 + 아카시아나무 잎 6개", price: "", img : "essence_life_2.png" },
+  { name: "부식 에센스 (2개)", ingredients: "성게★★ 2개 + 해초 6개 + 벚나무 잎 6개", price: "", img : "essence_decay_2.png" },
 
-  { name: "활기 보존의 결정", ingredients: "수호 에센스 + 생명 에센스 + 켈프 8개 + 청금석 블록 1개", price: "" },
-  { name: "파도 침식의 결정", ingredients: "파동 에센스 + 부식 에센스 + 켈프 8개 + 레드스톤 블록 1개", price: "" },
-  { name: "방어 오염의 결정", ingredients: "혼란 에센스 + 수호 에센스 + 켈프 8개 + 철 주괴 3개", price: "" },
-  { name: "격류 재생의 결정", ingredients: "생명 에센스 + 파동 에센스 + 켈프 8개 + 금 주괴 2개", price: "" },
-  { name: "맹독 혼란의 결정", ingredients: "부식 에센스 + 혼란 에센스 + 켈프 8개 + 다이아몬드 1개", price: "" },
+  { name: "활기 보존의 결정", ingredients: "수호 에센스 + 생명 에센스 + 켈프 8개 + 청금석 블록 1개", price: "", img : "crystal_vital.png" },
+  { name: "파도 침식의 결정", ingredients: "파동 에센스 + 부식 에센스 + 켈프 8개 + 레드스톤 블록 1개", price: "", img : "crystal_erosion.png" },
+  { name: "방어 오염의 결정", ingredients: "혼란 에센스 + 수호 에센스 + 켈프 8개 + 철 주괴 3개", price: "", img : "crystal_defense.png" },
+  { name: "격류 재생의 결정", ingredients: "생명 에센스 + 파동 에센스 + 켈프 8개 + 금 주괴 2개", price: "", img : "crystal_regen.png" },
+  { name: "맹독 혼란의 결정", ingredients: "부식 에센스 + 혼란 에센스 + 켈프 8개 + 다이아몬드 1개", price: "", img : "crystal_poison.png" },
 
-  { name: "해구 파동의 코어", ingredients: "활기 보존의 결정 + 파도 침식의 결정 + 격류 재생의 결정", price: "12,231G" },
-  { name: "침묵의 심해 비약", ingredients: "파도 침식의 결정 + 격류 재생의 결정 + 맹독 혼란의 결정", price: "12,354G" },
-  { name: "청해룡의 날개", ingredients: "방어 오염의 결정 + 맹독 혼란의 결정 + 활기 보존의 결정", price: "12,527G" },
+  { name: "해구 파동의 코어", ingredients: "활기 보존의 결정 + 파도 침식의 결정 + 격류 재생의 결정", price: "12,231G", img : "hadal_core.png" },
+  { name: "침묵의 심해 비약", ingredients: "파도 침식의 결정 + 격류 재생의 결정 + 맹독 혼란의 결정", price: "12,354G", img : "silent_deep.png" },
+  { name: "청해룡의 날개", ingredients: "방어 오염의 결정 + 맹독 혼란의 결정 + 활기 보존의 결정", price: "12,527G", img : "wing.png" },
 ]
 
 
 export const RECIPES_3STAR = [
-  { name: "수호의 엘릭서", ingredients: "굴★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 네더랙 8개", price: "" },
-  { name: "파동의 엘릭서", ingredients: "소라★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 마그마 블록 4개", price: "" },
-  { name: "혼란의 엘릭서", ingredients: "문어★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 영혼 흙 4개", price: "" },
-  { name: "생명의 엘릭서", ingredients: "미역★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 진홍빛 자루 4개", price: "" },
-  { name: "부식의 엘릭서", ingredients: "성게★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 뒤틀린 자루 4개", price: "" },
+  { name: "수호의 엘릭서", ingredients: "굴★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 네더랙 8개", price: "", img : "elixir-guard.png" },
+  { name: "파동의 엘릭서", ingredients: "소라★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 마그마 블록 4개", price: "", img : "elixir-wave.png" },
+  { name: "혼란의 엘릭서", ingredients: "문어★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 영혼 흙 4개", price: "", img : "elixir-chaos.png" },
+  { name: "생명의 엘릭서", ingredients: "미역★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 진홍빛 자루 4개", price: "", img : "elixir-life.png" },
+  { name: "부식의 엘릭서", ingredients: "성게★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 뒤틀린 자루 4개", price: "", img : "elixir-decay.png" },
 
-  { name: "불멸 재생의 영약", ingredients: "수호의 엘릭서 + 생명의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 관 산호 블록 2개", price: "" },
-  { name: "파동 장벽의 영약", ingredients: "파동의 엘릭서 + 수호의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 사방산호 블록 2개", price: "" },
-  { name: "타락 침식의 영약", ingredients: "혼란의 엘릭서 + 부식의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 거품 산호 블록 2개", price: "" },
-  { name: "생명 광란의 영약", ingredients: "생명의 엘릭서 + 혼란의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 불 산호 블록 2개", price: "" },
-  { name: "맹독 파동의 영약", ingredients: "부식의 엘릭서 + 파동의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 뇌 산호 블록 2개", price: "" },
+  { name: "불멸 재생의 영약", ingredients: "수호의 엘릭서 + 생명의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 관 산호 블록 2개", price: "", img : "potion-immortal.png" },
+  { name: "파동 장벽의 영약", ingredients: "파동의 엘릭서 + 수호의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 사방산호 블록 2개", price: "", img : "potion-barrier.png" },
+  { name: "타락 침식의 영약", ingredients: "혼란의 엘릭서 + 부식의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 거품 산호 블록 2개", price: "", img : "potion-corrupt.png" },
+  { name: "생명 광란의 영약", ingredients: "생명의 엘릭서 + 혼란의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 불 산호 블록 2개", price: "", img : "potion-frenzy.png" },
+  { name: "맹독 파동의 영약", ingredients: "부식의 엘릭서 + 파동의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 뇌 산호 블록 2개", price: "", img : "potion-venom.png" },
 
-  { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "20,863G" },
-  { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "21,107G" },
-  { name: "무저의 척추", ingredients: "타락 침식의 영약 + 맹독 파동의 영약 + 생명 광란의 영약", price: "21,239G" },
+  { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "20,863G", img : "aqua_pulse.png" },
+  { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "21,107G", img : "hand.png" },
+  { name: "무저의 척추", ingredients: "타락 침식의 영약 + 맹독 파동의 영약 + 생명 광란의 영약", price: "21,239G", img : "spine.png" },
 ]
 
 
 export const RECIPES_CRAFT = [
-  { name: "금속 재활용품 (2개)", ingredients: "캔 2개", minPrice: "", maxPrice: "" },
-  { name: "합금 재활용품 (2개)", ingredients: "통조림 2개", minPrice: "", maxPrice: "" },
-  { name: "합성수지 재활용품 (2개)", ingredients: "비닐봉지 2개", minPrice: "", maxPrice: "" },
-  { name: "플라스틱 재활용품 (2개)", ingredients: "페트병 2개", minPrice: "", maxPrice: "" },
-  { name: "섬유 재활용품 (2개)", ingredients: "신발 2개", minPrice: "", maxPrice: "" },
+  { name: "금속 재활용품 (2개)", ingredients: "캔 2개", minPrice: "", maxPrice: "", img:"metal.png" },
+  { name: "합금 재활용품 (2개)", ingredients: "통조림 2개", minPrice: "", maxPrice: "", img:"alloy.png" },
+  { name: "합성수지 재활용품 (2개)", ingredients: "비닐봉지 2개", minPrice: "", maxPrice: "", img:"resin.png" },
+  { name: "플라스틱 재활용품 (2개)", ingredients: "페트병 2개", minPrice: "", maxPrice: "", img:"pt.png" },
+  { name: "섬유 재활용품 (2개)", ingredients: "신발 2개", minPrice: "", maxPrice: "", img:"fiber.png" },
 
-  { name: "조개껍데기 브로치", ingredients: "깨진 조개껍데기 1개 + 노란빛 진주 1개 + 금속 재활용품 1개 + 거미줄 4개", minPrice: "0G", maxPrice: "50,000G" },
-  { name: "푸른 향수병", ingredients: "깨진 조개껍데기 2개 + 푸른빛 진주 1개 + 합성수지 재활용품 1개 + 플라스틱 재활용품 1개 + 양동이 8개", minPrice: "0G", maxPrice: "100,000G" },
-  { name: "자개 손거울", ingredients: "깨진 조개껍데기 3개 + 청록빛 진주 1개 + 합금 재활용품 2개 + 플라스틱 재활용품 2개 + 유리판 16개", minPrice: "0G", maxPrice: "200,000G" },
-  { name: "분홍 헤어핀", ingredients: "깨진 조개껍데기 4개 + 분홍빛 진주 1개 + 합성수지 재활용품 3개 + 섬유 재활용품 3개 + 대나무 64개 + 분홍 꽃잎 16개", minPrice: "0G", maxPrice: "300,000G" },
-  { name: "자개 부채", ingredients: "깨진 조개껍데기 5개 + 보라빛 진주 1개 + 합금 재활용품 5개 + 합성수지 재활용품 5개 + 막대기 64개 + 자수정 조각 16개", minPrice: "0G", maxPrice: "500,000G" },
-  { name: "흑진주 시계", ingredients: "깨진 조개껍데기 7개 + 흑진주 1개 + 금속 재활용품 7개 + 합금 재활용품 7개 + 섬유 재활용품 7개 + 흑요석 16개 + 시계 8개", minPrice: "0G", maxPrice: "700,000G" },
+  { name: "조개껍데기 브로치", ingredients: "깨진 조개껍데기 1개 + 노란빛 진주 1개 + 금속 재활용품 1개 + 거미줄 4개", minPrice: "0G", maxPrice: "50,000G", img : "yellow_clam.png" },
+  { name: "푸른 향수병", ingredients: "깨진 조개껍데기 2개 + 푸른빛 진주 1개 + 합성수지 재활용품 1개 + 플라스틱 재활용품 1개 + 양동이 8개", minPrice: "0G", maxPrice: "100,000G", img : "blue_perfume.png" },
+  { name: "자개 손거울", ingredients: "깨진 조개껍데기 3개 + 청록빛 진주 1개 + 합금 재활용품 2개 + 플라스틱 재활용품 2개 + 유리판 16개", minPrice: "0G", maxPrice: "200,000G", img : "mirror.png" },
+  { name: "분홍 헤어핀", ingredients: "깨진 조개껍데기 4개 + 분홍빛 진주 1개 + 합성수지 재활용품 3개 + 섬유 재활용품 3개 + 대나무 64개 + 분홍 꽃잎 16개", minPrice: "0G", maxPrice: "300,000G", img : "hairpin.png" },
+  { name: "자개 부채", ingredients: "깨진 조개껍데기 5개 + 보라빛 진주 1개 + 합금 재활용품 5개 + 합성수지 재활용품 5개 + 막대기 64개 + 자수정 조각 16개", minPrice: "0G", maxPrice: "500,000G", img : "fan.png" },
+  { name: "흑진주 시계", ingredients: "깨진 조개껍데기 7개 + 흑진주 1개 + 금속 재활용품 7개 + 합금 재활용품 7개 + 섬유 재활용품 7개 + 흑요석 16개 + 시계 8개", minPrice: "0G", maxPrice: "700,000G", img : "black_pearl.png" },
 ]
 

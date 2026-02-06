@@ -285,47 +285,7 @@
   padding: 16px;
 }
 
-/* =========================
-   검색/정렬 컨트롤
-========================= */
-.table-controls-compact {
-  display: flex;
-  gap: 10px;
-  margin: 16px 16px 5px; /* 위 | 좌우 | 아래 */
-  flex-wrap: wrap;
-}
 
-
-.search-input-compact {
-  flex: 1;
-  min-width: 150px;
-  padding: 8px 12px;
-  border: 1px solid var(--color-border, #e0e0e0);
-  border-radius: 4px;
-  font-size: 13px;
-  transition: border-color 0.2s;
-}
-
-.search-input-compact:focus {
-  outline: none;
-  border-color: var(--color-primary, #4a90e2);
-}
-
-.sort-select-compact {
-  padding: 8px 24px 8px 12px;
-  border: 1px solid var(--color-border, #e0e0e0);
-  border-radius: 4px;
-  font-size: 13px;
-  background-color: white;
-  cursor: pointer;
-  transition: border-color 0.2s;
-  flex-shrink: 0;
-}
-
-.sort-select-compact:focus {
-  outline: none;
-  border-color: var(--color-primary, #4a90e2);
-}
 
 /* =========================
    테이블 래퍼
@@ -460,8 +420,8 @@
 }
 
 .recipe-table-compact .recipe-name img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -805,11 +765,6 @@
 
   .table-controls-compact {
     flex-direction: column;
-  }
-
-  .search-input-compact,
-  .sort-select-compact {
-    width: 100%;
   }
 
   .recipe-content-inner {

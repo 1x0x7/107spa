@@ -73,34 +73,39 @@ export const SOUL_PROCESSING = [
   { 
     name: '영혼 불꽃', 
     ingredients: '좀비의 심장 1개 + 스켈레톤 심장 1개 + 거미의 심장 1개 + 크리퍼의 심장 1개',
-    price: '2,000 G'
+    price: '2,000 G',
+    img : "soul.png"
   },
-  { name: '사슴의 영혼', ingredients: '사슴의 뿔 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '미어캣의 영혼', ingredients: '미어캣의 꼬리 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '기린의 영혼', ingredients: '기린의 가죽 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '코끼리의 영혼', ingredients: '코끼리의 상아 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '하마의 영혼', ingredients: '하마의 송곳니 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '플라밍고의 영혼', ingredients: '플라밍고의 부리 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '칠면조의 영혼', ingredients: '칠면조의 깃털 8개 + 영혼 불꽃 3개', price: '2,000 G' },
-  { name: '곰의 영혼', ingredients: '곰의 발바닥 8개 + 영혼 불꽃 3개', price: '2,000 G' },
+  { name: '사슴의 영혼', ingredients: '사슴의 뿔 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "dear_soul.png" },
+  { name: '미어캣의 영혼', ingredients: '미어캣의 꼬리 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "meerkat_soul.png" },
+  { name: '기린의 영혼', ingredients: '기린의 가죽 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "giraffe_soul.png" },
+  { name: '코끼리의 영혼', ingredients: '코끼리의 상아 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "elephant_soul.png" },
+  { name: '하마의 영혼', ingredients: '하마의 송곳니 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "hippo_soul.png" },
+  { name: '플라밍고의 영혼', ingredients: '플라밍고의 부리 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "flamingo_soul.png" },
+  { name: '칠면조의 영혼', ingredients: '칠면조의 깃털 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "turkey_soul.png" },
+  { name: '곰의 영혼', ingredients: '곰의 발바닥 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "bear_soul.png" },
 ] as const
 
 // ==================== 영혼 계약서 (강화 제작 시설) ====================
 export const SOUL_CONTRACTS = [
   { 
-    name: '번영의 영혼 계약서 (채광)', 
-    ingredients: '사슴의 영혼 1개 + 미어캣의 영혼 1개'
+    name: '번영의 영혼 계약서 (재배)', 
+    ingredients: '사슴의 영혼 1개 + 미어캣의 영혼 1개',
+    img: "f.png"
   },
   { 
     name: '파쇄의 영혼 계약서 (채광)', 
-    ingredients: '기린의 영혼 1개 + 코끼리의 영혼 1개'
+    ingredients: '기린의 영혼 1개 + 코끼리의 영혼 1개',
+    img: "m.png"
   },
   { 
     name: '만조의 영혼 계약서 (해양)', 
-    ingredients: '하마의 영혼 1개 + 플라밍고의 영혼 1개'
+    ingredients: '하마의 영혼 1개 + 플라밍고의 영혼 1개',
+    img: "o.png"
   },
   { 
     name: '정복의 영혼 계약서 (사냥)', 
-    ingredients: '칠면조의 영혼 1개 + 곰의 영혼 1개'
+    ingredients: '칠면조의 영혼 1개 + 곰의 영혼 1개',
+    img: "h.png"
   },
 ] as const
