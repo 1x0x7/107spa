@@ -119,7 +119,7 @@ export default function EnchantPage() {
         <div className="enchant-card">
           <div className="enchant-card-header">
             라이프스톤 시세
-            <span className="price-date">02.05 기준</span>
+            <span className="price-date">02.07 기준</span>
           </div>
           <div className="enchant-card-body">
             <div className="price-input-row">
