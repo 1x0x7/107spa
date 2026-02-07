@@ -75,6 +75,7 @@
 
 .gold-card-body {
   /* 내부 컨텐츠 래퍼 */
+  display: block;
 }
 
 /* ===== 입력 그리드 ===== */
@@ -1049,6 +1050,111 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ===== 재료 툴팁 스타일 ===== */
+.tooltip-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.ingredient-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 35, 0.95);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-width: 120px;
+  max-width: 200px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.ingredient-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(30, 30, 35, 0.95);
+}
+
+.tooltip-wrapper:hover .ingredient-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltip-item:last-child {
+  border-bottom: none;
+}
+
+.tooltip-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.tooltip-text {
+  font-size: 11px;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ===== 최종 결과품 툴팁 스타일 ===== */
+.gold-result-products > .tooltip-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.gold-result-products > .tooltip-wrapper:hover {
+  background: #eef2f7;
+}
+
+.gold-result-products .ingredient-tooltip.product-tooltip {
+  bottom: calc(100% + 10px);
+  min-width: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ===== 통합 탭 미니 툴팁 스타일 ===== */
+.mini-tooltip-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.mini-tooltip-wrapper:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.ingredient-tooltip.mini-tooltip {
+  bottom: calc(100% + 6px);
+  min-width: 130px;
+  left: 0;
+  transform: translateX(0);
+}
+
+.ingredient-tooltip.mini-tooltip::after {
+  left: 20px;
+  transform: translateX(0);
 }
 
 /* ===== 반응형 ===== */

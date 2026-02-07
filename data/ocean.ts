@@ -118,6 +118,326 @@ export const RECIPES_3STAR = [
 ]
 
 
+// 재료 툴팁 데이터 (마우스 호버 시 표시)
+export interface IngredientInfo {
+  text: string;
+  icon?: string;
+}
+
+export interface TooltipItem {
+  name: string;
+  icon?: string;
+}
+
+export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }> = {
+  // === 1성 정수 ===
+  '수호': {
+    ingredients: [
+      { name: '굴★ 2', icon: '/img/ocean/oyster.png' },
+      { name: '점토 2' }
+    ]
+  },
+  '파동': {
+    ingredients: [
+      { name: '소라★ 2', icon: '/img/ocean/conch.png' },
+      { name: '모래 4' }
+    ]
+  },
+  '혼란': {
+    ingredients: [
+      { name: '문어★ 2', icon: '/img/ocean/octopus.png' },
+      { name: '흙 8' }
+    ]
+  },
+  '생명': {
+    ingredients: [
+      { name: '미역★ 2', icon: '/img/ocean/seaweed.png' },
+      { name: '자갈 4' }
+    ]
+  },
+  '부식': {
+    ingredients: [
+      { name: '성게★ 2', icon: '/img/ocean/urchin.png' },
+      { name: '화강암 2' }
+    ]
+  },
+  // === 1성 핵 ===
+  '물결 수호': {
+    ingredients: [
+      { name: '수호 정수', icon: '/img/ocean/essence_guard.png' },
+      { name: '파동 정수', icon: '/img/ocean/essence_wave.png' },
+      { name: '익히지 않은 새우' }
+    ]
+  },
+  '파동 오염': {
+    ingredients: [
+      { name: '파동 정수', icon: '/img/ocean/essence_wave.png' },
+      { name: '혼란 정수', icon: '/img/ocean/essence_chaos.png' },
+      { name: '익히지 않은 도미' }
+    ]
+  },
+  '질서 파괴': {
+    ingredients: [
+      { name: '혼란 정수', icon: '/img/ocean/essence_chaos.png' },
+      { name: '생명 정수', icon: '/img/ocean/essence_life.png' },
+      { name: '익히지 않은 청어' }
+    ]
+  },
+  '활력 붕괴': {
+    ingredients: [
+      { name: '생명 정수', icon: '/img/ocean/essence_life.png' },
+      { name: '부식 정수', icon: '/img/ocean/essence_decay.png' },
+      { name: '금붕어' }
+    ]
+  },
+  '침식 방어': {
+    ingredients: [
+      { name: '부식 정수', icon: '/img/ocean/essence_decay.png' },
+      { name: '수호 정수', icon: '/img/ocean/essence_guard.png' },
+      { name: '농어' }
+    ]
+  },
+  // === 1성 최종 제품 ===
+  '영생의 아쿠티스': {
+    ingredients: [
+      { name: '물결 수호 핵', icon: '/img/ocean/core_wg.png' },
+      { name: '질서 파괴 핵', icon: '/img/ocean/core_od.png' },
+      { name: '활력 붕괴 핵', icon: '/img/ocean/core_vd.png' }
+    ]
+  },
+  '크라켄의 광란체': {
+    ingredients: [
+      { name: '질서 파괴 핵', icon: '/img/ocean/core_od.png' },
+      { name: '활력 붕괴 핵', icon: '/img/ocean/core_vd.png' },
+      { name: '파동 오염 핵', icon: '/img/ocean/core_wp.png' }
+    ]
+  },
+  '리바이던의 깃털': {
+    ingredients: [
+      { name: '침식 방어 핵', icon: '/img/ocean/core_ed.png' },
+      { name: '파동 오염 핵', icon: '/img/ocean/core_wp.png' },
+      { name: '물결 수호 핵', icon: '/img/ocean/core_wg.png' }
+    ]
+  },
+
+  // === 2성 에센스 ===
+  '수호 에센스': {
+    ingredients: [
+      { name: '굴★★ 2', icon: '/img/ocean/oyster.png' },
+      { name: '해초 6' },
+      { name: '참나무 잎 6' }
+    ]
+  },
+  '파동 에센스': {
+    ingredients: [
+      { name: '소라★★ 2', icon: '/img/ocean/conch.png' },
+      { name: '해초 6' },
+      { name: '가문비나무 잎 6' }
+    ]
+  },
+  '혼란 에센스': {
+    ingredients: [
+      { name: '문어★★ 2', icon: '/img/ocean/octopus.png' },
+      { name: '해초 6' },
+      { name: '자작나무 잎 6' }
+    ]
+  },
+  '생명 에센스': {
+    ingredients: [
+      { name: '미역★★ 2', icon: '/img/ocean/seaweed.png' },
+      { name: '해초 6' },
+      { name: '아카시아나무 잎 6' }
+    ]
+  },
+  '부식 에센스': {
+    ingredients: [
+      { name: '성게★★ 2', icon: '/img/ocean/urchin.png' },
+      { name: '해초 6' },
+      { name: '벚나무 잎 6' }
+    ]
+  },
+  // === 2성 결정 ===
+  '활기 보존': {
+    ingredients: [
+      { name: '수호 에센스', icon: '/img/ocean/essence_guard_2.png' },
+      { name: '생명 에센스', icon: '/img/ocean/essence_life_2.png' },
+      { name: '켈프 8' },
+      { name: '청금석 블록 1' }
+    ]
+  },
+  '파도 침식': {
+    ingredients: [
+      { name: '파동 에센스', icon: '/img/ocean/essence_wave_2.png' },
+      { name: '부식 에센스', icon: '/img/ocean/essence_decay_2.png' },
+      { name: '켈프 8' },
+      { name: '레드스톤 블록 1' }
+    ]
+  },
+  '방어 오염': {
+    ingredients: [
+      { name: '혼란 에센스', icon: '/img/ocean/essence_chaos_2.png' },
+      { name: '수호 에센스', icon: '/img/ocean/essence_guard_2.png' },
+      { name: '켈프 8' },
+      { name: '철 주괴 3' }
+    ]
+  },
+  '격류 재생': {
+    ingredients: [
+      { name: '생명 에센스', icon: '/img/ocean/essence_life_2.png' },
+      { name: '파동 에센스', icon: '/img/ocean/essence_wave_2.png' },
+      { name: '켈프 8' },
+      { name: '금 주괴 2' }
+    ]
+  },
+  '맹독 혼란': {
+    ingredients: [
+      { name: '부식 에센스', icon: '/img/ocean/essence_decay_2.png' },
+      { name: '혼란 에센스', icon: '/img/ocean/essence_chaos_2.png' },
+      { name: '켈프 8' },
+      { name: '다이아몬드 1' }
+    ]
+  },
+  // === 2성 최종 제품 ===
+  '해구 파동의 코어': {
+    ingredients: [
+      { name: '활기 보존 결정', icon: '/img/ocean/crystal_vital.png' },
+      { name: '파도 침식 결정', icon: '/img/ocean/crystal_erosion.png' },
+      { name: '격류 재생 결정', icon: '/img/ocean/crystal_regen.png' }
+    ]
+  },
+  '해구의 파동 코어': {
+    ingredients: [
+      { name: '활기 보존 결정', icon: '/img/ocean/crystal_vital.png' },
+      { name: '파도 침식 결정', icon: '/img/ocean/crystal_erosion.png' },
+      { name: '격류 재생 결정', icon: '/img/ocean/crystal_regen.png' }
+    ]
+  },
+  '침묵의 심해 비약': {
+    ingredients: [
+      { name: '파도 침식 결정', icon: '/img/ocean/crystal_erosion.png' },
+      { name: '격류 재생 결정', icon: '/img/ocean/crystal_regen.png' },
+      { name: '맹독 혼란 결정', icon: '/img/ocean/crystal_poison.png' }
+    ]
+  },
+  '청해룡의 날개': {
+    ingredients: [
+      { name: '방어 오염 결정', icon: '/img/ocean/crystal_defense.png' },
+      { name: '맹독 혼란 결정', icon: '/img/ocean/crystal_poison.png' },
+      { name: '활기 보존 결정', icon: '/img/ocean/crystal_vital.png' }
+    ]
+  },
+
+  // === 3성 엘릭서 ===
+  '수호 엘릭서': {
+    ingredients: [
+      { name: '굴★★★ 1', icon: '/img/ocean/oyster.png' },
+      { name: '불우렁쉥이 2' },
+      { name: '유리병 3' },
+      { name: '네더랙 8' }
+    ]
+  },
+  '파동 엘릭서': {
+    ingredients: [
+      { name: '소라★★★ 1', icon: '/img/ocean/conch.png' },
+      { name: '불우렁쉥이 2' },
+      { name: '유리병 3' },
+      { name: '마그마 블록 4' }
+    ]
+  },
+  '혼란 엘릭서': {
+    ingredients: [
+      { name: '문어★★★ 1', icon: '/img/ocean/octopus.png' },
+      { name: '불우렁쉥이 2' },
+      { name: '유리병 3' },
+      { name: '영혼 흙 4' }
+    ]
+  },
+  '생명 엘릭서': {
+    ingredients: [
+      { name: '미역★★★ 1', icon: '/img/ocean/seaweed.png' },
+      { name: '불우렁쉥이 2' },
+      { name: '유리병 3' },
+      { name: '진홍빛 자루 4' }
+    ]
+  },
+  '부식 엘릭서': {
+    ingredients: [
+      { name: '성게★★★ 1', icon: '/img/ocean/urchin.png' },
+      { name: '불우렁쉥이 2' },
+      { name: '유리병 3' },
+      { name: '뒤틀린 자루 4' }
+    ]
+  },
+  // === 3성 영약 ===
+  '불멸 재생': {
+    ingredients: [
+      { name: '수호 엘릭서', icon: '/img/ocean/elixir-guard.png' },
+      { name: '생명 엘릭서', icon: '/img/ocean/elixir-life.png' },
+      { name: '말린 켈프 12' },
+      { name: '발광 열매 4' },
+      { name: '죽은 관 산호 블록 2' }
+    ]
+  },
+  '파동 장벽': {
+    ingredients: [
+      { name: '파동 엘릭서', icon: '/img/ocean/elixir-wave.png' },
+      { name: '수호 엘릭서', icon: '/img/ocean/elixir-guard.png' },
+      { name: '말린 켈프 12' },
+      { name: '발광 열매 4' },
+      { name: '죽은 사방산호 블록 2' }
+    ]
+  },
+  '타락 침식': {
+    ingredients: [
+      { name: '혼란 엘릭서', icon: '/img/ocean/elixir-chaos.png' },
+      { name: '부식 엘릭서', icon: '/img/ocean/elixir-decay.png' },
+      { name: '말린 켈프 12' },
+      { name: '발광 열매 4' },
+      { name: '죽은 거품 산호 블록 2' }
+    ]
+  },
+  '생명 광란': {
+    ingredients: [
+      { name: '생명 엘릭서', icon: '/img/ocean/elixir-life.png' },
+      { name: '혼란 엘릭서', icon: '/img/ocean/elixir-chaos.png' },
+      { name: '말린 켈프 12' },
+      { name: '발광 열매 4' },
+      { name: '죽은 불 산호 블록 2' }
+    ]
+  },
+  '맹독 파동': {
+    ingredients: [
+      { name: '부식 엘릭서', icon: '/img/ocean/elixir-decay.png' },
+      { name: '파동 엘릭서', icon: '/img/ocean/elixir-wave.png' },
+      { name: '말린 켈프 12' },
+      { name: '발광 열매 4' },
+      { name: '죽은 뇌 산호 블록 2' }
+    ]
+  },
+  // === 3성 최종 제품 ===
+  '아쿠아 펄스 파편': {
+    ingredients: [
+      { name: '불멸 재생 영약', icon: '/img/ocean/potion-immortal.png' },
+      { name: '파동 장벽 영약', icon: '/img/ocean/potion-barrier.png' },
+      { name: '맹독 파동 영약', icon: '/img/ocean/potion-venom.png' }
+    ]
+  },
+  '나우틸러스의 손': {
+    ingredients: [
+      { name: '파동 장벽 영약', icon: '/img/ocean/potion-barrier.png' },
+      { name: '생명 광란 영약', icon: '/img/ocean/potion-frenzy.png' },
+      { name: '불멸 재생 영약', icon: '/img/ocean/potion-immortal.png' }
+    ]
+  },
+  '무저의 척추': {
+    ingredients: [
+      { name: '타락 침식 영약', icon: '/img/ocean/potion-corrupt.png' },
+      { name: '맹독 파동 영약', icon: '/img/ocean/potion-venom.png' },
+      { name: '생명 광란 영약', icon: '/img/ocean/potion-frenzy.png' }
+    ]
+  },
+}
+
 export const RECIPES_CRAFT = [
   { name: "금속 재활용품 (2개)", ingredients: "캔 2개", minPrice: "", maxPrice: "", img:"metal.png" },
   { name: "합금 재활용품 (2개)", ingredients: "통조림 2개", minPrice: "", maxPrice: "", img:"alloy.png" },
@@ -132,4 +452,3 @@ export const RECIPES_CRAFT = [
   { name: "자개 부채", ingredients: "깨진 조개껍데기 5개 + 보라빛 진주 1개 + 합금 재활용품 5개 + 합성수지 재활용품 5개 + 막대기 64개 + 자수정 조각 16개", minPrice: "0G", maxPrice: "500,000G", img : "fan.png" },
   { name: "흑진주 시계", ingredients: "깨진 조개껍데기 7개 + 흑진주 1개 + 금속 재활용품 7개 + 합금 재활용품 7개 + 섬유 재활용품 7개 + 흑요석 16개 + 시계 8개", minPrice: "0G", maxPrice: "700,000G", img : "black_pearl.png" },
 ]
-

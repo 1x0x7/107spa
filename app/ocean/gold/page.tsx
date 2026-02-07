@@ -9,6 +9,7 @@ import {
   Result1Star, Result2Star, Result3Star, ResultAll
 } from './ocean-calculator'
 import './ocean-gold.css'
+import { INGREDIENT_TOOLTIPS, TooltipItem } from '@/data/ocean'
 
 type StarLevel = 'all' | '1' | '2' | '3'
 
@@ -448,20 +449,75 @@ export default function OceanGoldPage() {
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
   }
 
-  // 수정: 0 값도 표시
+  // 수정: 0 값도 표시, 툴팁 추가
   const renderSectionWithImage = (title: string, items: { name: string; value: number; icon?: string }[]) => {
     return (
       <div className="gold-result-section">
         <h5>{title}</h5>
         <div className="gold-material-tags with-image">
-          {items.map((item, idx) => (
-            <span key={idx} className="gold-material-tag with-image">
-              {item.icon && <span className="mat-icon"><img src={item.icon} alt={item.name} /></span>}
-              <span className="mat-name">{item.name}</span>
-              <span className="mat-value">{formatValue(item.value)}</span>
-            </span>
-          ))}
+          {items.map((item, idx) => {
+            const tooltipData = INGREDIENT_TOOLTIPS[item.name]
+            return (
+              <span key={idx} className="gold-material-tag with-image tooltip-wrapper">
+                {item.icon && <span className="mat-icon"><img src={item.icon} alt={item.name} /></span>}
+                <span className="mat-name">{item.name}</span>
+                <span className="mat-value">{formatValue(item.value)}</span>
+                {tooltipData && (
+                  <div className="ingredient-tooltip">
+                    {tooltipData.ingredients.map((ing: TooltipItem, i: number) => (
+                      <div key={i} className="tooltip-item">
+                        {ing.icon && <img src={ing.icon} alt={ing.name} className="tooltip-icon" />}
+                        <span className="tooltip-text">{ing.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </span>
+            )
+          })}
         </div>
+      </div>
+    )
+  }
+
+  // 최종 결과품 렌더링 (기존 디자인 유지 + 툴팁 추가)
+  const renderProductWithTooltip = (name: string, count: number) => {
+    const tooltipData = INGREDIENT_TOOLTIPS[name]
+    return (
+      <div className={tooltipData ? 'tooltip-wrapper' : ''}>
+        <div className="product-name">{name}</div>
+        <div className="product-count">{count}</div>
+        {tooltipData && (
+          <div className="ingredient-tooltip product-tooltip">
+            {tooltipData.ingredients.map((ing: TooltipItem, i: number) => (
+              <div key={i} className="tooltip-item">
+                {ing.icon && <img src={ing.icon} alt={ing.name} className="tooltip-icon" />}
+                <span className="tooltip-text">{ing.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // 통합 탭용 미니 제품 렌더링 (툴팁 포함)
+  const renderMiniProduct = (name: string, count: number) => {
+    const tooltipData = INGREDIENT_TOOLTIPS[name]
+    return (
+      <div className={`mini-product ${tooltipData ? 'tooltip-wrapper mini-tooltip-wrapper' : ''}`}>
+        <span className="mini-product-name">{name}</span>
+        <span className="mini-product-count">{count}</span>
+        {tooltipData && (
+          <div className="ingredient-tooltip mini-tooltip">
+            {tooltipData.ingredients.map((ing: TooltipItem, i: number) => (
+              <div key={i} className="tooltip-item">
+                {ing.icon && <img src={ing.icon} alt={ing.name} className="tooltip-icon" />}
+                <span className="tooltip-text">{ing.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     )
   }
@@ -597,18 +653,9 @@ export default function OceanGoldPage() {
                   <div className="gold-result-mini-card">
                     <div className="mini-card-header">1성</div>
                     <div className="mini-card-products">
-                      <div className="mini-product">
-                        <span className="mini-product-name">영생의 아쿠티스</span>
-                        <span className="mini-product-count">{resultAll.result1?.best.A || 0}</span>
-                      </div>
-                      <div className="mini-product">
-                        <span className="mini-product-name">크라켄의 광란체</span>
-                        <span className="mini-product-count">{resultAll.result1?.best.K || 0}</span>
-                      </div>
-                      <div className="mini-product">
-                        <span className="mini-product-name">리바이던의 깃털</span>
-                        <span className="mini-product-count">{resultAll.result1?.best.L || 0}</span>
-                      </div>
+                      {renderMiniProduct('영생의 아쿠티스', resultAll.result1?.best.A || 0)}
+                      {renderMiniProduct('크라켄의 광란체', resultAll.result1?.best.K || 0)}
+                      {renderMiniProduct('리바이던의 깃털', resultAll.result1?.best.L || 0)}
                     </div>
                     <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.star1Gold * (1 + getPremiumRate())))}</div>
                   </div>
@@ -617,18 +664,9 @@ export default function OceanGoldPage() {
                   <div className="gold-result-mini-card">
                     <div className="mini-card-header">2성</div>
                     <div className="mini-card-products">
-                      <div className="mini-product">
-                        <span className="mini-product-name">해구의 파동 코어</span>
-                        <span className="mini-product-count">{resultAll.result2?.best.CORE || 0}</span>
-                      </div>
-                      <div className="mini-product">
-                        <span className="mini-product-name">침묵의 심해 비약</span>
-                        <span className="mini-product-count">{resultAll.result2?.best.POTION || 0}</span>
-                      </div>
-                      <div className="mini-product">
-                        <span className="mini-product-name">청해룡의 날개</span>
-                        <span className="mini-product-count">{resultAll.result2?.best.WING || 0}</span>
-                      </div>
+                      {renderMiniProduct('해구 파동의 코어', resultAll.result2?.best.CORE || 0)}
+                      {renderMiniProduct('침묵의 심해 비약', resultAll.result2?.best.POTION || 0)}
+                      {renderMiniProduct('청해룡의 날개', resultAll.result2?.best.WING || 0)}
                     </div>
                     <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.star2Gold * (1 + getPremiumRate())))}</div>
                   </div>
@@ -637,18 +675,9 @@ export default function OceanGoldPage() {
                   <div className="gold-result-mini-card">
                     <div className="mini-card-header">3성</div>
                     <div className="mini-card-products">
-                      <div className="mini-product">
-                        <span className="mini-product-name">아쿠아 펄스 파편</span>
-                        <span className="mini-product-count">{resultAll.result3?.best.AQUA || 0}</span>
-                      </div>
-                      <div className="mini-product">
-                        <span className="mini-product-name">나우틸러스의 손</span>
-                        <span className="mini-product-count">{resultAll.result3?.best.NAUTILUS || 0}</span>
-                      </div>
-                      <div className="mini-product">
-                        <span className="mini-product-name">무저의 척추</span>
-                        <span className="mini-product-count">{resultAll.result3?.best.SPINE || 0}</span>
-                      </div>
+                      {renderMiniProduct('아쿠아 펄스 파편', resultAll.result3?.best.AQUA || 0)}
+                      {renderMiniProduct('나우틸러스의 손', resultAll.result3?.best.NAUTILUS || 0)}
+                      {renderMiniProduct('무저의 척추', resultAll.result3?.best.SPINE || 0)}
                     </div>
                     <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.star3Gold * (1 + getPremiumRate())))}</div>
                   </div>
@@ -806,9 +835,9 @@ export default function OceanGoldPage() {
                 </div>
 
                 <div className="gold-result-products">
-                  <div><div className="product-name">{productNames['1'].A}</div><div className="product-count">{result1.best.A}</div></div>
-                  <div><div className="product-name">{productNames['1'].K}</div><div className="product-count">{result1.best.K}</div></div>
-                  <div><div className="product-name">{productNames['1'].L}</div><div className="product-count">{result1.best.L}</div></div>
+                  {renderProductWithTooltip(productNames['1'].A, result1.best.A)}
+                  {renderProductWithTooltip(productNames['1'].K, result1.best.K)}
+                  {renderProductWithTooltip(productNames['1'].L, result1.best.L)}
                 </div>
 
                 {renderSectionWithImage('🔹 제작할 정수 ', [
@@ -896,9 +925,9 @@ export default function OceanGoldPage() {
                 </div>
 
                 <div className="gold-result-products">
-                  <div><div className="product-name">{productNames['2'].A}</div><div className="product-count">{result2.best.CORE}</div></div>
-                  <div><div className="product-name">{productNames['2'].K}</div><div className="product-count">{result2.best.POTION}</div></div>
-                  <div><div className="product-name">{productNames['2'].L}</div><div className="product-count">{result2.best.WING}</div></div>
+                  {renderProductWithTooltip(productNames['2'].A, result2.best.CORE)}
+                  {renderProductWithTooltip(productNames['2'].K, result2.best.POTION)}
+                  {renderProductWithTooltip(productNames['2'].L, result2.best.WING)}
                 </div>
 
                 {renderSectionWithImage('🔹 제작할 에센스 ', [
@@ -990,9 +1019,9 @@ export default function OceanGoldPage() {
                 </div>
 
                 <div className="gold-result-products">
-                  <div><div className="product-name">{productNames['3'].A}</div><div className="product-count">{result3.best.AQUA}</div></div>
-                  <div><div className="product-name">{productNames['3'].K}</div><div className="product-count">{result3.best.NAUTILUS}</div></div>
-                  <div><div className="product-name">{productNames['3'].L}</div><div className="product-count">{result3.best.SPINE}</div></div>
+                  {renderProductWithTooltip(productNames['3'].A, result3.best.AQUA)}
+                  {renderProductWithTooltip(productNames['3'].K, result3.best.NAUTILUS)}
+                  {renderProductWithTooltip(productNames['3'].L, result3.best.SPINE)}
                 </div>
 
                 {renderSectionWithImage('🔹 제작할 엘릭서 ', [
