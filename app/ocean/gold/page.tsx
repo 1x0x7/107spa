@@ -501,23 +501,12 @@ export default function OceanGoldPage() {
     )
   }
 
-  // 통합 탭용 미니 제품 렌더링 (툴팁 포함)
+  // 통합 탭용 미니 제품 렌더링 (툴팁 없음)
   const renderMiniProduct = (name: string, count: number) => {
-    const tooltipData = INGREDIENT_TOOLTIPS[name]
     return (
-      <div className={`mini-product ${tooltipData ? 'tooltip-wrapper mini-tooltip-wrapper' : ''}`}>
+      <div className="mini-product">
         <span className="mini-product-name">{name}</span>
         <span className="mini-product-count">{count}</span>
-        {tooltipData && (
-          <div className="ingredient-tooltip mini-tooltip">
-            {tooltipData.ingredients.map((ing: TooltipItem, i: number) => (
-              <div key={i} className="tooltip-item">
-                {ing.icon && <img src={ing.icon} alt={ing.name} className="tooltip-icon" />}
-                <span className="tooltip-text">{ing.name}</span>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     )
   }
