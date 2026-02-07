@@ -449,14 +449,14 @@ export default function OceanGoldPage() {
     return <span className="owned-summary">+{items.map(i => `${i.name} ${i.value}`).join(', ')}</span>
   }
 
-  // 수정: 0 값도 표시, 툴팁 추가
-  const renderSectionWithImage = (title: string, items: { name: string; value: number; icon?: string }[]) => {
+  // 수정: 0 값도 표시, 툴팁 추가, tooltipKey 지원
+  const renderSectionWithImage = (title: string, items: { name: string; value: number; icon?: string; tooltipKey?: string }[]) => {
     return (
       <div className="gold-result-section">
         <h5>{title}</h5>
         <div className="gold-material-tags with-image">
           {items.map((item, idx) => {
-            const tooltipData = INGREDIENT_TOOLTIPS[item.name]
+            const tooltipData = INGREDIENT_TOOLTIPS[item.tooltipKey || item.name]
             return (
               <span key={idx} className="gold-material-tag with-image tooltip-wrapper">
                 {item.icon && <span className="mat-icon"><img src={item.icon} alt={item.name} /></span>}
@@ -920,11 +920,11 @@ export default function OceanGoldPage() {
                 </div>
 
                 {renderSectionWithImage('🔹 제작할 에센스 ', [
-                  { name: '수호', value: ceilToTwo(result2.essNeedProduct.guard), icon: '/img/ocean/essence_guard_2.png' },
-                  { name: '파동', value: ceilToTwo(result2.essNeedProduct.wave), icon: '/img/ocean/essence_wave_2.png' },
-                  { name: '혼란', value: ceilToTwo(result2.essNeedProduct.chaos), icon: '/img/ocean/essence_chaos_2.png' },
-                  { name: '생명', value: ceilToTwo(result2.essNeedProduct.life), icon: '/img/ocean/essence_life_2.png' },
-                  { name: '부식', value: ceilToTwo(result2.essNeedProduct.decay), icon: '/img/ocean/essence_decay_2.png' }
+                  { name: '수호', value: ceilToTwo(result2.essNeedProduct.guard), icon: '/img/ocean/essence_guard_2.png', tooltipKey: '수호 에센스' },
+                  { name: '파동', value: ceilToTwo(result2.essNeedProduct.wave), icon: '/img/ocean/essence_wave_2.png', tooltipKey: '파동 에센스' },
+                  { name: '혼란', value: ceilToTwo(result2.essNeedProduct.chaos), icon: '/img/ocean/essence_chaos_2.png', tooltipKey: '혼란 에센스' },
+                  { name: '생명', value: ceilToTwo(result2.essNeedProduct.life), icon: '/img/ocean/essence_life_2.png', tooltipKey: '생명 에센스' },
+                  { name: '부식', value: ceilToTwo(result2.essNeedProduct.decay), icon: '/img/ocean/essence_decay_2.png', tooltipKey: '부식 에센스' }
                 ])}
                 {renderSectionWithImage('🔹 제작할 결정 ', [
                   { name: '활기 보존', value: result2.crystalToMakeProduct.vital, icon: '/img/ocean/crystal_vital.png' },
@@ -1014,11 +1014,11 @@ export default function OceanGoldPage() {
                 </div>
 
                 {renderSectionWithImage('🔹 제작할 엘릭서 ', [
-                  { name: '수호', value: (result3.elixNeedProduct.guard), icon: '/img/ocean/elixir-guard.png' },
-                  { name: '파동', value: (result3.elixNeedProduct.wave), icon: '/img/ocean/elixir-wave.png' },
-                  { name: '혼란', value: (result3.elixNeedProduct.chaos), icon: '/img/ocean/elixir-chaos.png' },
-                  { name: '생명', value: (result3.elixNeedProduct.life), icon: '/img/ocean/elixir-life.png' },
-                  { name: '부식', value: (result3.elixNeedProduct.decay), icon: '/img/ocean/elixir-decay.png' }
+                  { name: '수호', value: (result3.elixNeedProduct.guard), icon: '/img/ocean/elixir-guard.png', tooltipKey: '수호 엘릭서' },
+                  { name: '파동', value: (result3.elixNeedProduct.wave), icon: '/img/ocean/elixir-wave.png', tooltipKey: '파동 엘릭서' },
+                  { name: '혼란', value: (result3.elixNeedProduct.chaos), icon: '/img/ocean/elixir-chaos.png', tooltipKey: '혼란 엘릭서' },
+                  { name: '생명', value: (result3.elixNeedProduct.life), icon: '/img/ocean/elixir-life.png', tooltipKey: '생명 엘릭서' },
+                  { name: '부식', value: (result3.elixNeedProduct.decay), icon: '/img/ocean/elixir-decay.png', tooltipKey: '부식 엘릭서' }
                 ])}
                 {renderSectionWithImage('🔹 제작할 영약 ', [
                   { name: '불멸 재생', value: result3.potionToMakeProduct.immortal, icon: '/img/ocean/potion-immortal.png' },

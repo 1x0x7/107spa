@@ -25,6 +25,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       ],
       fixes: [
         "각인 이미지 출력 오류 수정",
+        "1성 2성 3성 이름 출력 오류 수정",
 
 
       ],
