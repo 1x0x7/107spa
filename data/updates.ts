@@ -20,6 +20,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       changes: [
         "요리 가격 변동",
         "모든 전문가 정보 탭 이미지 추가",
+        "강화 재료 맟 계약서 시세 변경 (02.07 기준)",
       ],
       fixes: [
         "각인 이미지 출력 오류 수정",
@@ -28,7 +29,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       ],
       notes: [
         "해양 제작 아이템에 마우스를 올리면 조합법이 표시 예정",
-        "다음 업데이트 : 02.06 예정(내용 수정)"
+        "다음 업데이트 : 02.09 예정(요리 가격 변경)"
       ]
     }
   },
