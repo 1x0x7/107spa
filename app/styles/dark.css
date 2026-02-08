@@ -1312,3 +1312,19 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .fee-card .result-empty {
   color: var(--color-text-muted);
 }
+
+:root[data-theme="dark"] .guide-stat.stamina {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+:root[data-theme="dark"] .guide-stat.count {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+:root[data-theme="dark"] .guide-stat.profit {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+:root[data-theme="dark"] .guide-stat.efficiency {
+  background: rgba(59, 130, 246, 0.25);
+}
