@@ -226,10 +226,11 @@ export default function EventPopup({ onOpenContact }: EventPopupProps) {
             <p className="ep-gold">채택 상금 : 1,000,000 골드</p>
             <p className="ep-note">
               *상금 지급을 위해 닉네임을 함께 남겨주세요.<br />
+              **이름 중복 시 선착순 채택<br/>
               (채택자는 서버 내 귓속말로 연락 예정)
             </p>
             <button className="ep-cta" onClick={handleGoContact}>
-              제안하러 가기
+              제안하러 가기(~02/22)
             </button>
           </div>
 
