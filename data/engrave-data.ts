@@ -23,9 +23,9 @@ export const CONTRACT_TYPES = {
 
 // 기본 시세
 export const DEFAULT_PRICES = {
-  prosperity: 65389, //번영
-  crushing: 41683, //파쇄
-  tide: 46567, //만조
+  prosperity: 62027, //번영
+  crushing: 37922, //파쇄
+  tide: 37817, //만조
   conquest: 64635, //정복
   rough: 0, //투박한
   neat: 0, //단정한
