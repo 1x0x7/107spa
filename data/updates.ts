@@ -13,8 +13,8 @@ export interface UpdateItem {
 export const UPDATE_HISTORY: UpdateItem[] = [
   { 
     title: "요리 가격 업데이트", 
-    desc: "딥 크림 빠네 > 마늘 양갈비 핫도그 > 삼색 아이스크림", 
-    date: "2025.02.09", 
+    desc: "토마토 라자냐 > 삼겹살 토마토 찌개 > 로스트 치킨 파이", 
+    date: "2025.02.12", 
     isLatest: true,
     details: {
       changes: [
@@ -25,7 +25,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
 
       ],
       notes: [
-        "다음 업데이트 : 02.12 예정(요리 가격 변경)"
+        "다음 업데이트 : 02.15 예정(요리 가격 변경)"
       ]
     }
   },
