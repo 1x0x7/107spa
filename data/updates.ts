@@ -19,6 +19,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     details: {
       changes: [
         "요리 가격 변동",
+        "사냥꾼 스태미나 페이지 추가",
       ],
       fixes: [
 

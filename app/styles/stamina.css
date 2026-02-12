@@ -494,6 +494,45 @@
   border-top: 1px solid var(--color-border-light, #f0f0f0);
 }
 
+
+/* =========================
+   사냥 스태미나 페이지 추가 스타일
+   (stamina.css 에 추가)
+========================= */
+
+/* 콤보 활성화 알림 */
+.combo-active-notice {
+  color: var(--color-primary, #4a90e2);
+  margin-left: 8px;
+  font-size: 11px;
+}
+
+/* 결과 아이콘 */
+.result-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* 작은 글씨 결과 행 */
+.result-row-small {
+  font-size: 11px;
+}
+
+.result-row-small .result-value {
+  font-weight: 400;
+}
+
+/* 상단 여백 결과 행 */
+.result-row-top {
+  margin-top: 4px;
+}
+
+/* 회색 텍스트 */
+.text-muted {
+  color: var(--color-text-muted, #999) !important;
+}
+
 /* 최적화 모드 반응형 */
 @media (max-width: 480px) {
   .allocation-grid {

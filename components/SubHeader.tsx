@@ -23,6 +23,7 @@ const tabs: Record<string, { href: string; label: string }[]> = {
   ],
   hunting: [
     { href: '/hunting/info', label: '정보' },
+    { href: '/hunting/stamina', label: '스태미나' },
   ],
   system: [
     { href: '/system/enchant', label: '강화' },

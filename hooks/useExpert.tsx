@@ -32,15 +32,13 @@ interface OceanSettings {
   clamRefill: number
 }
 
-// ============ 🎯 HuntingSettings 추가 ============
+// ============ HuntingSettings (flowMaintain, fasterThanAnyone 제거) ============
 interface HuntingSettings {
   swordLevel: number
   allTheWay: number
   worthProof: number
-  beastHeart: number
-  flowMaintain: number
-  fasterThanAnyone: number
   extraProcessing: number
+  differentFromOthers: number
   mutantSpecies: number
 }
 
@@ -48,11 +46,11 @@ interface ExpertContextType {
   mining: MiningSettings
   farming: FarmingSettings
   ocean: OceanSettings
-  hunting: HuntingSettings  // ← 추가
+  hunting: HuntingSettings
   updateMining: (key: keyof MiningSettings, value: number) => void
   updateFarming: (key: keyof FarmingSettings, value: number) => void
   updateOcean: (key: keyof OceanSettings, value: number) => void
-  updateHunting: (key: keyof HuntingSettings, value: number) => void  // ← 추가
+  updateHunting: (key: keyof HuntingSettings, value: number) => void
 }
 
 const defaultMining: MiningSettings = {
@@ -67,15 +65,13 @@ const defaultOcean: OceanSettings = {
   rodLevel: 1, clamSell: 0, premiumPrice: 0, deepSea: 0, star: 0, clamRefill: 0
 }
 
-// ============ 🎯 defaultHunting 추가 ============
+// ============ defaultHunting (flowMaintain, fasterThanAnyone 제거) ============
 const defaultHunting: HuntingSettings = {
   swordLevel: 1,
   allTheWay: 0,
   worthProof: 0,
-  beastHeart: 0,
-  flowMaintain: 0,
-  fasterThanAnyone: 0,
   extraProcessing: 0,
+  differentFromOthers: 0,
   mutantSpecies: 0
 }
 
@@ -99,14 +95,14 @@ export function ExpertProvider({ children }: { children: ReactNode }) {
   const [mining, setMining] = useState<MiningSettings>(defaultMining)
   const [farming, setFarming] = useState<FarmingSettings>(defaultFarming)
   const [ocean, setOcean] = useState<OceanSettings>(defaultOcean)
-  const [hunting, setHunting] = useState<HuntingSettings>(defaultHunting)  // ← 추가
+  const [hunting, setHunting] = useState<HuntingSettings>(defaultHunting)
 
   // 클라이언트에서 한 번만 localStorage 로드
   useEffect(() => {
     setMining(loadFromStorage('miningExpert', defaultMining))
     setFarming(loadFromStorage('farmingExpert', defaultFarming))
     setOcean(loadFromStorage('oceanExpert', defaultOcean))
-    setHunting(loadFromStorage('huntingExpert', defaultHunting))  // ← 추가
+    setHunting(loadFromStorage('huntingExpert', defaultHunting))
   }, [])
 
   const updateMining = useCallback((key: keyof MiningSettings, value: number) => {
@@ -133,7 +129,6 @@ export function ExpertProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  // ============ 🎯 updateHunting 함수 추가 ============
   const updateHunting = useCallback((key: keyof HuntingSettings, value: number) => {
     setHunting(prev => {
       const next = { ...prev, [key]: value }
@@ -143,7 +138,7 @@ export function ExpertProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(() => ({
-    mining, farming, ocean, hunting, updateMining, updateFarming, updateOcean, updateHunting  // ← hunting, updateHunting 추가
+    mining, farming, ocean, hunting, updateMining, updateFarming, updateOcean, updateHunting
   }), [mining, farming, ocean, hunting, updateMining, updateFarming, updateOcean, updateHunting])
 
   return (

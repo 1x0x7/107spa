@@ -19,10 +19,8 @@ export default function HuntingInfoPage() {
   const skills = [
     { key: 'allTheWay', name: '끝까지 간다!', max: 5, desc: HUNTING_EXPERT_DESC.allTheWay },
     { key: 'worthProof', name: '값어치 증명', max: 6, desc: HUNTING_EXPERT_DESC.worthProof },
-    { key: 'beastHeart', name: '야수의 심장', max: 7, desc: HUNTING_EXPERT_DESC.beastHeart },
-    { key: 'flowMaintain', name: '흐름 유지', max: 10, desc: HUNTING_EXPERT_DESC.flowMaintain },
-    { key: 'fasterThanAnyone', name: '누구보다 빠르게', max: 7, desc: HUNTING_EXPERT_DESC.fasterThanAnyone },
     { key: 'extraProcessing', name: '추가 손질', max: 7, desc: HUNTING_EXPERT_DESC.extraProcessing },
+    { key: 'differentFromOthers', name: '남들과는 다르게', max: 7, desc: HUNTING_EXPERT_DESC.differentFromOthers },
     { key: 'mutantSpecies', name: '변종 개체', max: 10, desc: HUNTING_EXPERT_DESC.mutantSpecies },
   ]
 
@@ -61,10 +59,8 @@ export default function HuntingInfoPage() {
   const skillValues: Record<string, number> = {
     allTheWay: hunting.allTheWay,
     worthProof: hunting.worthProof,
-    beastHeart: hunting.beastHeart,
-    flowMaintain: hunting.flowMaintain,
-    fasterThanAnyone: hunting.fasterThanAnyone,
     extraProcessing: hunting.extraProcessing,
+    differentFromOthers: hunting.differentFromOthers,
     mutantSpecies: hunting.mutantSpecies,
   }
 
