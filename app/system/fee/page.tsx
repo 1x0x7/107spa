@@ -1,6 +1,14 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+
+const GoldIcon = () => (
+  <img 
+    src="/img/gold.png" 
+    alt="골드" 
+    style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
+  />
+)
 import { FeeType, FEE_INFO, calculateFee } from './fee-calculator'
 import './fee.css'
 
@@ -158,7 +166,7 @@ export default function FeePage() {
                  selectedType === 'bank' ? '실제 저장액' : '실수령액'}
               </span>
               <span className="result-value highlight">
-                💰 {fmt(result.resultAmount)} G
+                <GoldIcon /> {fmt(result.resultAmount)} G
               </span>
             </div>
           </div>

@@ -1,6 +1,14 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+
+const GoldIcon = () => (
+  <img 
+    src="/img/gold.png" 
+    alt="골드" 
+    style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
+  />
+)
 import { useExpert } from '@/hooks/useExpert'
 import { useSecurityLock } from '@/hooks/useSecurityLock'
 import { 
@@ -619,7 +627,7 @@ export default function OceanGoldPage() {
                 <div className="gold-result-header">
                   <h4>최적 조합 결과</h4>
                   <div className="gold-result-gold">
-                    💰 {fmt(Math.floor(resultAll.totalGold * (1 + getPremiumRate())))}
+                    <GoldIcon /> {fmt(Math.floor(resultAll.totalGold * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
                   </div>
                 </div>
@@ -635,7 +643,7 @@ export default function OceanGoldPage() {
                         <span className="mini-product-count">{resultAll.dilution}</span>
                       </div>
                     </div>
-                    <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.dilutionGold * (1 + getPremiumRate())))}</div>
+                    <div className="mini-card-gold"><GoldIcon /> {fmt(Math.floor(resultAll.summary.dilutionGold * (1 + getPremiumRate())))}</div>
                   </div>
 
                   {/* 1성 */}
@@ -646,7 +654,7 @@ export default function OceanGoldPage() {
                       {renderMiniProduct('크라켄의 광란체', resultAll.result1?.best.K || 0)}
                       {renderMiniProduct('리바이던의 깃털', resultAll.result1?.best.L || 0)}
                     </div>
-                    <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.star1Gold * (1 + getPremiumRate())))}</div>
+                    <div className="mini-card-gold"><GoldIcon /> {fmt(Math.floor(resultAll.summary.star1Gold * (1 + getPremiumRate())))}</div>
                   </div>
 
                   {/* 2성 */}
@@ -657,7 +665,7 @@ export default function OceanGoldPage() {
                       {renderMiniProduct('침묵의 심해 비약', resultAll.result2?.best.POTION || 0)}
                       {renderMiniProduct('청해룡의 날개', resultAll.result2?.best.WING || 0)}
                     </div>
-                    <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.star2Gold * (1 + getPremiumRate())))}</div>
+                    <div className="mini-card-gold"><GoldIcon /> {fmt(Math.floor(resultAll.summary.star2Gold * (1 + getPremiumRate())))}</div>
                   </div>
 
                   {/* 3성 */}
@@ -668,7 +676,7 @@ export default function OceanGoldPage() {
                       {renderMiniProduct('나우틸러스의 손', resultAll.result3?.best.NAUTILUS || 0)}
                       {renderMiniProduct('무저의 척추', resultAll.result3?.best.SPINE || 0)}
                     </div>
-                    <div className="mini-card-gold">💰 {fmt(Math.floor(resultAll.summary.star3Gold * (1 + getPremiumRate())))}</div>
+                    <div className="mini-card-gold"><GoldIcon /> {fmt(Math.floor(resultAll.summary.star3Gold * (1 + getPremiumRate())))}</div>
                   </div>
                 </div>
 
@@ -818,7 +826,7 @@ export default function OceanGoldPage() {
                 <div className="gold-result-header">
                   <h4>최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
                   <div className="gold-result-gold">
-                    💰 {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star1Gold : result1.best.gold) * (1 + getPremiumRate())))}
+                    <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star1Gold : result1.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
                   </div>
                 </div>
@@ -908,7 +916,7 @@ export default function OceanGoldPage() {
                 <div className="gold-result-header">
                   <h4>최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
                   <div className="gold-result-gold">
-                    💰 {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star2Gold : result2.best.gold) * (1 + getPremiumRate())))}
+                    <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star2Gold : result2.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
                   </div>
                 </div>
@@ -1002,7 +1010,7 @@ export default function OceanGoldPage() {
                 <div className="gold-result-header">
                   <h4>최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
                   <div className="gold-result-gold">
-                    💰 {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star3Gold : result3.best.gold) * (1 + getPremiumRate())))}
+                    <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star3Gold : result3.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
                   </div>
                 </div>

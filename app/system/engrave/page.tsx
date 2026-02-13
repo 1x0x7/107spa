@@ -2,6 +2,14 @@
 
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
+
+const GoldIcon = () => (
+  <img 
+    src="/img/gold.png" 
+    alt="골드" 
+    style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
+  />
+)
 import { ENGRAVING_DATA, CONTRACT_TYPES, DEFAULT_PRICES, ENGRAVE_OPTIONS } from '@/data/engrave-data'
 import { 
   TierType, 
@@ -331,7 +339,7 @@ export default function EngravingPage() {
                   {tierOptions.find(t => t.key === selectedTier)?.label}
                 </span>
               </span>
-              <span className="result-total">💰 {fmt(result.totalCost)}</span>
+              <span className="result-total"><GoldIcon /> {fmt(result.totalCost)}</span>
             </div>
 
             <div className="result-body">

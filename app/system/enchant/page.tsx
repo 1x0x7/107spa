@@ -1,6 +1,14 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+
+const GoldIcon = () => (
+  <img 
+    src="/img/gold.png" 
+    alt="골드" 
+    style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
+  />
+)
 import { ENCHANT_DATA, DEFAULT_PRICES } from '@/data/enchant-data'
 import { 
   TierType, 
@@ -242,7 +250,7 @@ export default function EnchantPage() {
                 {hasVariableChance ? tierOptions.find(t => t.key === selectedTier)?.label : '확정'}
               </span>
             </span>
-            <span className="result-total">💰 {fmt(result.totalCost)}</span>
+            <span className="result-total"><GoldIcon /> {fmt(result.totalCost)}</span>
           </div>
 
           <div className="result-body">
