@@ -152,7 +152,7 @@ export default function EngravingPage() {
           <div className="enchant-card">
             <div className="enchant-card-header">
               영혼 계약서 시세
-              <span className="price-date">02.17 기준</span>
+              <span className="price-date">02.18 기준</span>
             </div>
             <div className="enchant-card-body">
               <div className="price-input-row">
