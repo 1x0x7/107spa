@@ -29,7 +29,7 @@ export const ENCHANT_DATA: EnchantLevel[] = [
 
 // 기본 라이프스톤 시세
 export const DEFAULT_PRICES = {
-  lowStone: 9672,
-  midStone: 31076,
-  highStone: 54538,
+  lowStone: 9913,
+  midStone: 30433,
+  highStone: 54642,
 };
