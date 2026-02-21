@@ -31,6 +31,7 @@ export default function OceanGoldPage() {
   const [setMode, setSetMode] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
   const [independentMode, setIndependentMode] = useState(false) // 독립 계산 스위치
+  const [showGuide, setShowGuide] = useState(false) // 가이드 열림/닫힘
   const [isLoaded, setIsLoaded] = useState(false)
   const [isCalculating, setIsCalculating] = useState(false) // 계산 중 상태
   const [workerReady, setWorkerReady] = useState(false) // Worker 준비 상태
@@ -539,6 +540,31 @@ export default function OceanGoldPage() {
   return (
     <div>
       <div className="gold-container">
+        {/* 연금품 가이드 */}
+        <div className="data-card">
+          <button className={`data-toggle ${showGuide ? 'open' : ''}`} onClick={() => setShowGuide(v => !v)}>
+            <span>연금품 가이드</span>
+            <span className="toggle-icon">▼</span>
+          </button>
+          <div className={`data-table-wrapper ${showGuide ? 'open' : ''}`}>
+            <div className="guide-content">
+              <div className="guide-section">
+                <p>보유 재료를 최대한 소모하여 최적의 수익을 계산합니다</p>
+              </div>
+              <div className="guide-section">
+                <ul>
+                  <li><strong>세트 변환</strong> : 세트 / 수량 으로 표기를 바꿉니다</li>
+                  <li><strong>보유량 입력</strong> : 기존 보유하고 있던 보유량도 고려하여 계산합니다</li>
+                  <li><strong>독립 계산</strong> : 0성을</li>
+                  <li><strong>통합 탭</strong> : 모든 성급을 한번에 최적화하여 계산합니다</li>
+                  <li>65개 = 1/1 로 입력 가능합니다</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
         {/* 탭 선택 */}
         <div className="gold-star-toggle">
           {(['all', '1', '2', '3'] as StarLevel[]).map(s => (

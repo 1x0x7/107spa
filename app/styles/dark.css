@@ -1328,3 +1328,7 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .guide-stat.efficiency {
   background: rgba(59, 130, 246, 0.25);
 }
+
+:root[data-theme="dark"] .guide-section h4 {
+  color: #888;
+}
