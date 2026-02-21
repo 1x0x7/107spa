@@ -112,7 +112,7 @@ export default function Header() {
 
           {/* 모바일 햄버거 버튼 */}
           <button 
-            className={`mobile-menu-btn ${isMobileMenuOpen ? 'open' : ''}`}
+            className="mobile-menu-btn"
             onClick={toggleMobileMenu}
             aria-label="메뉴 열기"
           >
@@ -123,7 +123,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* 모바일 오버레이 */}
+      {/* 모바일 오버레이 (서브헤더 포함) */}
       <div 
         className={`mobile-nav-overlay ${isMobileMenuOpen ? 'show' : ''}`}
         onClick={closeMobileMenu}
