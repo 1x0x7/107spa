@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 export default function Header() {
   const pathname = usePathname()
   const [isDark, setIsDark] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('theme')
@@ -16,6 +17,23 @@ export default function Header() {
       document.documentElement.setAttribute('data-theme', 'dark')
     }
   }, [])
+
+  // 모바일 메뉴 열릴 때 스크롤 방지
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMobileMenuOpen])
+
+  // 페이지 이동 시 모바일 메뉴 닫기
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
 
   const toggleTheme = () => {
     const newDark = !isDark
@@ -36,10 +54,27 @@ export default function Header() {
     })
   }
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+  }
+
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
     return pathname.startsWith(href)
   }
+
+  const navLinks = [
+    { href: '/', label: '홈' },
+    { href: '/mining/info', label: '채광', activePrefix: '/mining' },
+    { href: '/farming/info', label: '재배', activePrefix: '/farming' },
+    { href: '/ocean/info', label: '해양', activePrefix: '/ocean' },
+    { href: '/hunting/info', label: '사냥', activePrefix: '/hunting' },
+    { href: '/system/enchant', label: '시스템', activePrefix: '/system' },
+  ]
 
   return (
     <>
@@ -62,28 +97,61 @@ export default function Header() {
             />
           </div>
 
+          {/* 데스크톱 네비게이션 */}
           <nav className="main-nav">
-            <Link href="/" className={isActive('/') ? 'active' : ''}>
-              홈
-            </Link>
-            <Link href="/mining/info" className={isActive('/mining') ? 'active' : ''}>
-              채광
-            </Link>
-            <Link href="/farming/info" className={isActive('/farming') ? 'active' : ''}>
-              재배
-            </Link>
-            <Link href="/ocean/info" className={isActive('/ocean') ? 'active' : ''}>
-              해양
-            </Link>
-            <Link href="/hunting/info" className={isActive('/hunting') ? 'active' : ''}>
-              사냥
-            </Link>
-            <Link href="/system/enchant" className={isActive('/system') ? 'active' : ''}>
-              시스템
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={isActive(link.activePrefix || link.href) ? 'active' : ''}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
+
+          {/* 모바일 햄버거 버튼 */}
+          <button 
+            className={`mobile-menu-btn ${isMobileMenuOpen ? 'open' : ''}`}
+            onClick={toggleMobileMenu}
+            aria-label="메뉴 열기"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </header>
+
+      {/* 모바일 오버레이 */}
+      <div 
+        className={`mobile-nav-overlay ${isMobileMenuOpen ? 'show' : ''}`}
+        onClick={closeMobileMenu}
+      />
+
+      {/* 모바일 네비게이션 드로어 */}
+      <nav className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-nav-header">
+          <span className="mobile-nav-title">메뉴</span>
+          <button 
+            className="mobile-nav-close"
+            onClick={closeMobileMenu}
+            aria-label="메뉴 닫기"
+          >
+            ✕
+          </button>
+        </div>
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={isActive(link.activePrefix || link.href) ? 'active' : ''}
+            onClick={closeMobileMenu}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </nav>
     </>
   )
 }

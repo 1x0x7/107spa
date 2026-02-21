@@ -20,9 +20,16 @@
 @media (max-width: 768px) {
   .content-title {
     font-size: 1.15rem;
+    margin-bottom: 16px;
   }
 }
 
+@media (max-width: 480px) {
+  .content-title {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+}
 
 /* =========================
    2단 그리드 레이아웃
@@ -69,9 +76,8 @@
 .compact-card .card-header {
   padding: 12px 16px;
   background-color: var(--color-bg-secondary, #f8f9fa);
-  border-bottom: 1px solid var(--color-border-light, #f0f0f0); /* ← 이게 핵심 */
+  border-bottom: 1px solid var(--color-border-light, #f0f0f0);
 }
-
 
 .compact-card .card-title {
   font-size: clamp(14px, 3.5vw, 16px);
@@ -108,8 +114,6 @@
   flex-wrap: wrap;
   gap: 8px;
 }
-
-
 
 /* 도구 스펙 강조 행 (곡괭이/괭이/낚싯대) */
 .tool-spec-row {
@@ -169,8 +173,6 @@
   font-size: 11px;
 }
 
-
-
 /* =========================
    정보 버튼 (ⓘ)
 ========================= */
@@ -203,8 +205,6 @@
   color: var(--color-text-secondary, #666);
   line-height: 1.6;
 }
-
-
 
 .expert-desc strong {
   color: var(--color-text-primary, #333);
@@ -279,13 +279,9 @@
 /* =========================
    조합법 콘텐츠
 ========================= */
-
-
 .recipe-content-inner {
   padding: 16px;
 }
-
-
 
 /* =========================
    테이블 래퍼
@@ -652,7 +648,7 @@
 ========================= */
 @media (max-width: 768px) {
   .content-area {
-    padding: var(--spacing-md) !important;
+    padding: var(--spacing-md, 12px) !important;
   }
 
   .info-grid {
@@ -732,6 +728,11 @@
     width: 20px;
     height: 20px;
   }
+
+  .compact-card .card-header,
+  .compact-card .card-body {
+    padding: 10px 14px;
+  }
 }
 
 /* =========================
@@ -739,7 +740,7 @@
 ========================= */
 @media (max-width: 480px) {
   .content-area {
-    padding: var(--spacing-sm) !important;
+    padding: var(--spacing-sm, 8px) !important;
   }
 
   .compact-card .card-header,
@@ -749,6 +750,12 @@
 
   .setting-row {
     padding: 6px 0;
+    gap: 6px;
+  }
+
+  .setting-label {
+    font-size: 11px;
+    gap: 4px;
   }
 
   .setting-input {
@@ -763,12 +770,22 @@
     padding: 6px 8px;
   }
 
+  .tool-spec-label {
+    font-size: 11px;
+  }
+
   .table-controls-compact {
     flex-direction: column;
   }
 
   .recipe-content-inner {
     padding: 10px;
+  }
+
+  .recipe-tab {
+    font-size: 11px;
+    padding: 8px 10px;
+    min-width: 50px;
   }
 
   .table-wrapper-compact {
@@ -785,5 +802,26 @@
   .processing-table-compact th,
   .processing-table-compact td {
     padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .recipe-table-compact .recipe-name img,
+  .processing-table-compact .processing-name img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .recipe-table-compact .recipe-name,
+  .processing-table-compact .processing-name {
+    gap: 6px;
+  }
+
+  .basic-materials-inline {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .basic-materials-toggle {
+    padding: 10px 12px;
   }
 }
