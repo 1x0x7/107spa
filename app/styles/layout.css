@@ -171,7 +171,7 @@ a {
   border-radius: 2px;
 }
 
-/* 모바일 메뉴 오버레이 - 서브헤더 포함하여 덮음 */
+/* 모바일 메뉴 오버레이 - 헤더, 서브헤더 모두 덮음 */
 .mobile-nav-overlay {
   display: none;
   position: fixed;
@@ -180,7 +180,7 @@ a {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 95; /* 서브헤더(90)보다 높게 */
+  z-index: 105; /* 헤더(100)보다 높게 */
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -199,7 +199,7 @@ a {
   width: 280px;
   height: 100%;
   background: #fff;
-  z-index: 100;
+  z-index: 110; /* 오버레이보다 높게 */
   flex-direction: column;
   padding: 20px 0;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
