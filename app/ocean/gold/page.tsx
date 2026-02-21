@@ -824,7 +824,7 @@ export default function OceanGoldPage() {
             {result1 && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
-                  <h4>최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
+                  <h4>최적 조합 결과{resultAll && !independentMode ? '' : ''}</h4>
                   <div className="gold-result-gold">
                     <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star1Gold : result1.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
@@ -914,7 +914,7 @@ export default function OceanGoldPage() {
             {result2 && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
-                  <h4>최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
+                  <h4>최적 조합 결과{resultAll && !independentMode ? '' : ''}</h4>
                   <div className="gold-result-gold">
                     <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star2Gold : result2.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
@@ -1008,7 +1008,7 @@ export default function OceanGoldPage() {
             {result3 && (
               <div className="gold-result-card">
                 <div className="gold-result-header">
-                  <h4>최적 조합 결과{resultAll && !independentMode ? ' + 0성 포함' : ''}</h4>
+                  <h4>최적 조합 결과{resultAll && !independentMode ? '' : ''}</h4>
                   <div className="gold-result-gold">
                     <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star3Gold : result3.best.gold) * (1 + getPremiumRate())))}
                     {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
