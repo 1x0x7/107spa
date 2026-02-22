@@ -18,6 +18,10 @@ import {
 } from './ocean-calculator'
 import './ocean-gold.css'
 import { INGREDIENT_TOOLTIPS, TooltipItem } from '@/data/ocean'
+import { 
+  MaterialPrices, MATERIAL_LABELS, CATEGORY_LABELS, INITIAL_MATERIAL_PRICES,
+  calculate1StarMaterialCost, calculate2StarMaterialCost, calculate3StarMaterialCost
+} from './material-prices'
 
 type StarLevel = 'all' | '1' | '2' | '3'
 
@@ -32,6 +36,32 @@ export default function OceanGoldPage() {
   const [showDetails, setShowDetails] = useState(false)
   const [independentMode, setIndependentMode] = useState(false) // 독립 계산 스위치
   const [showGuide, setShowGuide] = useState(false) // 가이드 열림/닫힘
+  const [showPriceInput, setShowPriceInput] = useState(false) // 재료 시세 토글
+  const [priceAccordion, setPriceAccordion] = useState({ star1: false, star2: false, star3: false }) // 통합탭 아코디언
+  
+  // 재료 시세 입력
+  const [materialPrices, setMaterialPrices] = useState({
+    // 어패류 (1/2/3성)
+    shellfish1: { guard: 0, wave: 0, chaos: 0, life: 0, decay: 0 },
+    shellfish2: { guard: 0, wave: 0, chaos: 0, life: 0, decay: 0 },
+    shellfish3: { guard: 0, wave: 0, chaos: 0, life: 0, decay: 0 },
+    // 1성 블록
+    block1: { clay: 0, sand: 0, dirt: 0, gravel: 0, granite: 0 },
+    // 1성 물고기
+    fish1: { shrimp: 0, domi: 0, herring: 0, goldfish: 0, bass: 0 },
+    // 2성 재료
+    material2: { seaweed: 0, kelp: 0 },
+    // 2성 잎
+    leaf2: { oak: 0, spruce: 0, birch: 0, acacia: 0, cherry: 0 },
+    // 2성 광물
+    mineral2: { lapis: 0, redstone: 0, iron: 0, gold: 0, diamond: 0 },
+    // 3성 재료
+    material3: { seaSquirt: 0, glassBottle: 0, driedKelp: 0, glowBerry: 0 },
+    // 3성 블록
+    block3: { netherrack: 0, magma: 0, soulSoil: 0, crimson: 0, warped: 0 },
+    // 3성 산호
+    coral3: { tube: 0, brain: 0, bubble: 0, fire: 0, horn: 0 }
+  })
   const [isLoaded, setIsLoaded] = useState(false)
   const [isCalculating, setIsCalculating] = useState(false) // 계산 중 상태
   const [workerReady, setWorkerReady] = useState(false) // Worker 준비 상태
@@ -537,6 +567,281 @@ export default function OceanGoldPage() {
     )
   }
 
+  // 순수익 계산 (실제 사용된 재료 기준)
+  const getNetProfit = (star: '1' | '2' | '3' | 'all') => {
+    let sellPrice = 0
+    let materialCost = 0
+
+    if (star === '1' && result1) {
+      sellPrice = Math.floor(result1.best.gold * (1 + getPremiumRate()))
+      materialCost = calculate1StarMaterialCost(materialPrices, result1)
+    } else if (star === '2' && result2) {
+      sellPrice = Math.floor(result2.best.gold * (1 + getPremiumRate()))
+      materialCost = calculate2StarMaterialCost(materialPrices, result2)
+    } else if (star === '3' && result3) {
+      sellPrice = Math.floor(result3.best.gold * (1 + getPremiumRate()))
+      materialCost = calculate3StarMaterialCost(materialPrices, result3)
+    } else if (star === 'all' && resultAll) {
+      sellPrice = Math.floor(resultAll.totalGold * (1 + getPremiumRate()))
+      const cost1 = calculate1StarMaterialCost(materialPrices, resultAll.result1)
+      const cost2 = calculate2StarMaterialCost(materialPrices, resultAll.result2)
+      const cost3 = calculate3StarMaterialCost(materialPrices, resultAll.result3)
+      materialCost = cost1 + cost2 + cost3
+    }
+
+    const profit = sellPrice - materialCost
+    const percent = sellPrice > 0 ? ((profit / sellPrice) * 100).toFixed(1) : '0'
+    return { sellPrice, materialCost, profit, percent }
+  }
+
+  // 골드 결과 + 순수익 툴팁 렌더링
+  const renderGoldWithProfit = (gold: number, star: '1' | '2' | '3' | 'all') => {
+    const { materialCost, profit, percent } = getNetProfit(star)
+    const hasPriceInput = materialCost > 0
+
+    return (
+      <div className={`gold-result-gold ${hasPriceInput ? 'has-net-profit' : ''}`}>
+        <GoldIcon /> {fmt(gold)}
+        {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
+        {hasPriceInput && (
+          <div className="net-profit-tooltip">
+            <div>재료비 : {fmt(materialCost)} G</div>
+            <div className={profit >= 0 ? 'net-profit-positive' : 'net-profit-negative'}>
+              순수익 : {fmt(profit)} G ({profit >= 0 ? '+' : ''}{percent}%)
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // 재료 시세 입력 렌더링 - 1성
+  const renderPriceInput1Star = () => (
+    <div className="price-input-content">
+      <div className="price-category-section">
+        <span className="price-section-label">어패류★</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.shellfish1).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label.replace(' ★', '')}</span>
+              <input
+                type="number"
+                value={materialPrices.shellfish1[key as keyof typeof materialPrices.shellfish1] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  shellfish1: { ...prev.shellfish1, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">블록</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.block1).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label}</span>
+              <input
+                type="number"
+                value={materialPrices.block1[key as keyof typeof materialPrices.block1] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  block1: { ...prev.block1, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">물고기</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.fish1).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label}</span>
+              <input
+                type="number"
+                value={materialPrices.fish1[key as keyof typeof materialPrices.fish1] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  fish1: { ...prev.fish1, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  // 재료 시세 입력 렌더링 - 2성
+  const renderPriceInput2Star = () => (
+    <div className="price-input-content">
+      <div className="price-category-section">
+        <span className="price-section-label">어패류★★</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.shellfish2).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label.replace(' ★★', '')}</span>
+              <input
+                type="number"
+                value={materialPrices.shellfish2[key as keyof typeof materialPrices.shellfish2] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  shellfish2: { ...prev.shellfish2, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">재료</span>
+        <div className="price-input-grid price-input-grid-2">
+          {Object.entries(MATERIAL_LABELS.material2).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label}</span>
+              <input
+                type="number"
+                value={materialPrices.material2[key as keyof typeof materialPrices.material2] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  material2: { ...prev.material2, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">잎</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.leaf2).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label.replace(' 잎', '')}</span>
+              <input
+                type="number"
+                value={materialPrices.leaf2[key as keyof typeof materialPrices.leaf2] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  leaf2: { ...prev.leaf2, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">광물</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.mineral2).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label}</span>
+              <input
+                type="number"
+                value={materialPrices.mineral2[key as keyof typeof materialPrices.mineral2] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  mineral2: { ...prev.mineral2, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  // 재료 시세 입력 렌더링 - 3성
+  const renderPriceInput3Star = () => (
+    <div className="price-input-content">
+      <div className="price-category-section">
+        <span className="price-section-label">어패류★★★</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.shellfish3).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label.replace(' ★★★', '')}</span>
+              <input
+                type="number"
+                value={materialPrices.shellfish3[key as keyof typeof materialPrices.shellfish3] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  shellfish3: { ...prev.shellfish3, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">재료</span>
+        <div className="price-input-grid price-input-grid-4">
+          {Object.entries(MATERIAL_LABELS.material3).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label}</span>
+              <input
+                type="number"
+                value={materialPrices.material3[key as keyof typeof materialPrices.material3] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  material3: { ...prev.material3, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">블록</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.block3).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label}</span>
+              <input
+                type="number"
+                value={materialPrices.block3[key as keyof typeof materialPrices.block3] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  block3: { ...prev.block3, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="price-category-section">
+        <span className="price-section-label">산호</span>
+        <div className="price-input-grid">
+          {Object.entries(MATERIAL_LABELS.coral3).map(([key, label]) => (
+            <div key={key} className="price-input-item">
+              <span className="price-item-label">{label.replace('죽은 ', '').replace(' 산호', '')}</span>
+              <input
+                type="number"
+                value={materialPrices.coral3[key as keyof typeof materialPrices.coral3] || ''}
+                onChange={(e) => setMaterialPrices(prev => ({
+                  ...prev,
+                  coral3: { ...prev.coral3, [key]: Number(e.target.value) || 0 }
+                }))}
+                placeholder="0"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div>
       <div className="gold-container">
@@ -549,19 +854,69 @@ export default function OceanGoldPage() {
           <div className={`data-table-wrapper ${showGuide ? 'open' : ''}`}>
             <div className="guide-content">
               <div className="guide-section">
-                <p>보유 재료를 최대한 소모하여 최적의 수익을 계산합니다</p>
-              </div>
-              <div className="guide-section">
+                <h4>옵션 설명</h4>
                 <ul>
                   <li><strong>세트 변환</strong> : 세트 / 수량 으로 표기를 바꿉니다</li>
                   <li><strong>보유량 입력</strong> : 기존 보유하고 있던 보유량도 고려하여 계산합니다</li>
-                  <li><strong>독립 계산</strong> : 0성을</li>
-                  <li><strong>통합 탭</strong> : 모든 성급을 한번에 최적화하여 계산합니다</li>
-                  <li>65개 = 1/1 로 입력 가능합니다</li>
+                  <li><strong>독립 계산</strong> : 0성을 고려하지 않은 값으로 보여줍니다</li>
+                  <li><strong>재료 시세</strong> : 1개당 가격으로 입력해주세요</li>
                 </ul>
               </div>
-
+              <div className="guide-section">
+                <p>⚠️ 주의 : 입력값이 클 수록 계산 시간이 늘어납니다</p>
+              </div>
             </div>
+          </div>
+        </div>
+
+        {/* 재료 시세 - 탭에 따라 다르게 표시 */}
+        <div className="data-card price-card">
+          <button className={`data-toggle ${showPriceInput ? 'open' : ''}`} onClick={() => setShowPriceInput(v => !v)}>
+            <span>재료 시세(TEST) {starLevel !== 'all' ? `(${starLevel}성)` : ''}</span>
+            <span className="toggle-icon">▼</span>
+          </button>
+          <div className={`price-accordion-wrapper ${showPriceInput ? 'open' : ''}`}>
+            {starLevel === 'all' ? (
+              <>
+                {/* 통합: 아코디언 */}
+                <div className="price-accordion-item">
+                  <button 
+                    className={`price-accordion-toggle ${priceAccordion.star1 ? 'open' : ''}`}
+                    onClick={() => setPriceAccordion(prev => ({ ...prev, star1: !prev.star1 }))}
+                  >
+                    <span>1성 재료</span>
+                    <span className="toggle-icon">▼</span>
+                  </button>
+                  {priceAccordion.star1 && renderPriceInput1Star()}
+                </div>
+                <div className="price-accordion-item">
+                  <button 
+                    className={`price-accordion-toggle ${priceAccordion.star2 ? 'open' : ''}`}
+                    onClick={() => setPriceAccordion(prev => ({ ...prev, star2: !prev.star2 }))}
+                  >
+                    <span>2성 재료</span>
+                    <span className="toggle-icon">▼</span>
+                  </button>
+                  {priceAccordion.star2 && renderPriceInput2Star()}
+                </div>
+                <div className="price-accordion-item">
+                  <button 
+                    className={`price-accordion-toggle ${priceAccordion.star3 ? 'open' : ''}`}
+                    onClick={() => setPriceAccordion(prev => ({ ...prev, star3: !prev.star3 }))}
+                  >
+                    <span>3성 재료</span>
+                    <span className="toggle-icon">▼</span>
+                  </button>
+                  {priceAccordion.star3 && renderPriceInput3Star()}
+                </div>
+              </>
+            ) : starLevel === '1' ? (
+              renderPriceInput1Star()
+            ) : starLevel === '2' ? (
+              renderPriceInput2Star()
+            ) : (
+              renderPriceInput3Star()
+            )}
           </div>
         </div>
 
@@ -652,10 +1007,7 @@ export default function OceanGoldPage() {
               <div className="gold-result-card">
                 <div className="gold-result-header">
                   <h4>최적 조합 결과</h4>
-                  <div className="gold-result-gold">
-                    <GoldIcon /> {fmt(Math.floor(resultAll.totalGold * (1 + getPremiumRate())))}
-                    {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
-                  </div>
+                  {renderGoldWithProfit(Math.floor(resultAll.totalGold * (1 + getPremiumRate())), 'all')}
                 </div>
 
                 {/* 4열 카드 형태 결과 (항상 추출액 포함) */}
@@ -851,10 +1203,7 @@ export default function OceanGoldPage() {
               <div className="gold-result-card">
                 <div className="gold-result-header">
                   <h4>최적 조합 결과{resultAll && !independentMode ? '' : ''}</h4>
-                  <div className="gold-result-gold">
-                    <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star1Gold : result1.best.gold) * (1 + getPremiumRate())))}
-                    {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
-                  </div>
+                  {renderGoldWithProfit(Math.floor((resultAll && !independentMode ? resultAll.summary.star1Gold : result1.best.gold) * (1 + getPremiumRate())), '1')}
                 </div>
 
                 <div className="gold-result-products">
@@ -941,10 +1290,7 @@ export default function OceanGoldPage() {
               <div className="gold-result-card">
                 <div className="gold-result-header">
                   <h4>최적 조합 결과{resultAll && !independentMode ? '' : ''}</h4>
-                  <div className="gold-result-gold">
-                    <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star2Gold : result2.best.gold) * (1 + getPremiumRate())))}
-                    {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
-                  </div>
+                  {renderGoldWithProfit(Math.floor((resultAll && !independentMode ? resultAll.summary.star2Gold : result2.best.gold) * (1 + getPremiumRate())), '2')}
                 </div>
 
                 <div className="gold-result-products">
@@ -1035,10 +1381,7 @@ export default function OceanGoldPage() {
               <div className="gold-result-card">
                 <div className="gold-result-header">
                   <h4>최적 조합 결과{resultAll && !independentMode ? '' : ''}</h4>
-                  <div className="gold-result-gold">
-                    <GoldIcon /> {fmt(Math.floor((resultAll && !independentMode ? resultAll.summary.star3Gold : result3.best.gold) * (1 + getPremiumRate())))}
-                    {getPremiumRate() > 0 && <small>+{Math.round(getPremiumRate() * 100)}%</small>}
-                  </div>
+                  {renderGoldWithProfit(Math.floor((resultAll && !independentMode ? resultAll.summary.star3Gold : result3.best.gold) * (1 + getPremiumRate())), '3')}
                 </div>
 
                 <div className="gold-result-products">

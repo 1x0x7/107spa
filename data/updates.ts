@@ -19,9 +19,10 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     details: {
       changes: [
         "요리 가격 변동",
+        "해양 재료 가격 입력 가능",
       ],
       fixes: [
-
+        "다크모드 수정",
 
       ],
       notes: [

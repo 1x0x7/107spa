@@ -1332,3 +1332,158 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .guide-section h4 {
   color: #888;
 }
+
+/* =========================
+   모바일 햄버거 메뉴 다크모드
+========================= */
+:root[data-theme="dark"] .mobile-menu-btn span {
+  background-color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .mobile-nav-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+:root[data-theme="dark"] .mobile-nav {
+  background: #1f1f23;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .mobile-nav-header {
+  border-bottom-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .mobile-nav-title {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .mobile-nav-close {
+  background: #27272a;
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .mobile-nav-close:hover {
+  background: #3f3f46;
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .mobile-nav a {
+  color: var(--color-text-secondary);
+  border-bottom-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .mobile-nav a:hover,
+:root[data-theme="dark"] .mobile-nav a.active {
+  background: #27272a;
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .mobile-nav a.active {
+  border-left-color: var(--color-primary);
+}
+
+/* =========================
+   다크모드 - 가이드 & 재료 시세
+========================= */
+:root[data-theme="dark"] .data-card {
+  background-color: #27272a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .data-toggle {
+  background-color: #1f1f23;
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .data-toggle:hover {
+  background-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .data-toggle .toggle-icon {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .data-toggle.open .toggle-icon {
+  color: var(--color-text-secondary);
+}
+
+/* 가이드 섹션 */
+:root[data-theme="dark"] .guide-section h4 {
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .guide-section p {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .guide-section li {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .guide-section li strong {
+  color: var(--color-text-secondary);
+}
+
+/* 재료 시세 카드 */
+:root[data-theme="dark"] .price-card {
+  background-color: #27272a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="dark"] .price-accordion-wrapper {
+  background-color: #27272a;
+}
+
+:root[data-theme="dark"] .price-accordion-item {
+  border-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .price-accordion-toggle {
+  background-color: #1f1f23;
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .price-accordion-toggle:hover {
+  background-color: #3f3f46;
+}
+
+:root[data-theme="dark"] .price-accordion-toggle.open {
+  background-color: rgba(76, 125, 233, 0.15);
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .price-input-content {
+  background-color: #27272a;
+}
+
+:root[data-theme="dark"] .price-section-label {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .price-item-label {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .price-input-item input {
+  background-color: #1f1f23;
+  border-color: #3f3f46;
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .price-input-item input:focus {
+  border-color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .price-input-item input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* 순수익 툴팁 */
+:root[data-theme="dark"] .net-profit-tooltip {
+  background: rgba(39, 39, 42, 0.98);
+  border: 1px solid #3f3f46;
+}
+
+:root[data-theme="dark"] .net-profit-tooltip::after {
+  border-top-color: #3f3f46;
+}

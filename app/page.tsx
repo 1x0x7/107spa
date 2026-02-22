@@ -1,36 +1,11 @@
-'use client';
-import { useState } from 'react';
 import { UPDATE_HISTORY } from '@/data/updates';
-import EventPopup from '@/components/Eventpopup';
-import ContactModal from '@/components/ContactModal';
 
 export default function HomePage() {
   const latestUpdate = UPDATE_HISTORY.find(u => u.isLatest);
   const pastUpdates = UPDATE_HISTORY.filter(u => !u.isLatest);
 
-  const [contactOpen, setContactOpen] = useState(false);
-  const [contactType, setContactType] = useState<string | undefined>(undefined);
-
-  const handleOpenNameSuggest = () => {
-    setContactType('이름 제안하기');
-    setContactOpen(true);
-  };
-
   return (
     <>
-      {/* 이벤트 팝업 */}
-      <EventPopup onOpenContact={handleOpenNameSuggest} />
-
-      {/* 문의하기 모달 */}
-      <ContactModal
-        isOpen={contactOpen}
-        onClose={() => {
-          setContactOpen(false);
-          setContactType(undefined);
-        }}
-        defaultType={contactType}
-      />
-
       {/* 사용법 */}
       <section className="content-block usage-warning">
         정보 탭에 본인 스펙 입력 후, 계산기 활용
@@ -40,6 +15,7 @@ export default function HomePage() {
       {latestUpdate && (
         <section className="content-block">
           <div className="update-banner">
+            {/* 상단: 배지 + 힌트를 같은 줄에 */}
             <div className="update-banner-header">
               <div className="update-banner-badge">최신 업데이트</div>
               {latestUpdate.details && (
@@ -55,6 +31,7 @@ export default function HomePage() {
 
             <div className="update-banner-date">{latestUpdate.date}</div>
 
+            {/* 호버 시 보이는 상세 내용 */}
             {latestUpdate.details && (
               <div className="update-banner-details">
                 {latestUpdate.details.changes && latestUpdate.details.changes.length > 0 && (

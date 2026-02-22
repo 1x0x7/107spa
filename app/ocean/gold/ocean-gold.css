@@ -32,7 +32,6 @@
   border-radius: var(--border-radius-md, 8px);
   margin-bottom: 16px;
   overflow: hidden;
-  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
@@ -80,11 +79,11 @@
 }
 
 .guide-content {
-  padding: 8px;
+  padding: 12px 8px;
 }
 
 .guide-section {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .guide-section:last-child {
@@ -92,17 +91,20 @@
 }
 
 .guide-section h4 {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #333;
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #888;
   margin-bottom: 6px;
+  padding-left: 2px;
 }
 
 .guide-section p {
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   color: #666;
-  line-height: 1.4;
-  margin-bottom: 6px;
+  line-height: 1.5;
+  margin: 0 0 6px 0;
+  padding-left: 2px;
 }
 
 .guide-section ul {
@@ -112,18 +114,23 @@
 }
 
 .guide-section li {
-  font-size: 0.72rem;
-  color: #888;
-  padding: 3px 0;
-  padding-left: 12px;
+  font-size: 0.73rem;
+  color: #555;
+  padding: 4px 0;
+  padding-left: 14px;
   position: relative;
+  line-height: 1.4;
 }
 
-.guide-section li:before {
+.guide-section li::before {
   content: '•';
   position: absolute;
-  left: 0;
-  color: #4a90e2;
+  left: 2px;
+  color: var(--color-primary, #4a90e2);
+}
+
+.guide-section li strong {
+  color: #888;
 }
 
 .gold-star-toggle label {
@@ -316,12 +323,14 @@
 }
 
 .gold-result-gold {
+  position: relative;
   font-size: clamp(1rem, 4vw, 1.17rem);
   font-weight: 700;
   color: var(--color-danger, #e74c3c);
   display: flex;
   align-items: baseline;
   gap: 3px;
+  cursor: pointer;
 }
 
 .gold-result-gold small {
@@ -1257,8 +1266,6 @@
   transform: translateX(0);
 }
 
-
-
 /* ===== 반응형 ===== */
 @media (max-width: 768px) {
   .gold-container {
@@ -1407,3 +1414,229 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ===== 재료 시세 입력 ===== */
+.price-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.price-wrapper.open {
+  max-height: 600px;
+}
+
+.price-input-content {
+  padding: 12px 8px;
+}
+
+/* 아코디언 (통합 탭용) */
+.price-accordion-wrapper {
+  padding: 0 8px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.price-accordion-wrapper.open {
+  padding: 8px;
+  max-height: 800px;
+}
+
+.price-accordion-item {
+  margin-bottom: 6px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.price-accordion-item:last-child {
+  margin-bottom: 0;
+}
+
+.price-accordion-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.price-accordion-toggle:hover {
+  background: #e9ecef;
+}
+
+.price-accordion-toggle.open {
+  background: #e3edf7;
+  color: #4a90e2;
+}
+
+.price-accordion-toggle .toggle-icon {
+  font-size: 0.6rem;
+  transition: transform 0.2s;
+}
+
+.price-accordion-toggle.open .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* 2열, 4열 그리드 */
+.price-input-grid-2 {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.price-input-grid-4 {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+.price-category {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.price-category:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.price-category-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary, #4a90e2);
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  background: rgba(74, 144, 226, 0.1);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.price-category-section {
+  margin-bottom: 10px;
+}
+
+.price-category-section:last-child {
+  margin-bottom: 0;
+}
+
+.price-section-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #888;
+  margin-bottom: 6px;
+  padding-left: 2px;
+}
+
+.price-input-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.price-input-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.price-item-label {
+  font-size: 0.7rem;
+  color: #666;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price-input-item input {
+  width: 100%;
+  padding: 6px 4px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-align: center;
+  background: white;
+}
+
+.price-input-item input:focus {
+  outline: none;
+  border-color: var(--color-primary, #4a90e2);
+}
+
+.price-input-item input::placeholder {
+  color: #ccc;
+}
+
+/* 순수익 툴팁 */
+.net-profit-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(30, 30, 35, 0.842);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 100;
+}
+
+.net-profit-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(30, 30, 35, 0.95);
+}
+
+.has-net-profit:hover .net-profit-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.net-profit-positive {
+  color: #f87171;
+}
+
+.net-profit-negative {
+  color: #f87171;
+}
+
+/* 반응형 - 재료 시세 */
+@media (max-width: 768px) {
+  .price-input-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .price-input-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .price-item-label {
+    font-size: 0.6rem;
+  }
+  
+  .price-input-item input {
+    padding: 5px 2px;
+    font-size: 0.7rem;
+  }
+}
+

@@ -1,25 +1,18 @@
 'use client';
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 interface ContactModalProps {
   isOpen: boolean
   onClose: () => void
-  defaultType?: string
 }
 
-export default function ContactModal({ isOpen, onClose, defaultType }: ContactModalProps) {
+export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [type, setType] = useState('버그/오류')
   const [nickname, setNickname] = useState('')
   const [content, setContent] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // defaultType이 바뀌면 type을 갱신
-  useEffect(() => {
-    if (defaultType) {
-      setType(defaultType);
-    }
-  }, [defaultType]);
-
+  // ⚠️ 여기에 Discord Webhook URL을 입력하세요
   const WEBHOOK_URL = 'https://discord.com/api/webhooks/1465340719630782668/8vJye3EKduHVRF8TKPI2739e7LP1rMxR0jjjmeD2CSki-bZVKbBEDNftIvJ3haGn-vWl'
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,7 +70,6 @@ export default function ContactModal({ isOpen, onClose, defaultType }: ContactMo
               <option>기능 건의</option>
               <option>질문</option>
               <option>기타 문의</option>
-              <option>이름 제안하기</option>
             </select>
           </label>
 
