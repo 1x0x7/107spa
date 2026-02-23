@@ -849,7 +849,7 @@ export default function OceanGoldPage() {
         <div className="data-card">
           <button className={`data-toggle ${showGuide ? 'open' : ''}`} onClick={() => setShowGuide(v => !v)}>
             <span>연금품 가이드</span>
-            <span className="toggle-icon">▼</span>
+            <span className="toggle-icon">{showGuide ? '▼' : 'ㅡ'}</span>
           </button>
           <div className={`data-table-wrapper ${showGuide ? 'open' : ''}`}>
             <div className="guide-content">
@@ -873,7 +873,7 @@ export default function OceanGoldPage() {
         <div className="data-card price-card">
           <button className={`data-toggle ${showPriceInput ? 'open' : ''}`} onClick={() => setShowPriceInput(v => !v)}>
             <span>재료 시세(TEST) {starLevel !== 'all' ? `(${starLevel}성)` : ''}</span>
-            <span className="toggle-icon">▼</span>
+            <span className="toggle-icon">{showPriceInput ? '▼' : 'ㅡ'}</span>
           </button>
           <div className={`price-accordion-wrapper ${showPriceInput ? 'open' : ''}`}>
             {starLevel === 'all' ? (
@@ -885,7 +885,7 @@ export default function OceanGoldPage() {
                     onClick={() => setPriceAccordion(prev => ({ ...prev, star1: !prev.star1 }))}
                   >
                     <span>1성 재료</span>
-                    <span className="toggle-icon">▼</span>
+                    <span className="toggle-icon">{priceAccordion.star1 ? '▼' : 'ㅡ'}</span>
                   </button>
                   {priceAccordion.star1 && renderPriceInput1Star()}
                 </div>
@@ -895,7 +895,7 @@ export default function OceanGoldPage() {
                     onClick={() => setPriceAccordion(prev => ({ ...prev, star2: !prev.star2 }))}
                   >
                     <span>2성 재료</span>
-                    <span className="toggle-icon">▼</span>
+                    <span className="toggle-icon">{priceAccordion.star2 ? '▼' : 'ㅡ'}</span>
                   </button>
                   {priceAccordion.star2 && renderPriceInput2Star()}
                 </div>
@@ -905,7 +905,7 @@ export default function OceanGoldPage() {
                     onClick={() => setPriceAccordion(prev => ({ ...prev, star3: !prev.star3 }))}
                   >
                     <span>3성 재료</span>
-                    <span className="toggle-icon">▼</span>
+                    <span className="toggle-icon">{priceAccordion.star3 ? '▼' : 'ㅡ'}</span>
                   </button>
                   {priceAccordion.star3 && renderPriceInput3Star()}
                 </div>

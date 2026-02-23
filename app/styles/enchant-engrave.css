@@ -86,6 +86,7 @@
 .toggle-icon {
   font-size: 0.65rem;
   color: #aaa;
+  transition: color 0.2s;
 }
 
 .data-toggle.open .toggle-icon {
@@ -97,12 +98,19 @@
   padding: 0 8px;
   max-height: 0;
   overflow-y: auto;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.data-table-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 
 .data-table-wrapper.open {
   padding: 0 8px 8px;
-  max-height: 400px;
+  max-height: 500px;
 }
 
 .guide-content {
