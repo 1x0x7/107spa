@@ -21,6 +21,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
         "요리 가격 변동",
       ],
       fixes: [
+        "해양 스태미나 15 단위로 계산 보정"
 
       ],
       notes: [

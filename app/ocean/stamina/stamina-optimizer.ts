@@ -552,22 +552,24 @@ export function optimizeAllocation(
           
           // 스태미나 배분
           const allocation: Allocation = {
-            oyster: Math.floor(normalizedStamina * oyster / 100),
-            conch: Math.floor(normalizedStamina * conch / 100),
-            octopus: Math.floor(normalizedStamina * octopus / 100),
-            seaweed: Math.floor(normalizedStamina * seaweed / 100),
-            urchin: Math.floor(normalizedStamina * urchin / 100)
+            oyster: Math.floor(normalizedStamina * oyster / 100 / OCEAN_STAMINA_PER_GATHER) * OCEAN_STAMINA_PER_GATHER,
+            conch: Math.floor(normalizedStamina * conch / 100 / OCEAN_STAMINA_PER_GATHER) * OCEAN_STAMINA_PER_GATHER,
+            octopus: Math.floor(normalizedStamina * octopus / 100 / OCEAN_STAMINA_PER_GATHER) * OCEAN_STAMINA_PER_GATHER,
+            seaweed: Math.floor(normalizedStamina * seaweed / 100 / OCEAN_STAMINA_PER_GATHER) * OCEAN_STAMINA_PER_GATHER,
+            urchin: Math.floor(normalizedStamina * urchin / 100 / OCEAN_STAMINA_PER_GATHER) * OCEAN_STAMINA_PER_GATHER
           }
           
           // 반올림 오차 보정
           const usedStamina = allocation.oyster + allocation.conch + allocation.octopus + allocation.seaweed + allocation.urchin
           const remaining = normalizedStamina - usedStamina
-          if (remaining > 0) {
-            if (allocation.oyster > 0) allocation.oyster += remaining
-            else if (allocation.conch > 0) allocation.conch += remaining
-            else if (allocation.octopus > 0) allocation.octopus += remaining
-            else if (allocation.seaweed > 0) allocation.seaweed += remaining
-            else allocation.urchin += remaining
+          const remainingUnits = Math.floor(remaining / OCEAN_STAMINA_PER_GATHER)
+          if (remainingUnits > 0) {
+            const toAdd = remainingUnits * OCEAN_STAMINA_PER_GATHER
+            if (allocation.oyster > 0) allocation.oyster += toAdd
+            else if (allocation.conch > 0) allocation.conch += toAdd
+            else if (allocation.octopus > 0) allocation.octopus += toAdd
+            else if (allocation.seaweed > 0) allocation.seaweed += toAdd
+            else allocation.urchin += toAdd
           }
           
           // 드롭량 계산
