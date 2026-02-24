@@ -859,7 +859,7 @@ export default function OceanGoldPage() {
                   <li><strong>세트 변환</strong> : 세트 / 수량 으로 표기를 바꿉니다</li>
                   <li><strong>보유량 입력</strong> : 기존 보유하고 있던 보유량도 고려하여 계산합니다</li>
                   <li><strong>독립 계산</strong> : 0성을 고려하지 않은 값으로 보여줍니다</li>
-                  <li><strong>재료 시세</strong> : 1개당 가격으로 입력해주세요</li>
+                  <li><strong>재료 시세</strong> : 1개당 가격으로 입력해주세요. 골드 계산 결과 위에 마우스 커서를 올리면 순수익 확인이 가능합니다</li>
                 </ul>
               </div>
               <div className="guide-section">
