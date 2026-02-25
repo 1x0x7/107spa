@@ -19,6 +19,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     details: {
       changes: [
         "사이트 이름 변경",
+        "럭키히트 스킬 상향",
       ],
       fixes: [
 
