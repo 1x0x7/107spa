@@ -1084,7 +1084,7 @@ export default function OceanGoldPage() {
                           </div>
                           <div className="tier-material-row">
                             <span className="material-label">물고기</span>
-                            <span>농어 {setMode ? formatSet(resultAll.result1?.fishNeedDilution?.bass || 0) : resultAll.result1?.fishNeedDilution?.bass || 0}</span>
+                            <span>농어 회 {setMode ? formatSet(resultAll.result1?.fishNeedDilution?.bass || 0) : resultAll.result1?.fishNeedDilution?.bass || 0}</span>
                           </div>
                         </div>
                       </div>
@@ -1234,11 +1234,11 @@ export default function OceanGoldPage() {
                   { name: '화강암', value: result1.blockNeedProduct.granite }
                 ])}
                 {renderSection('🔹 필요 물고기 ', [
-                  { name: '새우', value: result1.fishNeedProduct.shrimp },
-                  { name: '도미', value: result1.fishNeedProduct.domi },
-                  { name: '청어', value: result1.fishNeedProduct.herring },
-                  { name: '금붕어', value: result1.fishNeedProduct.goldfish },
-                  { name: '농어', value: result1.fishNeedProduct.bass }
+                  { name: '깐 새우', value: result1.fishNeedProduct.shrimp },
+                  { name: '도미 회', value: result1.fishNeedProduct.domi },
+                  { name: '청어 회', value: result1.fishNeedProduct.herring },
+                  { name: '금붕어 회', value: result1.fishNeedProduct.goldfish },
+                  { name: '농어 회', value: result1.fishNeedProduct.bass }
                 ])}
               </div>
             )}

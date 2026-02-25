@@ -68,11 +68,11 @@ export const RECIPES_1STAR = [
   { name: "생명의 정수 (2개)", ingredients: "미역★ 2개 + 자갈 4개", price: "", img : "essence_life.png" },
   { name: "부식의 정수 (2개)", ingredients: "성게★ 2개 + 화강암 2개", price: "", img : "essence_decay.png" },
 
-  { name: "물결 수호의 핵", ingredients: "수호의 정수 + 파동의 정수 + 익히지 않은 새우", price: "", img : "core_wg.png" },
-  { name: "파동 오염의 핵", ingredients: "파동의 정수 + 혼란의 정수 + 익히지 않은 도미", price: "", img : "core_wp.png" },
-  { name: "질서 파괴의 핵", ingredients: "혼란의 정수 + 생명의 정수 + 익히지 않은 청어", price: "", img : "core_od.png" },
-  { name: "활력 붕괴의 핵", ingredients: "생명의 정수 + 부식의 정수 + 금붕어", price: "", img : "core_vd.png" },
-  { name: "침식 방어의 핵", ingredients: "부식의 정수 + 수호의 정수 + 농어", price: "", img : "core_ed.png" },
+  { name: "물결 수호의 핵", ingredients: "수호의 정수 + 파동의 정수 + 깐 새우", price: "", img : "core_wg.png" },
+  { name: "파동 오염의 핵", ingredients: "파동의 정수 + 혼란의 정수 + 도미 회", price: "", img : "core_wp.png" },
+  { name: "질서 파괴의 핵", ingredients: "혼란의 정수 + 생명의 정수 + 청어 회", price: "", img : "core_od.png" },
+  { name: "활력 붕괴의 핵", ingredients: "생명의 정수 + 부식의 정수 + 금붕어 회", price: "", img : "core_vd.png" },
+  { name: "침식 방어의 핵", ingredients: "부식의 정수 + 수호의 정수 + 농어 회", price: "", img : "core_ed.png" },
 
   { name: "영생의 아쿠티스", ingredients: "물결 수호의 핵 + 질서 파괴의 핵 + 활력 붕괴의 핵", price: "5,669G", img : "akutis.png" },
   { name: "크라켄의 광란체", ingredients: "질서 파괴의 핵 + 활력 붕괴의 핵 + 파동 오염의 핵", price: "5,752G", img : "kraken.png" },
@@ -166,35 +166,35 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '수호 정수', icon: '/img/ocean/essence_guard.png' },
       { name: '파동 정수', icon: '/img/ocean/essence_wave.png' },
-      { name: '익히지 않은 새우' }
+      { name: '깐 새우' }
     ]
   },
   '파동 오염': {
     ingredients: [
       { name: '파동 정수', icon: '/img/ocean/essence_wave.png' },
       { name: '혼란 정수', icon: '/img/ocean/essence_chaos.png' },
-      { name: '익히지 않은 도미' }
+      { name: '도미 회' }
     ]
   },
   '질서 파괴': {
     ingredients: [
       { name: '혼란 정수', icon: '/img/ocean/essence_chaos.png' },
       { name: '생명 정수', icon: '/img/ocean/essence_life.png' },
-      { name: '익히지 않은 청어' }
+      { name: '청어 회' }
     ]
   },
   '활력 붕괴': {
     ingredients: [
       { name: '생명 정수', icon: '/img/ocean/essence_life.png' },
       { name: '부식 정수', icon: '/img/ocean/essence_decay.png' },
-      { name: '금붕어' }
+      { name: '금붕어 회' }
     ]
   },
   '침식 방어': {
     ingredients: [
       { name: '부식 정수', icon: '/img/ocean/essence_decay.png' },
       { name: '수호 정수', icon: '/img/ocean/essence_guard.png' },
-      { name: '농어' }
+      { name: '농어 회' }
     ]
   },
   // === 1성 최종 제품 ===

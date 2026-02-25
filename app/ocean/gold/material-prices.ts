@@ -96,11 +96,11 @@ export function calculate1StarMaterialCost(
 
   // 물고기 비용
   const fishCost = 
-    (result.fishNeedProduct?.shrimp || 0) * prices.fish1.shrimp +
-    (result.fishNeedProduct?.domi || 0) * prices.fish1.domi +
-    (result.fishNeedProduct?.herring || 0) * prices.fish1.herring +
-    (result.fishNeedProduct?.goldfish || 0) * prices.fish1.goldfish +
-    (result.fishNeedProduct?.bass || 0) * prices.fish1.bass
+    (result.fishNeedProduct?.shrimp || 0) * prices.fish1.shrimp * 0.5 +
+    (result.fishNeedProduct?.domi || 0) * prices.fish1.domi * 0.5 +
+    (result.fishNeedProduct?.herring || 0) * prices.fish1.herring * 0.5 +
+    (result.fishNeedProduct?.goldfish || 0) * prices.fish1.goldfish * 0.5 +
+    (result.fishNeedProduct?.bass || 0) * prices.fish1.bass * 0.5
 
   return shellfishCost + blockCost + fishCost
 }

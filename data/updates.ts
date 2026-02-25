@@ -12,16 +12,15 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
   { 
-    title: "요리 가격 업데이트", 
-    desc: "달콤 시리얼 > 토마토 라자냐 > 허브 삼겹살 찜", 
-    date: "2025.02.24", 
+    title: "정기 업데이트", 
+    desc: "채광 럭키 히트 수정, 연금 레시피 수정", 
+    date: "2025.02.25", 
     isLatest: true,
     details: {
       changes: [
-        "요리 가격 변동",
+        "사이트 이름 변경",
       ],
       fixes: [
-        "해양 스태미나 15 단위로 계산 보정"
 
       ],
       notes: [
