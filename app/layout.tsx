@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <head>
-        <title>띵동 - 띵타이쿤 효율 가이드</title>
+        <title>띵동 - 띵타이쿤 효율 계산 사이트</title>
         <meta name="description" content="채광 · 재배 · 해양 · 사냥 효율 계산기" />
         <link rel="icon" href="/img/1x0x7_.png" />
       </head>
