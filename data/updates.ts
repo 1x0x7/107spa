@@ -12,20 +12,19 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
   { 
-    title: "정기 업데이트", 
-    desc: "채광 럭키 히트 수정, 연금 레시피 수정", 
+    title: "요리 업데이트", 
+    desc: "토마토 라자냐 > 트리플 소갈비 꼬치 > 달콤 시리얼 ", 
     date: "2025.02.25", 
     isLatest: true,
     details: {
       changes: [
-        "사이트 이름 변경",
-        "럭키히트 스킬 상향",
+        "강화, 계약서 가격 변경"
       ],
       fixes: [
 
       ],
       notes: [
-        "다음 업데이트 : 02.27 예정(요리 가격변동)"
+        "다음 업데이트 : 02.28 예정(요리 가격변동)"
       ]
     }
   },
