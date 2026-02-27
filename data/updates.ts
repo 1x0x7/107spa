@@ -28,7 +28,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
       ]
     }
   },
+  { title: "정기 업데이트", date: "2025.02.25" },
   { title: "요리가격 업데이트", date: "2025.02.24" },
   { title: "요리가격 업데이트", date: "2025.02.21" },
-  { title: "요리가격 업데이트", date: "2025.02.15" },
 ]
