@@ -24,7 +24,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
 
       ],
       notes: [
-        "다음 업데이트 : 02.28 예정(요리 가격변동)"
+        "다음 업데이트 : 03.01 예정(요리 가격변동)"
       ]
     }
   },
