@@ -12,7 +12,7 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
   { 
-    title: "요리 업데이트", 
+    title: "요리 업데이트!!", 
     desc: "트리플 소갈비 꼬치 > 딥 크림 빠네 > 허브 삼겹살 찜 ", 
     date: "2025.03.01", 
     isLatest: true,
