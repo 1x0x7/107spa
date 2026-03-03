@@ -320,7 +320,7 @@
 .update-item-details .update-detail-title {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--color-primary, #4a90e2);
+  color: #4a90d9;
   margin-bottom: 4px;
 }
 
