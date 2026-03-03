@@ -18,12 +18,15 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     isLatest: true,
     details: {
       changes: [
+        "연금품 계산 예상 시간 추가(TEST)"
       ],
       fixes: [
 
       ],
       notes: [
-        "다음 업데이트 : 03.3 예정(요리 가격변동)"
+        "연금 재료 시세 UI/UX 개선",
+        "재배 재료 시세 입력 추가",
+        "다음 업데이트 : 03.06 예정(요리 가격변동)",
       ]
     }
   },

@@ -28,6 +28,178 @@ type StarLevel = 'all' | '1' | '2' | '3'
 // localStorage 키
 const STORAGE_KEY = 'ocean-gold-data'
 
+// 예상 시간 계산 함수 (유효 조합 수 기반)
+function estimateCalculationTime(
+  starLevel: StarLevel,
+  shellfish: {
+    star1: { guard: number; wave: number; chaos: number; life: number; decay: number };
+    star2: { guard: number; wave: number; chaos: number; life: number; decay: number };
+    star3: { guard: number; wave: number; chaos: number; life: number; decay: number };
+  },
+  advanced1?: any,
+  advanced2?: any,
+  advanced3?: any
+): { seconds: number; label: string } {
+  const floorToTwo = (n: number) => Math.floor(n / 2) * 2
+
+  // 총 사용 가능한 정수/에센스/엘릭서 계산
+  const calcTotalEss = (
+    shellfishValues: { guard: number; wave: number; chaos: number; life: number; decay: number },
+    ownedEss: { guard: number; wave: number; chaos: number; life: number; decay: number },
+    is3Star: boolean = false
+  ) => {
+    const essFromShellfish = is3Star ? shellfishValues : {
+      guard: floorToTwo(shellfishValues.guard),
+      wave: floorToTwo(shellfishValues.wave),
+      chaos: floorToTwo(shellfishValues.chaos),
+      life: floorToTwo(shellfishValues.life),
+      decay: floorToTwo(shellfishValues.decay)
+    }
+    
+    return {
+      guard: ownedEss.guard + essFromShellfish.guard,
+      wave: ownedEss.wave + essFromShellfish.wave,
+      chaos: ownedEss.chaos + essFromShellfish.chaos,
+      life: ownedEss.life + essFromShellfish.life,
+      decay: ownedEss.decay + essFromShellfish.decay
+    }
+  }
+
+  // 유효 조합 수 추정 (continue 조건 고려)
+  // 핵심: 정수 소비 패턴상 실제 유효한 조합은 maxProduct³보다 훨씬 적음
+  // 1성: life=2A+2K, decay=A+K+L → 제품 총합 ≈ minEss/2
+  // 2성: guard=vital+defense, chaos=defense+poison → 제품 총합 ≈ minEss/2  
+  // 3성: guard=immortal+barrier, chaos=corrupt+frenzy → 제품 총합 ≈ minEss/2
+  const calcEffectiveCombinations = (
+    totalEss: { guard: number; wave: number; chaos: number; life: number; decay: number },
+    ownedIntermediate: number[],
+    is3Star: boolean = false
+  ) => {
+    const minEss = Math.min(totalEss.guard, totalEss.wave, totalEss.chaos, totalEss.life, totalEss.decay)
+    const totalOwned = ownedIntermediate.reduce((a, b) => a + b, 0)
+    
+    // 정수 소비 계수 (제품 1개당 평균 소비량)
+    // 1/2성: 핵/결정 만들 때 정수 2개씩 소비, 제품 1개당 핵/결정 3개 필요 → 약 2~3
+    // 3성: 엘릭서 1:1, 영약 만들 때 엘릭서 2개 소비, 제품 1개당 영약 3개 → 약 2~3
+    const consumptionRate = is3Star ? 2.5 : 2.5
+    
+    // 유효한 제품 총 생산량 추정 (A+K+L의 합 상한)
+    const maxTotalProducts = Math.ceil(minEss / consumptionRate) + Math.ceil(totalOwned / 3)
+    
+    // 3개 제품 조합 수: (A+K+L ≤ N)인 조합 수 ≈ N³/6 (조합론)
+    // 하지만 루프는 각각 0~maxProduct까지 돌므로, effectiveMax까지만 유효
+    const effectiveMax = Math.min(2000, Math.max(100, maxTotalProducts))
+    
+    // 유효 조합 수 = 약 (effectiveMax)³ / 6
+    // 실제로는 조기 종료로 더 적지만, 안전하게 추정
+    return Math.pow(effectiveMax, 3) / 6
+  }
+
+  let totalEffectiveCombinations = 0
+
+  if (starLevel === '1' || starLevel === 'all') {
+    const ownedEss1 = {
+      guard: advanced1?.essGuard || 0,
+      wave: advanced1?.essWave || 0,
+      chaos: advanced1?.essChaos || 0,
+      life: advanced1?.essLife || 0,
+      decay: advanced1?.essDecay || 0
+    }
+    const ownedCore = [
+      advanced1?.coreWG || 0,
+      advanced1?.coreWP || 0,
+      advanced1?.coreOD || 0,
+      advanced1?.coreVD || 0,
+      advanced1?.coreED || 0
+    ]
+    const totalEss1 = calcTotalEss(shellfish.star1, ownedEss1, false)
+    totalEffectiveCombinations += calcEffectiveCombinations(totalEss1, ownedCore, false)
+  }
+
+  if (starLevel === '2' || starLevel === 'all') {
+    const ownedEss2 = {
+      guard: advanced2?.essGuard || 0,
+      wave: advanced2?.essWave || 0,
+      chaos: advanced2?.essChaos || 0,
+      life: advanced2?.essLife || 0,
+      decay: advanced2?.essDecay || 0
+    }
+    const ownedCrystal = [
+      advanced2?.crystalVital || 0,
+      advanced2?.crystalErosion || 0,
+      advanced2?.crystalDefense || 0,
+      advanced2?.crystalRegen || 0,
+      advanced2?.crystalPoison || 0
+    ]
+    const totalEss2 = calcTotalEss(shellfish.star2, ownedEss2, false)
+    totalEffectiveCombinations += calcEffectiveCombinations(totalEss2, ownedCrystal, false)
+  }
+
+  if (starLevel === '3' || starLevel === 'all') {
+    const ownedElix = {
+      guard: advanced3?.elixGuard || 0,
+      wave: advanced3?.elixWave || 0,
+      chaos: advanced3?.elixChaos || 0,
+      life: advanced3?.elixLife || 0,
+      decay: advanced3?.elixDecay || 0
+    }
+    const ownedPotion = [
+      advanced3?.potionImmortal || 0,
+      advanced3?.potionBarrier || 0,
+      advanced3?.potionCorrupt || 0,
+      advanced3?.potionFrenzy || 0,
+      advanced3?.potionVenom || 0
+    ]
+    const totalElix3 = calcTotalEss(shellfish.star3, ownedElix, true)
+    totalEffectiveCombinations += calcEffectiveCombinations(totalElix3, ownedPotion, true)
+  }
+
+  // 통합 계산시 희석액 루프 추가
+  if (starLevel === 'all') {
+    const ess1Guard = floorToTwo(shellfish.star1.guard) + (advanced1?.essGuard || 0)
+    const ess1Decay = floorToTwo(shellfish.star1.decay) + (advanced1?.essDecay || 0)
+    const ess2Guard = floorToTwo(shellfish.star2.guard) + (advanced2?.essGuard || 0)
+    const ess2Chaos = floorToTwo(shellfish.star2.chaos) + (advanced2?.essChaos || 0)
+    const elix3Chaos = shellfish.star3.chaos + (advanced3?.elixChaos || 0)
+    const elix3Decay = shellfish.star3.decay + (advanced3?.elixDecay || 0)
+
+    const maxCoreED = Math.floor(Math.min(ess1Guard, ess1Decay) / 2) + (advanced1?.coreED || 0)
+    const maxCrystalDefense = Math.floor(Math.min(ess2Guard, ess2Chaos) / 2) + (advanced2?.crystalDefense || 0)
+    const maxPotionCorrupt = Math.floor(Math.min(elix3Chaos, elix3Decay) / 2) + (advanced3?.potionCorrupt || 0)
+
+    const maxDilution = Math.min(
+      Math.floor(maxCoreED / 3),
+      Math.floor(maxCrystalDefense / 2),
+      maxPotionCorrupt
+    )
+
+    // 희석액 루프만큼 곱하기
+    totalEffectiveCombinations *= Math.max(1, maxDilution + 1)
+  }
+
+  // 시간 추정: 유효 조합 100만개당 약 1초 (경험적 수치)
+  const secondsMin = totalEffectiveCombinations / 2000000  // 빠른 경우
+  const secondsMax = totalEffectiveCombinations / 500000   // 느린 경우
+
+  // 범위 라벨 생성
+  const formatTime = (sec: number): string => {
+    if (sec < 1) return '1초'
+    if (sec < 60) return `${Math.ceil(sec)}초`
+    return `${Math.ceil(sec / 60)}분`
+  }
+
+  let label: string
+  if (secondsMax < 1) {
+    label = '1초 미만'
+  } else if (secondsMin < 1) {
+    label = `1초 ~ ${formatTime(secondsMax)}`
+  } else {
+    label = `${formatTime(secondsMin)} ~ ${formatTime(secondsMax)}`
+  }
+
+  return { seconds: (secondsMin + secondsMax) / 2, label }
+}
+
 export default function OceanGoldPage() {
   const { ocean } = useExpert()
   const [starLevel, setStarLevel] = useState<StarLevel>('all')
@@ -65,6 +237,12 @@ export default function OceanGoldPage() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isCalculating, setIsCalculating] = useState(false) // 계산 중 상태
   const [workerReady, setWorkerReady] = useState(false) // Worker 준비 상태
+  
+  // 계산 시간 관련 상태 추가
+  const [elapsedTime, setElapsedTime] = useState(0) // 경과 시간 (초)
+  const [estimatedTime, setEstimatedTime] = useState<{ seconds: number; label: string } | null>(null) // 예상 시간
+  const elapsedTimerRef = useRef<NodeJS.Timeout | null>(null) // 경과 시간 타이머
+  const startTimeRef = useRef<number>(0) // 계산 시작 시간
   
   // Web Worker 참조
   const workerRef = useRef<Worker | null>(null)
@@ -137,6 +315,12 @@ export default function OceanGoldPage() {
         const { type, result } = e.data
         setIsCalculating(false)
         
+        // 경과 시간 타이머 정지
+        if (elapsedTimerRef.current) {
+          clearInterval(elapsedTimerRef.current)
+          elapsedTimerRef.current = null
+        }
+        
         switch(type) {
           case 'calculate1Star':
             setResult1(result)
@@ -166,6 +350,11 @@ export default function OceanGoldPage() {
         console.error('Worker error:', e)
         setWorkerReady(false)
         setIsCalculating(false)
+        // 에러 시 타이머 정지
+        if (elapsedTimerRef.current) {
+          clearInterval(elapsedTimerRef.current)
+          elapsedTimerRef.current = null
+        }
       }
       
       setWorkerReady(true)
@@ -176,6 +365,9 @@ export default function OceanGoldPage() {
     
     return () => {
       workerRef.current?.terminate()
+      if (elapsedTimerRef.current) {
+        clearInterval(elapsedTimerRef.current)
+      }
     }
   }, [])
 
@@ -259,7 +451,40 @@ export default function OceanGoldPage() {
     }
   }, [independentMode, starLevel])
 
+  // 경과 시간 포맷팅
+  const formatElapsedTime = (seconds: number): string => {
+    if (seconds < 60) {
+      return `${seconds}초`
+    }
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}분 ${secs}초`
+  }
+
   const calculate = () => {
+    // 예상 시간 계산
+    const estimate = estimateCalculationTime(
+      starLevel,
+      shellfish,
+      advancedMode ? advanced1 : undefined,
+      advancedMode ? advanced2 : undefined,
+      advancedMode ? advanced3 : undefined
+    )
+    setEstimatedTime(estimate)
+    
+    // 경과 시간 초기화 및 타이머 시작
+    setElapsedTime(0)
+    startTimeRef.current = Date.now()
+    
+    if (elapsedTimerRef.current) {
+      clearInterval(elapsedTimerRef.current)
+    }
+    
+    elapsedTimerRef.current = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000)
+      setElapsedTime(elapsed)
+    }, 1000)
+    
     setIsCalculating(true)
     
     // Worker가 준비되었으면 Worker 사용, 아니면 직접 계산 (fallback)
@@ -333,6 +558,10 @@ export default function OceanGoldPage() {
         }
       } finally {
         setIsCalculating(false)
+        if (elapsedTimerRef.current) {
+          clearInterval(elapsedTimerRef.current)
+          elapsedTimerRef.current = null
+        }
       }
     }
   }
@@ -365,6 +594,8 @@ export default function OceanGoldPage() {
     setResult2(null)
     setResult3(null)
     setResultAll(null)
+    setEstimatedTime(null)
+    setElapsedTime(0)
     // localStorage도 초기화
     try {
       localStorage.removeItem(STORAGE_KEY)
@@ -842,6 +1073,52 @@ export default function OceanGoldPage() {
     </div>
   )
 
+  // 계산 버튼 내용 생성 (JSX 반환)
+  const renderCalculateButtonContent = () => {
+    const baseText = starLevel === 'all' ? '최대 골드 계산' : `${starLevel}성 최대 골드 계산`
+    
+    if (isCalculating) {
+      const elapsed = formatElapsedTime(elapsedTime)
+      return (
+        <>
+          <span>계산 중... {elapsed}</span>
+          {estimatedTime && estimatedTime.seconds > 1 && (
+            <>
+              <br />
+              <span style={{ fontSize: '0.85em', opacity: 0.9 }}>예상 : {estimatedTime.label}</span>
+            </>
+          )}
+        </>
+      )
+    }
+    
+    // 계산 전 예상 시간 미리보기 (입력값이 있을 때만)
+    const hasInput = Object.values(shellfish.star1).some(v => v > 0) ||
+                     Object.values(shellfish.star2).some(v => v > 0) ||
+                     Object.values(shellfish.star3).some(v => v > 0)
+    
+    if (hasInput) {
+      const preview = estimateCalculationTime(
+        starLevel,
+        shellfish,
+        advancedMode ? advanced1 : undefined,
+        advancedMode ? advanced2 : undefined,
+        advancedMode ? advanced3 : undefined
+      )
+      if (preview.seconds > 1) {
+        return (
+          <>
+            <span>{baseText}</span>
+            <br />
+            <span style={{ fontSize: '0.85em', opacity: 0.9 }}>예상: {preview.label}</span>
+          </>
+        )
+      }
+    }
+    
+    return <span>{baseText}</span>
+  }
+
   return (
     <div>
       <div className="gold-container">
@@ -998,7 +1275,7 @@ export default function OceanGoldPage() {
                 </div>
               </div>
               <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
-                {isCalculating ? '계산 중입니다...' : '최대 골드 계산'}
+                {renderCalculateButtonContent()}
               </button>
             </div>
 
@@ -1195,7 +1472,7 @@ export default function OceanGoldPage() {
                 </>
               )}
               <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
-                {isCalculating ? '계산 중입니다...' : '1성 최대 골드 계산'}
+                {renderCalculateButtonContent()}
               </button>
             </div>
 
@@ -1282,7 +1559,7 @@ export default function OceanGoldPage() {
                 </>
               )}
               <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
-                {isCalculating ? '계산 중입니다...' : '2성 최대 골드 계산'}
+                {renderCalculateButtonContent()}
               </button>
             </div>
 
@@ -1373,7 +1650,7 @@ export default function OceanGoldPage() {
                 </>
               )}
               <button className="gold-btn-calculate" onClick={calculate} disabled={isCalculating}>
-                {isCalculating ? '계산 중입니다...' : '3성 최대 골드 계산'}
+                {renderCalculateButtonContent()}
               </button>
             </div>
 
