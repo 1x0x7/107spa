@@ -15,7 +15,6 @@ export default function HomePage() {
       {latestUpdate && (
         <section className="content-block">
           <div className="update-banner">
-            {/* 상단: 배지 + 힌트를 같은 줄에 */}
             <div className="update-banner-header">
               <div className="update-banner-badge">최신 업데이트</div>
               {latestUpdate.details && (
@@ -31,7 +30,6 @@ export default function HomePage() {
 
             <div className="update-banner-date">{latestUpdate.date}</div>
 
-            {/* 호버 시 보이는 상세 내용 */}
             {latestUpdate.details && (
               <div className="update-banner-details">
                 {latestUpdate.details.changes && latestUpdate.details.changes.length > 0 && (
@@ -78,9 +76,51 @@ export default function HomePage() {
 
         <div className="update-list">
           {pastUpdates.map((item, idx) => (
-            <div key={idx} className="update-item">
+            <div key={idx} className={`update-item ${item.details ? 'has-details' : ''}`}>
               <div className="update-title">{item.title}</div>
               <div className="update-meta">{item.date}</div>
+              
+              {item.desc && (
+                <div className="update-item-desc">{item.desc}</div>
+              )}
+
+              {/* 호버 시 보이는 상세 내용 */}
+              {item.details && (
+                <div className="update-item-details">
+                  {item.details.changes && item.details.changes.length > 0 && (
+                    <div className="update-detail-section">
+                      <div className="update-detail-title">변경사항</div>
+                      <ul className="update-detail-list">
+                        {item.details.changes.map((change, i) => (
+                          <li key={i}>{change}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {item.details.fixes && item.details.fixes.length > 0 && (
+                    <div className="update-detail-section">
+                      <div className="update-detail-title">버그 수정</div>
+                      <ul className="update-detail-list">
+                        {item.details.fixes.map((fix, i) => (
+                          <li key={i}>{fix}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {item.details.notes && item.details.notes.length > 0 && (
+                    <div className="update-detail-section">
+                      <div className="update-detail-title">예정</div>
+                      <ul className="update-detail-list">
+                        {item.details.notes.map((note, i) => (
+                          <li key={i}>{note}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>

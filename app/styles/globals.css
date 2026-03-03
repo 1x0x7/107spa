@@ -246,6 +246,95 @@
   color: var(--color-text-muted);
 }
 
+/* =========================
+   업데이트 내역 리스트
+========================= */
+.update-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.update-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 16px;
+  background-color: var(--color-bg-card);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+
+.update-item.has-details:hover {
+  background-color: var(--color-bg-hover, #f8f9fa);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+}
+
+.update-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.update-meta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+.update-item-desc {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* 상세 내용 (기본 숨김) */
+.update-item-details {
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* 호버 시 펼침 */
+.update-item.has-details:hover .update-item-details {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-light, #eee);
+}
+
+/* 상세 내용 내부 */
+.update-item-details .update-detail-section {
+  margin-bottom: 10px;
+}
+
+.update-item-details .update-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.update-item-details .update-detail-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary, #4a90e2);
+  margin-bottom: 4px;
+}
+
+.update-item-details .update-detail-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.update-item-details .update-detail-list li {
+  margin-bottom: 2px;
+}
 
 /* globals.css에 추가 */
 .recipe-name-cell {
