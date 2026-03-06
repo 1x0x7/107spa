@@ -17,6 +17,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     date: "2025.03.06", 
     isLatest: true,
     details: {
+      notes: ["전문가 역계산기 추가", "해양 - 공예품 추가", "홈 화면 수정"],
     }
   },
 
