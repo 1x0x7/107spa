@@ -21,16 +21,8 @@ export const CONTRACT_TYPES = {
   conquest: { name: '정복의 영혼 계약서', tool: '세이지 대검' },
 }
 
-// 기본 시세
-export const DEFAULT_PRICES = {
-  crushing: 24127, //파쇄
-  conquest: 25536, //정복
-  prosperity: 25078, //번영
-  tide: 25068, //만조
-  rough: 0, //투박한
-  neat: 0, //단정한
-  precise: 0, //정교한
-}
+// 기본 시세 - updates.ts에서 관리
+export { ENGRAVE_PRICES as DEFAULT_PRICES } from './updates'
 
 // 각인 상세 옵션 데이터
 export const ENGRAVE_OPTIONS = {

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
+import { PRICE_DATES } from '@/data/updates'
 
 const GoldIcon = () => (
   <img 
@@ -152,7 +153,7 @@ export default function EngravingPage() {
           <div className="enchant-card">
             <div className="enchant-card-header">
               영혼 계약서 시세
-              <span className="price-date">03.06 기준</span>
+              <span className="price-date">{PRICE_DATES.engrave}</span>
             </div>
             <div className="enchant-card-body">
               <div className="price-input-row">

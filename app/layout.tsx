@@ -12,6 +12,7 @@ import './styles/info.css'
 import './styles/stamina.css'
 import { SecurityLock } from '@/components/SecurityLock'
 import { Analytics } from "@vercel/analytics/next"
+import './styles/home.css'
 
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

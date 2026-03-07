@@ -198,24 +198,8 @@ export const FARMING_EXPERT_DESC = {
   ]
 }
 
-// 기본 시세 설정 (3일마다 수정)
-export const DEFAULT_PRICES: Record<string, number> = {
-  "토마토 스파게티": 728,
-  "어니언 링": 739,
-  "갈릭 케이크": 643,
-  "삼겹살 토마토 찌개": 1479,
-  "삼색 아이스크림": 2577,
-  "마늘 양갈비 핫도그": 1101,
-  "달콤 시리얼": 2560,
-  "로스트 치킨 파이": 1624,
-  "스윗 치킨 햄버거": 1658,
-  "토마토 파인애플 피자": 2207,
-  "양파 수프": 2509,
-  "허브 삼겹살 찜": 1694,
-  "토마토 라자냐": 1333,
-  "딥 크림 빠네": 1241,
-  "트리플 소갈비 꼬치": 2301
-}
+// 기본 시세 - updates.ts에서 관리
+export { COOKING_PRICES as DEFAULT_PRICES } from './updates'
 
 // 효율 계산용 요리 레시피 데이터 (베이스 필요량 포함)
 export interface EfficiencyRecipe {

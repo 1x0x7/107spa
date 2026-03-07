@@ -27,9 +27,5 @@ export const ENCHANT_DATA: EnchantLevel[] = [
   { level: 15, lowStone: 10, midStone: 6, highStone: 5, gold: 2000000, ruby: 30, chance: 1 },
 ];
 
-// 기본 라이프스톤 시세
-export const DEFAULT_PRICES = {
-  lowStone: 10436,
-  midStone: 37239,
-  highStone: 58217,
-};
+// 기본 라이프스톤 시세 - updates.ts에서 관리
+export { ENCHANT_PRICES as DEFAULT_PRICES } from './updates'

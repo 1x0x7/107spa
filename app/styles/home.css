@@ -1,0 +1,498 @@
+/* =========================
+   홈페이지 메인 그리드 (2단 레이아웃)
+========================= */
+.home-main-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 16px;
+}
+
+/* =========================
+   왼쪽: 업데이트 통합 블록
+========================= */
+.home-update-block {
+  background-color: #f0f8ff;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  min-height: 510px;
+}
+
+/* 기본 상태 */
+.home-update-default {
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.home-update-default.hidden {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* 최신 업데이트 영역 */
+.home-latest-update {
+  cursor: pointer;
+  padding: 12px;
+  margin: -12px -12px 16px -12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.2s ease;
+}
+
+.home-latest-update:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.home-update-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.home-update-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #4a90d9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.home-update-hint {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  transition: opacity 0.2s ease;
+}
+
+.home-latest-update:hover .home-update-hint {
+  opacity: 0.6;
+}
+
+.home-update-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.home-update-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.home-update-date {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+/* 업데이트 내역 */
+.home-update-history {
+  padding-top: 4px;
+}
+
+.home-history-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.home-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-history-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.home-history-item:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.home-history-name {
+  color: var(--color-text);
+}
+
+.home-history-date {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+/* 상세보기 상태 - 페이드만 */
+.home-update-detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  background-color: #e3f2fd;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  overflow-y: auto;
+}
+
+.home-update-detail.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.home-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.home-detail-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #4a90d9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.home-detail-close {
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.home-detail-close:hover {
+  color: var(--color-text);
+}
+
+.home-detail-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.home-detail-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+
+.home-detail-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: var(--border-radius-sm);
+}
+
+.home-detail-section {
+  margin-bottom: 16px;
+}
+
+.home-detail-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4a90d9;
+  margin-bottom: 8px;
+}
+
+.home-detail-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.home-detail-list li {
+  margin-bottom: 2px;
+}
+
+/* =========================
+   오른쪽: 카드 3개
+========================= */
+.home-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--border-radius-md);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border-light);
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.home-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border);
+}
+
+.home-card.disabled {
+  background-color: var(--color-bg-secondary);
+  cursor: default;
+}
+
+.home-card.disabled:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-border-light);
+}
+
+.home-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+}
+
+.home-card-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.home-card-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.home-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.home-card-body.empty {
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.home-card-empty-icon {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.home-card-empty-text {
+  color: var(--color-text-muted);
+}
+
+/* 요리 순위 - 명도로 순위 표현 */
+.home-rank-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  gap: 6px;
+}
+
+.home-rank-number {
+  width: 16px;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.home-rank-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.home-rank-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 순위별 요리명 명도 - 라이트모드 */
+.home-rank-name.rank-1 {
+  color: #111;
+  font-weight: 600;
+}
+
+.home-rank-name.rank-2 {
+  color: #555;
+}
+
+.home-rank-name.rank-3 {
+  color: #888;
+}
+
+.home-rank-percent {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.home-rank-percent.top {
+  color: #e53935;
+  font-weight: 600;
+}
+
+.home-rank-price {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  min-width: 50px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 시스템 시세 (라이프스톤 + 영혼계약서 가로 배치) */
+.home-card-body.two-col {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 16px;
+  overflow: visible;
+}
+
+.home-price-section {
+  min-width: 0;
+}
+
+.home-price-section.lifestone {
+  flex: 0 0 auto;
+  padding-right: 16px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.home-price-section.contract {
+  flex: 1;
+  padding-left: 4px;
+}
+
+.home-price-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #4a90d9;
+  margin-bottom: 6px;
+}
+
+.home-price-row {
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+  padding: 2px 0;
+  gap: 3px;
+}
+.home-price-img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.home-price-label {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.home-price-value {
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+  margin-left: auto;
+}
+
+/* 영혼 계약서 2x2 그리드 */
+.home-price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+}
+
+/* =========================
+   반응형 - 태블릿
+========================= */
+@media (max-width: 900px) {
+  .home-main-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .home-update-block {
+    min-height: 320px;
+  }
+  
+  .home-cards {
+    flex-direction: row;
+  }
+  
+  .home-card {
+    min-height: 150px;
+  }
+}
+
+/* =========================
+   반응형 - 모바일
+========================= */
+@media (max-width: 640px) {
+  .home-cards {
+    flex-direction: column;
+  }
+  
+  .home-card {
+    min-height: 120px;
+  }
+  
+  .home-update-block {
+    min-height: 280px;
+  }
+  
+  .home-card-body.two-col {
+    gap: 12px;
+  }
+  
+  .home-price-row {
+    font-size: 0.6rem;
+  }
+}

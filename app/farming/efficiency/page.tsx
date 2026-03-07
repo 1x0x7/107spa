@@ -16,6 +16,7 @@ import {
   SEED_IMAGES,
   SEED_NAMES,
 } from '@/data/farming'
+import { PRICE_DATES } from '@/data/updates'
 import '@/app/styles/efficiency.css'
 
 // 결과 타입 정의
@@ -211,7 +212,7 @@ export default function EfficiencyPage() {
         <div className="price-edit-header">
           <h3>
             시세 수정
-            <span className="price-date">03.06 ~ 03.09</span>
+            <span className="price-date">{PRICE_DATES.cooking}</span>
           </h3>
           <button className="btn-reset-price" onClick={handleResetPrices}>
             초기화

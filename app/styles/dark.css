@@ -1516,3 +1516,177 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .net-profit-tooltip::after {
   border-top-color: #3f3f46;
 }
+
+/* =========================
+   홈페이지 다크모드
+========================= */
+
+/* 업데이트 블록 */
+:root[data-theme="dark"] .home-update-block {
+  background-color: #1e3a5f;
+}
+
+:root[data-theme="dark"] .home-latest-update:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme="dark"] .home-latest-update {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .home-update-badge {
+  color: #60a5fa;
+}
+
+:root[data-theme="dark"] .home-update-title {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .home-update-desc {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .home-update-hint {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-update-date {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-history-title {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .home-history-item {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme="dark"] .home-history-item:hover {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .home-history-name {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .home-history-date {
+  color: var(--color-text-muted);
+}
+
+/* 상세보기 다크모드 */
+:root[data-theme="dark"] .home-update-detail {
+  background-color: #1e4976;
+}
+
+:root[data-theme="dark"] .home-detail-badge {
+  color: #60a5fa;
+}
+
+:root[data-theme="dark"] .home-detail-close {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-detail-close:hover {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .home-detail-title {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .home-detail-date {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-detail-desc {
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .home-detail-section-title {
+  color: #60a5fa;
+}
+
+:root[data-theme="dark"] .home-detail-list {
+  color: var(--color-text-secondary);
+}
+
+/* 카드 다크모드 */
+:root[data-theme="dark"] .home-card {
+  background-color: var(--color-bg-card);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .home-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .home-card.disabled {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-light);
+}
+
+:root[data-theme="dark"] .home-card-header {
+  border-bottom-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .home-card-title {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .home-card-date {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-card-empty-text {
+  color: var(--color-text-muted);
+}
+
+/* 요리 순위 다크모드 - 명도로 순위 표현 */
+:root[data-theme="dark"] .home-rank-number {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-rank-name.rank-1 {
+  color: #f4f4f5;
+  font-weight: 600;
+}
+
+:root[data-theme="dark"] .home-rank-name.rank-2 {
+  color: #a1a1aa;
+}
+
+:root[data-theme="dark"] .home-rank-name.rank-3 {
+  color: #71717a;
+}
+
+:root[data-theme="dark"] .home-rank-percent {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-rank-percent.top {
+  color: #f87171;
+}
+
+:root[data-theme="dark"] .home-rank-price {
+  color: #60a5fa;
+}
+
+/* 시스템 시세 다크모드 */
+:root[data-theme="dark"] .home-price-section.lifestone {
+  border-right-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .home-price-title {
+  color: #60a5fa;
+}
+
+:root[data-theme="dark"] .home-price-label {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .home-price-value {
+  color: var(--color-text);
+}

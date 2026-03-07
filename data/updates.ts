@@ -1,28 +1,107 @@
+// ============================================
+// 📅 가격 업데이트 날짜 (한곳에서 관리)
+// ============================================
+export const PRICE_DATES = {
+  // 요리 가격 (3일마다 수정)
+  cooking: "03.06 ~ 03.09",
+  
+  // 시스템 시세
+  system: "03.06 기준",
+  enchant: "03.06 기준",   // 라이프스톤
+  engrave: "03.06 기준",   // 영혼 계약서
+}
+
+// ============================================
+// 🍳 요리 가격 (3일마다 수정)
+// ============================================
+export const COOKING_PRICES: Record<string, number> = {
+  "토마토 스파게티": 728,
+  "어니언 링": 739,
+  "갈릭 케이크": 643,
+  "삼겹살 토마토 찌개": 1479,
+  "삼색 아이스크림": 2577,
+  "마늘 양갈비 핫도그": 1101,
+  "달콤 시리얼": 2560,
+  "로스트 치킨 파이": 1624,
+  "스윗 치킨 햄버거": 1658,
+  "토마토 파인애플 피자": 2207,
+  "양파 수프": 2509,
+  "허브 삼겹살 찜": 1694,
+  "토마토 라자냐": 1333,
+  "딥 크림 빠네": 1241,
+  "트리플 소갈비 꼬치": 2301
+}
+
+// ============================================
+// 💎 라이프스톤 시세
+// ============================================
+export const ENCHANT_PRICES = {
+  lowStone: 10436,   // 하급
+  midStone: 37239,   // 중급
+  highStone: 58217,  // 상급
+}
+
+// ============================================
+// 📜 영혼 계약서 시세 (가격만 - 다른 페이지 호환용)
+// ============================================
+export const ENGRAVE_PRICES = {
+  prosperity: 25078, // 번영
+  crushing: 24127,   // 파쇄
+  tide: 25068,       // 만조
+  conquest: 25536,   // 정복
+  rough: 0,          // 투박한
+  neat: 0,           // 단정한
+  precise: 0,        // 정교한
+}
+
+// ============================================
+// 📜 영혼 계약서 (홈 화면용 - 이미지 포함)
+// ============================================
+export const SOUL_CONTRACTS = [
+  { key: 'prosperity', name: '재배', img: '/img/engrave/farming.png' },
+  { key: 'crushing', name: '채광', img: '/img/engrave/mining.png' },
+  { key: 'tide', name: '해양', img: '/img/engrave/ocean.png' },
+  { key: 'conquest', name: '사냥', img: '/img/engrave/hunting.png' },
+]
+
+// ============================================
+// 📝 업데이트 내역
+// ============================================
 export interface UpdateItem {
   title: string
   desc?: string
   date: string
   isLatest?: boolean
   details?: {
-    changes?: string[]    // 변경사항
-    fixes?: string[]      // 버그 수정
-    notes?: string[]      // 참고사항
+    changes?: string[]
+    fixes?: string[]
+    notes?: string[]
   }
 }
 
 export const UPDATE_HISTORY: UpdateItem[] = [
+
+  { 
+    title: "사이트 업데이트", 
+    desc: "홈 화면 개선 및 버그 수정", 
+    date: "2025.03.08", 
+    isLatest: true,
+    details: {
+      changes: ["홈 화면 변경"],
+      notes: ["전문가 역계산기 추가", "해양 - 공예품 추가", "이미 "],
+    }
+  },
+
+  
   { 
     title: "요리 업데이트", 
-    desc: "달콤 시리얼 > 로스트 치킨 파이 > 삼색 아이스크림", 
-    date: "2025.03.06", 
-    isLatest: true,
+    date: "2025.03.06",
     details: {
       notes: ["전문가 역계산기 추가", "해양 - 공예품 추가", "홈 화면 수정"],
     }
   },
-
   { 
-    title: "요리가격 업데이트", 
+    title: "요리 업데이트", 
     date: "2025.03.03",
     details: {
       changes: ["로스트 치킨 파이 > 스윗 치킨 햄버거 > 허브 삼겹살 찜"],
@@ -30,18 +109,17 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     }
   },
   { 
-    title: "요리가격 업데이트", 
+    title: "요리 업데이트", 
     date: "2025.03.01",
     details: {
       changes: ["트리플 소갈비 꼬치 > 딥 크림 빠네 > 허브 삼겹살 찜", "강화, 계약서 가격 변경"],
     }
   },
   { 
-    title: "요리가격 업데이트", 
+    title: "요리 업데이트", 
     date: "2025.02.27",
     details: {
-      changes: ["토마토 라자냐 > 트리플 소갈비 꼬치 > 달콤 시리얼 "],
+      changes: ["토마토 라자냐 > 트리플 소갈비 꼬치 > 달콤 시리얼"],
     }
   },
-
 ]

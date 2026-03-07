@@ -1,6 +1,8 @@
 'use client'
 
+import { PRICE_DATES } from '@/data/updates'
 import { useState, useMemo } from 'react'
+
 
 const GoldIcon = () => (
   <img 
@@ -127,7 +129,7 @@ export default function EnchantPage() {
         <div className="enchant-card">
           <div className="enchant-card-header">
             라이프스톤 시세
-            <span className="price-date">03.06 기준</span>
+            <span className="price-date">{PRICE_DATES.enchant}</span>
           </div>
           <div className="enchant-card-body">
             <div className="price-input-row">
