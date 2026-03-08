@@ -88,7 +88,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     isLatest: true,
     details: {
       changes: ["홈 화면 변경"],
-      notes: ["전문가 역계산기 추가", "해양 - 공예품 추가", "이미 "],
+      notes: ["전문가 역계산기 추가", "해양 - 공예품 추가",],
     }
   },
 
