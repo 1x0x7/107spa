@@ -83,7 +83,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
 
 
   { 
-    title: "요리 업데이트", 
+    title: "요리 및 정기 업데이트", 
     desc: "로스트 치킨 파이 > 트리플 소갈비 꼬치 > 달콤 시리얼", 
     date: "2025.03.12", 
     isLatest: true,
