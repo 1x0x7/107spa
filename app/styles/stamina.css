@@ -557,3 +557,267 @@
     font-size: 12px;
   }
 }
+
+/* =========================
+   역계산기 스타일
+========================= */
+
+/* 자동완성 래퍼 */
+.autocomplete-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 160px;
+}
+
+.autocomplete-input {
+  width: 100% !important;
+  text-align: left !important;
+}
+
+/* 자동완성 드롭다운 */
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  margin-top: 4px;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-text-primary, #333);
+  transition: background 0.15s;
+}
+
+.autocomplete-item:hover {
+  background: var(--color-bg-secondary, #f8f9fa);
+}
+
+.autocomplete-item.selected {
+  background: rgba(74, 144, 226, 0.1);
+}
+
+.autocomplete-item img,
+.autocomplete-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+
+}
+
+.autocomplete-category {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--color-text-muted, #999);
+  background: var(--color-bg-secondary, #f8f9fa);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 결과 제목 왼쪽 */
+.result-title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-title-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+
+}
+
+/* 컴팩트 리스트 스타일 */
+.compact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.compact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--color-bg-secondary, #f8f9fa);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #f0f0f0);
+}
+
+.compact-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+
+}
+
+.compact-icon-placeholder {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--color-border-light, #f0f0f0);
+  border-radius: 4px;
+}
+
+.compact-name {
+  flex: 1;
+  font-size: 13px;
+  color: var(--color-text-primary, #333);
+  font-weight: 500;
+}
+
+.compact-amount-wrap {
+  text-align: right;
+  min-width: 90px;
+}
+
+.compact-amount {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary, #4a90e2);
+  font-variant-numeric: tabular-nums;
+}
+
+.compact-amount-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--color-text-muted, #999);
+  margin-top: 1px;
+}
+
+/* 해양 4버튼 모드 토글 */
+.ocean-mode-toggle {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.ocean-mode-toggle .mode-toggle-btn {
+  padding: 10px 8px;
+  font-size: 12px;
+}
+
+/* 역계산기 반응형 */
+@media (max-width: 480px) {
+  .autocomplete-wrapper {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .autocomplete-dropdown {
+    max-height: 200px;
+  }
+
+  .compact-item {
+    padding: 8px 10px;
+  }
+
+  .compact-name {
+    font-size: 12px;
+  }
+
+  .compact-amount-wrap {
+    min-width: 80px;
+  }
+
+  .compact-amount {
+    font-size: 12px;
+  }
+
+  .ocean-mode-toggle {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 결과 섹션 라벨 */
+.result-section-label {
+  padding: 10px 0 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #666);
+}
+
+/* 원재료 합산 - 접이식 */
+.raw-materials-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  border-top: 1px solid var(--color-border-light, #f0f0f0);
+}
+
+.raw-materials-header:hover {
+  color: var(--color-primary, #4a90e2);
+}
+
+.raw-toggle {
+  font-size: 11px;
+  color: var(--color-text-muted, #999);
+}
+
+.raw-materials-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.raw-materials-content.open {
+  max-height: 300px;
+}
+
+.raw-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-bottom: 8px;
+}
+
+.raw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  background: var(--color-bg-secondary, #f5f5f5);
+  border-radius: 3px;
+  font-size: 11px;
+  color: var(--color-text-secondary, #666);
+}
+
+.raw-badge-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+
+}
+
+.raw-badge-name {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.raw-badge-amount {
+  font-weight: 600;
+  color: var(--color-primary, #4a90e2);
+}
