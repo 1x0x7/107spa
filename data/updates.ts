@@ -88,7 +88,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     isLatest: true,
     details: {
       changes: ["채광, 재배 - 역계산 추가", "시스템 시세 업데이트"],
-      notes: ["해양 - 공예품 추가, 역계산 추가", "이미지 수정"],
+      notes: ["해양 - 공예품 추가, 역계산 추가", "이미지 로딩 시간 수정", "자료 시세 입력 변경"],
     }
   },
     { 
