@@ -8,8 +8,7 @@ const nextConfig = {
     optimizeCss: true,
   },
   images: {
-    formats: ['image/webp'],
-    minimumCacheTTL: 31536000,
+    unoptimized: true,  // ← 이 줄만 추가
   },
 }
 
