@@ -37,9 +37,9 @@ export const PREMIUM_RATE: Record<number, number> = {
 }
 
 export const GOLD_PRICES = {
-  '1star': { A: 5669, K: 5752, L: 5927 },
-  '2star': { CORE: 12231, POTION: 12354, WING: 12527 },
-  '3star': { AQUA: 20863, NAUTILUS: 21107, SPINE: 21239 }
+  '1star': { A: 5159, K: 5234, L: 5393 },
+  '2star': { CORE: 11131, POTION: 11242, WING: 11399 },
+  '3star': { AQUA: 18985, NAUTILUS: 19207, SPINE: 19328 }
 }
 
 export const FISH_DATA: Record<string, { name: string }> = {
@@ -61,7 +61,7 @@ export const OCEAN_EXPERT_DESC = {
 }
 
 export const RECIPES_1STAR = [
-  { name: "(0성) 추출된 희석액", ingredients: "침식방어의 핵★3개 + 방어오염의 결정★★2개 + 타락침식의 영약★★★1개", price: "17,566G", img: "hehe.png" },
+  { name: "(0성) 추출된 희석액", ingredients: "침식방어의 핵★3개 + 방어오염의 결정★★2개 + 타락침식의 영약★★★1개", price: "18,444G", img: "hehe.png" },
   { name: "수호의 정수 (2개)", ingredients: "굴★ 2개 + 점토 2개", price: "", img : "essence_guard.png" },
   { name: "파동의 정수 (2개)", ingredients: "소라★ 2개 + 모래 4개", price: "", img : "essence_wave.png" },
   { name: "혼란의 정수 (2개)", ingredients: "문어★ 2개 + 흙 8개", price: "", img : "essence_chaos.png" },
@@ -74,9 +74,9 @@ export const RECIPES_1STAR = [
   { name: "활력 붕괴의 핵", ingredients: "생명의 정수 + 부식의 정수 + 금붕어 회", price: "", img : "core_vd.png" },
   { name: "침식 방어의 핵", ingredients: "부식의 정수 + 수호의 정수 + 농어 회", price: "", img : "core_ed.png" },
 
-  { name: "영생의 아쿠티스", ingredients: "물결 수호의 핵 + 질서 파괴의 핵 + 활력 붕괴의 핵", price: "5,669G", img : "akutis.png" },
-  { name: "크라켄의 광란체", ingredients: "질서 파괴의 핵 + 활력 붕괴의 핵 + 파동 오염의 핵", price: "5,752G", img : "kraken.png" },
-  { name: "리바이던의 깃털", ingredients: "침식 방어의 핵 + 파동 오염의 핵 + 물결 수호의 핵", price: "5,927G", img : "feather.png" },
+  { name: "영생의 아쿠티스", ingredients: "물결 수호의 핵 + 질서 파괴의 핵 + 활력 붕괴의 핵", price: "5,159G", img : "akutis.png" },
+  { name: "크라켄의 광란체", ingredients: "질서 파괴의 핵 + 활력 붕괴의 핵 + 파동 오염의 핵", price: "5,234G", img : "kraken.png" },
+  { name: "리바이던의 깃털", ingredients: "침식 방어의 핵 + 파동 오염의 핵 + 물결 수호의 핵", price: "5,393G", img : "feather.png" },
 ]
 
 
@@ -93,9 +93,9 @@ export const RECIPES_2STAR = [
   { name: "격류 재생의 결정", ingredients: "생명 에센스 + 파동 에센스 + 켈프 8개 + 금 주괴 2개", price: "", img : "crystal_regen.png" },
   { name: "맹독 혼란의 결정", ingredients: "부식 에센스 + 혼란 에센스 + 켈프 8개 + 다이아몬드 1개", price: "", img : "crystal_poison.png" },
 
-  { name: "해구 파동의 코어", ingredients: "활기 보존의 결정 + 파도 침식의 결정 + 격류 재생의 결정", price: "12,231G", img : "hadal_core.png" },
-  { name: "침묵의 심해 비약", ingredients: "파도 침식의 결정 + 격류 재생의 결정 + 맹독 혼란의 결정", price: "12,354G", img : "silent_deep.png" },
-  { name: "청해룡의 날개", ingredients: "방어 오염의 결정 + 맹독 혼란의 결정 + 활기 보존의 결정", price: "12,527G", img : "wing.png" },
+  { name: "해구 파동의 코어", ingredients: "활기 보존의 결정 + 파도 침식의 결정 + 격류 재생의 결정", price: "11,131G", img : "hadal_core.png" },
+  { name: "침묵의 심해 비약", ingredients: "파도 침식의 결정 + 격류 재생의 결정 + 맹독 혼란의 결정", price: "11,242G", img : "silent_deep.png" },
+  { name: "청해룡의 날개", ingredients: "방어 오염의 결정 + 맹독 혼란의 결정 + 활기 보존의 결정", price: "11,399G", img : "wing.png" },
 ]
 
 
@@ -112,9 +112,9 @@ export const RECIPES_3STAR = [
   { name: "생명 광란의 영약", ingredients: "생명의 엘릭서 + 혼란의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 불 산호 블록 2개", price: "", img : "potion-frenzy.png" },
   { name: "맹독 파동의 영약", ingredients: "부식의 엘릭서 + 파동의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 뇌 산호 블록 2개", price: "", img : "potion-venom.png" },
 
-  { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "20,863G", img : "aqua_pulse.png" },
-  { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "21,107G", img : "hand.png" },
-  { name: "무저의 척추", ingredients: "타락 침식의 영약 + 맹독 파동의 영약 + 생명 광란의 영약", price: "21,239G", img : "spine.png" },
+  { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "18,985G", img : "aqua_pulse.png" },
+  { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "19,207G", img : "hand.png" },
+  { name: "무저의 척추", ingredients: "타락 침식의 영약 + 맹독 파동의 영약 + 생명 광란의 영약", price: "19,328G", img : "spine.png" },
 ]
 
 

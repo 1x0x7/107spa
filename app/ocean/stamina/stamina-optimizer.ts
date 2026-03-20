@@ -210,7 +210,7 @@ function calculateGold(inventory: Inventory, premiumRate: number): {
   }
 } {
   const prices = {
-    dilution: 17566,
+    dilution: 18444,
     star1: GOLD_PRICES['1star'],
     star2: GOLD_PRICES['2star'],
     star3: GOLD_PRICES['3star']

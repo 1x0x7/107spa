@@ -80,11 +80,20 @@ export interface UpdateItem {
 }
 
 export const UPDATE_HISTORY: UpdateItem[] = [
+    { 
+    title: "요리 업데이트", 
+    desc: "로스트 치킨 파이 > 토마토 라자냐 > 트리플 소갈비 꼬치", 
+    date: "2025.03.20", 
+    isLatest: true,
+    details: {
+      fixes: ["해양 가격 수정"],
+      notes: ["해양 - 공예품 추가, 역계산 추가", "이미지 로딩 시간 수정", "자료 시세 입력 변경"],
+    }
+  },
   { 
     title: "요리 업데이트", 
     desc: "로스트 치킨 파이 > 토마토 라자냐 > 트리플 소갈비 꼬치", 
     date: "2025.03.19", 
-    isLatest: true,
     details: {
       changes: ["시세 업데이트"],
       notes: ["해양 - 공예품 추가, 역계산 추가", "이미지 로딩 시간 수정", "자료 시세 입력 변경"],
