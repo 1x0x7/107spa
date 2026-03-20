@@ -12,4 +12,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfigw
+module.exports = nextConfig
