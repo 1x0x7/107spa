@@ -5,7 +5,7 @@ import { useState, useMemo } from 'react'
 
 
 const GoldIcon = () => (
-  <img 
+  <img loading="eager" 
     src="/img/gold.png" 
     alt="골드" 
     style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
@@ -134,7 +134,7 @@ export default function EnchantPage() {
           <div className="enchant-card-body">
             <div className="price-input-row">
               <span className="price-label">
-                <Image src="/img/mining/low.png" alt="하급" width={20} height={20} />
+                <Image priority src="/img/mining/low.png" alt="하급" width={20} height={20} />
                 하급
               </span>
               <input
@@ -147,7 +147,7 @@ export default function EnchantPage() {
             </div>
             <div className="price-input-row">
               <span className="price-label">
-                <Image src="/img/mining/mid.png" alt="중급" width={20} height={20} />
+                <Image priority src="/img/mining/mid.png" alt="중급" width={20} height={20} />
                 중급
               </span>
               <input
@@ -160,7 +160,7 @@ export default function EnchantPage() {
             </div>
             <div className="price-input-row">
               <span className="price-label">
-                <Image src="/img/mining/high.png" alt="상급" width={20} height={20} />
+                <Image priority src="/img/mining/high.png" alt="상급" width={20} height={20} />
                 상급
               </span>
               <input
@@ -263,7 +263,7 @@ export default function EnchantPage() {
                 
                 <div className="result-row">
                   <span className="result-row-label stone">
-                    <img src="/img/mining/low.png" alt="하급" />
+                    <img loading="eager" src="/img/mining/low.png" alt="하급" />
                     하급
                   </span>
                   <span className="result-row-value">
@@ -274,7 +274,7 @@ export default function EnchantPage() {
                 
                 <div className="result-row">
                   <span className="result-row-label stone">
-                    <img src="/img/mining/mid.png" alt="중급" />
+                    <img loading="eager" src="/img/mining/mid.png" alt="중급" />
                     중급
                   </span>
                   <span className="result-row-value">
@@ -285,7 +285,7 @@ export default function EnchantPage() {
                 
                 <div className="result-row">
                   <span className="result-row-label stone">
-                    <img src="/img/mining/high.png" alt="상급" />
+                    <img loading="eager" src="/img/mining/high.png" alt="상급" />
                     상급
                   </span>
                   <span className="result-row-value">

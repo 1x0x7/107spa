@@ -171,7 +171,7 @@ export default function MiningCalculatorPage() {
                             className={`autocomplete-item ${selectedRecipe?.name === recipe.name ? 'selected' : ''}`}
                             onClick={() => handleSelectRecipe(recipe)}
                           >
-                            <Image 
+                            <Image priority 
                               src={recipe.img} 
                               alt={recipe.name} 
                               width={24} 
@@ -206,7 +206,7 @@ export default function MiningCalculatorPage() {
           <div className="result-card">
             <div className="result-section-title">
               <div className="result-title-left">
-                <Image 
+                <Image priority 
                   src={selectedRecipe.img} 
                   alt={selectedRecipe.name} 
                   width={24} 
@@ -224,7 +224,7 @@ export default function MiningCalculatorPage() {
                   return (
                     <div key={i} className="compact-item">
                       {ing.img ? (
-                        <Image src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
+                        <Image priority src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
                       ) : (
                         <div className="compact-icon-placeholder" />
                       )}

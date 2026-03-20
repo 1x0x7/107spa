@@ -32,7 +32,7 @@ export default function HuntingInfoPage() {
       data: SOUL_PROCESSING.map(s => ({ 
         '항목': (
           <span className="recipe-name-cell">
-            <img src={`/img/hunting/${s.img}`} alt={s.name} />
+            <img loading="eager" src={`/img/hunting/${s.img}`} alt={s.name} />
             {s.name}
           </span>
         ),
@@ -47,7 +47,7 @@ export default function HuntingInfoPage() {
       data: SOUL_CONTRACTS.map(s => ({ 
         '항목': (
           <span className="recipe-name-cell">
-            <img src={`/img/hunting/${s.img}`} alt={s.name} />
+            <img loading="eager" src={`/img/hunting/${s.img}`} alt={s.name} />
             {s.name}
           </span>
         ),

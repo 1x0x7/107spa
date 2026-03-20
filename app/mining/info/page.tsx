@@ -35,7 +35,7 @@ export default function MiningInfoPage() {
       data: MINING_PROCESS_RECIPES.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/mining/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/mining/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),
@@ -49,7 +49,7 @@ export default function MiningInfoPage() {
       data: MINING_CRAFT_RECIPES.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/mining/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/mining/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),

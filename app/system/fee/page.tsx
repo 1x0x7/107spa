@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 
 const GoldIcon = () => (
-  <img 
+  <img loading="eager" 
     src="/img/gold.png" 
     alt="골드" 
     style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 

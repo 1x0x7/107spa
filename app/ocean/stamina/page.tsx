@@ -354,7 +354,7 @@ export default function OceanStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
-                      <img src={FISH_IMAGES[r.fishType]} alt={r.fishName}
+                      <img loading="eager" src={FISH_IMAGES[r.fishType]} alt={r.fishName}
                         style={{ width: 22, height: 22, objectFit: 'contain' }}/>
                       {r.fishName}
                     </div>
@@ -417,7 +417,7 @@ export default function OceanStaminaPage() {
                     if (stamina === 0) return null
                     return (
                       <div key={fish} className="allocation-item">
-                        <img src={FISH_IMAGES[fish]} alt={fishNames[fish]}
+                        <img loading="eager" src={FISH_IMAGES[fish]} alt={fishNames[fish]}
                           style={{ width: 24, height: 24, objectFit: 'contain' }}/>
                         <div className="allocation-info">
                           <span className="allocation-name">{fishNames[fish]}</span>

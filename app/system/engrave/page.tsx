@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { PRICE_DATES } from '@/data/updates'
 
 const GoldIcon = () => (
-  <img 
+  <img loading="eager" 
     src="/img/gold.png" 
     alt="골드" 
     style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
@@ -158,7 +158,7 @@ export default function EngravingPage() {
             <div className="enchant-card-body">
               <div className="price-input-row">
                 <span className="price-label">
-                  <Image src="/img/engrave/farming.png" alt="번영" width={20} height={20} />
+                  <Image priority src="/img/engrave/farming.png" alt="번영" width={20} height={20} />
                   번영
                 </span>
                 <input
@@ -171,7 +171,7 @@ export default function EngravingPage() {
               </div>
               <div className="price-input-row">
                 <span className="price-label">
-                  <Image src="/img/engrave/mining.png" alt="파쇄" width={20} height={20} />
+                  <Image priority src="/img/engrave/mining.png" alt="파쇄" width={20} height={20} />
                   파쇄
                 </span>
                 <input
@@ -184,7 +184,7 @@ export default function EngravingPage() {
               </div>
               <div className="price-input-row">
                 <span className="price-label">
-                  <Image src="/img/engrave/ocean.png" alt="만조" width={20} height={20} />
+                  <Image priority src="/img/engrave/ocean.png" alt="만조" width={20} height={20} />
                   만조
                 </span>
                 <input
@@ -197,7 +197,7 @@ export default function EngravingPage() {
               </div>
               <div className="price-input-row">
                 <span className="price-label">
-                  <Image src="/img/engrave/hunting.png" alt="정복" width={20} height={20} />
+                  <Image priority src="/img/engrave/hunting.png" alt="정복" width={20} height={20} />
                   정복
                 </span>
                 <input
@@ -351,7 +351,7 @@ export default function EngravingPage() {
                   
                   <div className="result-row">
                     <span className="result-row-label">
-                      <Image src={contractImages[selectedContract]} alt={CONTRACT_TYPES[selectedContract].name} width={18} height={18} />
+                      <Image priority src={contractImages[selectedContract]} alt={CONTRACT_TYPES[selectedContract].name} width={18} height={18} />
                       {CONTRACT_TYPES[selectedContract].name}
                     </span>
                     <span className="result-row-value">

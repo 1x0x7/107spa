@@ -1,71 +1,45 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode, useMemo } from 'react'
+import type {
+  MiningSettings,
+  FarmingSettings,
+  OceanSettings,
+  HuntingSettings,
+  ExpertContextType
+} from '@/types'
 
-interface MiningSettings {
-  pickaxeLevel: number
-  cobi: number
-  ingot: number
-  gemStart: number
-  gemShine: number
-  lucky: number
-  firePick: number
-}
-
-interface FarmingSettings {
-  hoeLevel: number
-  gift: number
-  harvest: number
-  pot: number
-  money: number
-  king: number
-  seedBonus: number
-  fire: number
-}
-
-interface OceanSettings {
-  rodLevel: number
-  clamSell: number
-  premiumPrice: number
-  deepSea: number
-  star: number
-  clamRefill: number
-}
-
-// ============ HuntingSettings (flowMaintain, fasterThanAnyone 제거) ============
-interface HuntingSettings {
-  swordLevel: number
-  allTheWay: number
-  worthProof: number
-  extraProcessing: number
-  differentFromOthers: number
-  mutantSpecies: number
-}
-
-interface ExpertContextType {
-  mining: MiningSettings
-  farming: FarmingSettings
-  ocean: OceanSettings
-  hunting: HuntingSettings
-  updateMining: (key: keyof MiningSettings, value: number) => void
-  updateFarming: (key: keyof FarmingSettings, value: number) => void
-  updateOcean: (key: keyof OceanSettings, value: number) => void
-  updateHunting: (key: keyof HuntingSettings, value: number) => void
-}
-
+// ===== 기본값 =====
 const defaultMining: MiningSettings = {
-  pickaxeLevel: 1, cobi: 0, ingot: 0, gemStart: 0, gemShine: 0, lucky: 0, firePick: 0
+  pickaxeLevel: 1,
+  cobi: 0,
+  ingot: 0,
+  gemStart: 0,
+  gemShine: 0,
+  lucky: 0,
+  firePick: 0
 }
 
 const defaultFarming: FarmingSettings = {
-  hoeLevel: 1, gift: 0, harvest: 0, pot: 0, money: 0, king: 0, seedBonus: 0, fire: 0
+  hoeLevel: 1,
+  gift: 0,
+  harvest: 0,
+  pot: 0,
+  money: 0,
+  king: 0,
+  seedBonus: 0,
+  fire: 0
 }
 
 const defaultOcean: OceanSettings = {
-  rodLevel: 1, clamSell: 0, premiumPrice: 0, deepSea: 0, star: 0, clamRefill: 0
+  rodLevel: 1,
+  clamSell: 0,
+  premiumPrice: 0,
+  deepSea: 0,
+  star: 0,
+  clamRefill: 0
 }
 
-// ============ defaultHunting (flowMaintain, fasterThanAnyone 제거) ============
 const defaultHunting: HuntingSettings = {
   swordLevel: 1,
   allTheWay: 0,
@@ -75,22 +49,29 @@ const defaultHunting: HuntingSettings = {
   mutantSpecies: 0
 }
 
+// ===== Context =====
 const ExpertContext = createContext<ExpertContextType | null>(null)
 
-// localStorage 로드 함수
+// ===== localStorage 유틸리티 =====
 function loadFromStorage<T>(key: string, defaultValue: T): T {
   if (typeof window === 'undefined') return defaultValue
   try {
     const saved = localStorage.getItem(key)
     return saved ? { ...defaultValue, ...JSON.parse(saved) } : defaultValue
-  } catch { return defaultValue }
+  } catch {
+    return defaultValue
+  }
 }
 
-// localStorage 저장 함수
-function saveToStorage(key: string, value: unknown) {
-  try { localStorage.setItem(key, JSON.stringify(value)) } catch {}
+function saveToStorage(key: string, value: unknown): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value))
+  } catch {
+    // 저장 실패 시 무시
+  }
 }
 
+// ===== Provider =====
 export function ExpertProvider({ children }: { children: ReactNode }) {
   const [mining, setMining] = useState<MiningSettings>(defaultMining)
   const [farming, setFarming] = useState<FarmingSettings>(defaultFarming)
@@ -138,7 +119,14 @@ export function ExpertProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const value = useMemo(() => ({
-    mining, farming, ocean, hunting, updateMining, updateFarming, updateOcean, updateHunting
+    mining,
+    farming,
+    ocean,
+    hunting,
+    updateMining,
+    updateFarming,
+    updateOcean,
+    updateHunting
   }), [mining, farming, ocean, hunting, updateMining, updateFarming, updateOcean, updateHunting])
 
   return (
@@ -148,8 +136,14 @@ export function ExpertProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useExpert() {
+// ===== Hook =====
+export function useExpert(): ExpertContextType {
   const context = useContext(ExpertContext)
-  if (!context) throw new Error('useExpert must be used within ExpertProvider')
+  if (!context) {
+    throw new Error('useExpert must be used within ExpertProvider')
+  }
   return context
 }
+
+// ===== 타입 re-export (하위 호환성) =====
+export type { MiningSettings, FarmingSettings, OceanSettings, HuntingSettings }

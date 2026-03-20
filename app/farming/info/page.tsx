@@ -34,7 +34,7 @@ export default function FarmingInfoPage() {
       data: EFFICIENCY_RECIPES.map(r => ({
         '요리명': (
           <span className="recipe-name-cell">
-            <img src={`/img/farming/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/farming/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),
@@ -50,7 +50,7 @@ export default function FarmingInfoPage() {
       data: PROCESSING_RECIPES.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/farming/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/farming/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),

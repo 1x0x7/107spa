@@ -1,11 +1,14 @@
 // =========================
 // 채광 관련 데이터
 // =========================
+import type { MiningSettings, MiningSkillKey, ExpertSkill } from '@/types'
+
 export const MINING_IMAGES: Record<string, string> = {
   corum: '/img/mining/corum.png',
   lifton: '/img/mining/lifton.png',
   serent: '/img/mining/serent.png',
 }
+
 /* ===== 기본 수치 ===== */
 export const MINING_STAMINA_PER_MINE = 10
 
@@ -85,23 +88,27 @@ export const MINING_EXPERT_DESC = {
     '아일랜드에서 채광 시 코비 등장 확률 +4%',
     '아일랜드에서 채광 시 코비 등장 확률 +5%',
   ],
-  ingot: ['주괴 판매가 +5%', 
+  ingot: [
+    '주괴 판매가 +5%',
     '주괴 판매가 +7%',
     '주괴 판매가 +10%',
     '주괴 판매가 +20%',
     '주괴 판매가 +30%',
-    '주괴 판매가 +50%'],
+    '주괴 판매가 +50%'
+  ],
   gemStart: [
     '3% 확률로 보석 1개 드롭',
     '7% 확률로 보석 1개 드롭',
     '10% 확률로 보석 2개 드롭',
   ],
-  gemShine: ['보석 판매가 +5%',
+  gemShine: [
+    '보석 판매가 +5%',
     '보석 판매가 +7%',
     '보석 판매가 +10%',
     '보석 판매가 +20%',
     '보석 판매가 +30%',
-    '보석 판매가 +50%'],
+    '보석 판매가 +50%'
+  ],
   lucky: [
     '1% 확률로 광석 +1개 추가 드롭',
     '2% 확률로 광석 +2개 추가 드롭',
@@ -129,53 +136,26 @@ export const MINING_EXPERT_DESC = {
 } as const
 
 /* ===== 레시피 ===== */
-export interface Recipe {
-  name: string
-  ingredients: string
-  img?:string
-}
-
-export const MINING_PROCESS_RECIPES: Recipe[] = [
+export const MINING_PROCESS_RECIPES = [
   { name: '강화 횃불', ingredients: '횃불 4개', img: "toach.png" },
-  { name: '코룸 주괴', ingredients: '코룸 16개 + 강화 횃불 2개', img : "corum2.png" },
-  { name: '리프톤 주괴', ingredients: '리프톤 15개 + 강화 횃불 4개', img : "lifton2.png" },
-  { name: '세렌트 주괴', ingredients: '세렌트 16개 + 강화 횃불 8개', img : "serent2.png" },
+  { name: '코룸 주괴', ingredients: '코룸 16개 + 강화 횃불 2개', img: "corum2.png" },
+  { name: '리프톤 주괴', ingredients: '리프톤 15개 + 강화 횃불 4개', img: "lifton2.png" },
+  { name: '세렌트 주괴', ingredients: '세렌트 16개 + 강화 횃불 8개', img: "serent2.png" },
 ]
 
-export const MINING_CRAFT_RECIPES: Recipe[] = [
-  { name: '조약돌 뭉치', ingredients: '조약돌 64개', img : "stone1.png" },
-  { name: '심층암 조약돌 뭉치', ingredients: '심층암 조약돌 64개', img : "stone2.png" },
-  { name: '어빌리티 스톤', ingredients: '코룸 주괴 1개 + 리프톤 주괴 1개 + 세렌트 주괴 1개', img : "a.png" },
-  { name: '하급 라이프스톤', ingredients: '조약돌 뭉치 2개 + 구리 블록 8개 + 레드스톤 블록 3개 + 코룸 주괴 1개', img : "low.png" },
-  { name: '중급 라이프스톤', ingredients: '심층암 조약돌 뭉치 2개 + 청금석 블록 5개 + 철 블록 5개 + 다이아몬드 블록 3개 + 리프톤 주괴 2개', img : "mid.png" },
-  { name: '상급 라이프스톤', ingredients: '구리 블록 30개 + 자수정 블록 20개 + 철 블록 7개 + 금 블록 7개 + 다이아몬드 블록 5개 + 세렌트 주괴 3개', img : "high.png" },
+export const MINING_CRAFT_RECIPES = [
+  { name: '조약돌 뭉치', ingredients: '조약돌 64개', img: "stone1.png" },
+  { name: '심층암 조약돌 뭉치', ingredients: '심층암 조약돌 64개', img: "stone2.png" },
+  { name: '어빌리티 스톤', ingredients: '코룸 주괴 1개 + 리프톤 주괴 1개 + 세렌트 주괴 1개', img: "a.png" },
+  { name: '하급 라이프스톤', ingredients: '조약돌 뭉치 2개 + 구리 블록 8개 + 레드스톤 블록 3개 + 코룸 주괴 1개', img: "low.png" },
+  { name: '중급 라이프스톤', ingredients: '심층암 조약돌 뭉치 2개 + 청금석 블록 5개 + 철 블록 5개 + 다이아몬드 블록 3개 + 리프톤 주괴 2개', img: "mid.png" },
+  { name: '상급 라이프스톤', ingredients: '구리 블록 30개 + 자수정 블록 20개 + 철 블록 7개 + 금 블록 7개 + 다이아몬드 블록 5개 + 세렌트 주괴 3개', img: "high.png" },
 ]
-
-
-/* ===== 핵심 타입 ===== */
-export interface MiningSettings {
-  pickaxeLevel: number
-  cobi: number
-  ingot: number
-  gemStart: number
-  gemShine: number
-  lucky: number
-  firePick: number
-}
-
-export type MiningSkillKey = Exclude<keyof MiningSettings, 'pickaxeLevel'>
-
-export interface ExpertSkill {
-  key: MiningSkillKey
-  name: string
-  max: number
-  desc: readonly string[]
-}
 
 /* ===== UI용 가공 데이터 ===== */
 export const PICKAXE_CONFIG = { min: 1, max: 15 } as const
 
-export const MINING_EXPERT_SKILLS: ExpertSkill[] = [
+export const MINING_EXPERT_SKILLS: ExpertSkill<MiningSkillKey>[] = [
   { key: 'cobi', name: '코비 전문가', max: 7, desc: MINING_EXPERT_DESC.cobi },
   { key: 'ingot', name: '주괴 전문가', max: 6, desc: MINING_EXPERT_DESC.ingot },
   { key: 'gemStart', name: '보석 스타트', max: 3, desc: MINING_EXPERT_DESC.gemStart },
@@ -183,3 +163,6 @@ export const MINING_EXPERT_SKILLS: ExpertSkill[] = [
   { key: 'lucky', name: '럭키 채광', max: 10, desc: MINING_EXPERT_DESC.lucky },
   { key: 'firePick', name: '화염 곡괭이', max: 10, desc: MINING_EXPERT_DESC.firePick },
 ]
+
+// 타입 re-export (하위 호환성)
+export type { MiningSettings, MiningSkillKey }

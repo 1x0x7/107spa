@@ -86,8 +86,8 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     date: "2025.03.20", 
     isLatest: true,
     details: {
-      fixes: ["해양 가격 수정"],
-      notes: ["해양 - 공예품 추가, 역계산 추가", "이미지 로딩 시간 수정", "자료 시세 입력 변경"],
+      fixes: ["해양 가격 수정, 이미지 로딩 개선"],
+      notes: ["해양 - 공예품 추가, 역계산 추가", "자료 시세 입력 변경"],
     }
   },
   { 

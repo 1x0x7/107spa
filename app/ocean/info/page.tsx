@@ -38,7 +38,7 @@ export default function OceanInfoPage() {
       data: RECIPES_1STAR.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/ocean/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),
@@ -53,7 +53,7 @@ export default function OceanInfoPage() {
       data: RECIPES_2STAR.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/ocean/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),
@@ -68,7 +68,7 @@ export default function OceanInfoPage() {
       data: RECIPES_3STAR.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/ocean/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),
@@ -83,7 +83,7 @@ export default function OceanInfoPage() {
       data: RECIPES_CRAFT.map(r => ({ 
         '결과물': (
           <span className="recipe-name-cell">
-            <img src={`/img/ocean/${r.img}`} alt={r.name} />
+            <img loading="eager" src={`/img/ocean/${r.img}`} alt={r.name} />
             {r.name}
           </span>
         ),

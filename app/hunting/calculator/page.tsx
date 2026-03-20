@@ -139,7 +139,7 @@ export default function HuntingCalculatorPage() {
                             className={`autocomplete-item ${selectedRecipe?.name === recipe.name ? 'selected' : ''}`}
                             onClick={() => handleSelectRecipe(recipe)}
                           >
-                            <Image 
+                            <Image priority 
                               src={recipe.img} 
                               alt={recipe.name} 
                               width={24} 
@@ -174,7 +174,7 @@ export default function HuntingCalculatorPage() {
           <div className="result-card">
             <div className="result-section-title">
               <div className="result-title-left">
-                <Image 
+                <Image priority 
                   src={selectedRecipe.img} 
                   alt={selectedRecipe.name} 
                   width={24} 
@@ -192,7 +192,7 @@ export default function HuntingCalculatorPage() {
                   return (
                     <div key={i} className="compact-item">
                       {ing.img && (
-                        <Image src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
+                        <Image priority src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
                       )}
                       <span className="compact-name">{ing.name}</span>
                       <div className="compact-amount-wrap">

@@ -1,6 +1,7 @@
 // =========================
 // 사냥 관련 데이터
 // =========================
+import type { HuntingSettings, HuntingSkillKey, ExpertSkill } from '@/types'
 
 // 전리품 이미지
 export const HUNTING_IMAGES: Record<string, string> = {
@@ -178,7 +179,7 @@ export const SOUL_PROCESSING = [
     name: '영혼 불꽃', 
     ingredients: '좀비의 심장 1개 + 스켈레톤 심장 1개 + 거미의 심장 1개 + 크리퍼의 심장 1개',
     price: '2,000 G',
-    img : "soul.png"
+    img: "soul.png"
   },
   { name: '사슴의 영혼', ingredients: '사슴의 뿔 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "dear_soul.png" },
   { name: '미어캣의 영혼', ingredients: '미어캣의 꼬리 8개 + 영혼 불꽃 3개', price: '2,000 G', img: "meerkat_soul.png" },
@@ -214,32 +215,16 @@ export const SOUL_CONTRACTS = [
   },
 ] as const
 
-/* ===== 핵심 타입 ===== */
-export interface HuntingSettings {
-  swordLevel: number
-  allTheWay: number
-  worthProof: number
-  extraProcessing: number
-  differentFromOthers: number
-  mutantSpecies: number
-}
-
-export type HuntingSkillKey = Exclude<keyof HuntingSettings, 'swordLevel'>
-
-export interface ExpertSkill {
-  key: HuntingSkillKey
-  name: string
-  max: number
-  desc: readonly string[]
-}
-
 /* ===== UI용 가공 데이터 ===== */
 export const SWORD_CONFIG = { min: 1, max: 15 } as const
 
-export const HUNTING_EXPERT_SKILLS: ExpertSkill[] = [
+export const HUNTING_EXPERT_SKILLS: ExpertSkill<HuntingSkillKey>[] = [
   { key: 'allTheWay', name: '끝까지 간다!', max: 5, desc: HUNTING_EXPERT_DESC.allTheWay },
   { key: 'worthProof', name: '값어치 증명', max: 6, desc: HUNTING_EXPERT_DESC.worthProof },
   { key: 'extraProcessing', name: '추가 손질', max: 7, desc: HUNTING_EXPERT_DESC.extraProcessing },
   { key: 'differentFromOthers', name: '남들과는 다르게', max: 7, desc: HUNTING_EXPERT_DESC.differentFromOthers },
   { key: 'mutantSpecies', name: '변종 개체', max: 10, desc: HUNTING_EXPERT_DESC.mutantSpecies },
 ]
+
+// 타입 re-export (하위 호환성)
+export type { HuntingSettings, HuntingSkillKey }

@@ -160,7 +160,7 @@ export default function HomePage() {
               {topCooking.map((item) => (
                 <div key={item.rank} className="home-rank-item">
                   <span className="home-rank-number">{item.rank}.</span>
-                  <img src={item.img} alt={item.name} className="home-rank-img" />
+                  <img loading="eager" src={item.img} alt={item.name} className="home-rank-img" />
                   <span className={`home-rank-name rank-${item.rank}`}>{item.name}</span>
                   <span className={`home-rank-percent ${item.rank === 1 ? 'top' : ''}`}>
                     {item.percent}%
@@ -212,7 +212,7 @@ export default function HomePage() {
                 <div className="home-price-grid">
                   {SOUL_CONTRACTS.map((contract) => (
                     <div key={contract.key} className="home-price-row">
-                      <img src={contract.img} alt={contract.name} className="home-price-img" />
+                      <img loading="eager" src={contract.img} alt={contract.name} className="home-price-img" />
                       <span className="home-price-label">{contract.name}</span>
                       <span className="home-price-value">{fmt(ENGRAVE_PRICES[contract.key as keyof typeof ENGRAVE_PRICES])}</span>
                     </div>

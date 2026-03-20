@@ -394,7 +394,7 @@ export default function OceanCalculatorPage() {
                             className={`autocomplete-item ${selectedRecipe?.name === recipe.name ? 'selected' : ''}`}
                             onClick={() => handleSelectRecipe(recipe)}
                           >
-                            <Image 
+                            <Image priority 
                               src={recipe.img} 
                               alt={recipe.name} 
                               width={24} 
@@ -428,7 +428,7 @@ export default function OceanCalculatorPage() {
           <div className="result-card">
             <div className="result-section-title">
               <div className="result-title-left">
-                <Image 
+                <Image priority 
                   src={selectedRecipe.img} 
                   alt={selectedRecipe.name} 
                   width={24} 
@@ -448,7 +448,7 @@ export default function OceanCalculatorPage() {
                   return (
                     <div key={i} className="compact-item">
                       {ing.img ? (
-                        <Image src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
+                        <Image priority src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
                       ) : (
                         <div className="compact-icon-placeholder" />
                       )}
@@ -477,7 +477,7 @@ export default function OceanCalculatorPage() {
                       {rawMaterials.map((mat, i) => (
                         <span key={i} className="raw-badge">
                           {mat.img && (
-                            <Image src={mat.img} alt={mat.name} width={14} height={14} className="raw-badge-icon" />
+                            <Image priority src={mat.img} alt={mat.name} width={14} height={14} className="raw-badge-icon" />
                           )}
                           <span className="raw-badge-name">{mat.name}</span>
                           <span className="raw-badge-amount">{fmt(mat.amount)}</span>

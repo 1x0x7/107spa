@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 
 const GoldIcon = () => (
-  <img 
+  <img loading="eager" 
     src="/img/gold.png" 
     alt="골드" 
     style={{ width: '16px', height: '16px', display: 'inline-block', verticalAlign: 'middle' }} 
@@ -729,14 +729,14 @@ export default function OceanGoldPage() {
             const tooltipData = INGREDIENT_TOOLTIPS[item.tooltipKey || item.name]
             return (
               <span key={idx} className="gold-material-tag with-image tooltip-wrapper">
-                {item.icon && <span className="mat-icon"><img src={item.icon} alt={item.name} /></span>}
+                {item.icon && <span className="mat-icon"><img loading="eager" src={item.icon} alt={item.name} /></span>}
                 <span className="mat-name">{item.name}</span>
                 <span className="mat-value">{formatValue(item.value)}</span>
                 {tooltipData && (
                   <div className="ingredient-tooltip">
                     {tooltipData.ingredients.map((ing: TooltipItem, i: number) => (
                       <div key={i} className="tooltip-item">
-                        {ing.icon && <img src={ing.icon} alt={ing.name} className="tooltip-icon" />}
+                        {ing.icon && <img loading="eager" src={ing.icon} alt={ing.name} className="tooltip-icon" />}
                         <span className="tooltip-text">{ing.name}</span>
                       </div>
                     ))}
@@ -761,7 +761,7 @@ export default function OceanGoldPage() {
           <div className="ingredient-tooltip product-tooltip">
             {tooltipData.ingredients.map((ing: TooltipItem, i: number) => (
               <div key={i} className="tooltip-item">
-                {ing.icon && <img src={ing.icon} alt={ing.name} className="tooltip-icon" />}
+                {ing.icon && <img loading="eager" src={ing.icon} alt={ing.name} className="tooltip-icon" />}
                 <span className="tooltip-text">{ing.name}</span>
               </div>
             ))}
@@ -1344,7 +1344,7 @@ export default function OceanGoldPage() {
                       {/* 1성: 침식 방어 핵 */}
                       <div className="dilution-tier-card tier1">
                         <div className="tier-card-header">
-                          <img src="/img/ocean/core_ed.png" alt="침식방어핵" style={{ width: 20, height: 20, marginRight: 4 }} />
+                          <img loading="eager" src="/img/ocean/core_ed.png" alt="침식방어핵" style={{ width: 20, height: 20, marginRight: 4 }} />
                           <span className="tier-card-title">침식 방어의 핵 ★</span>
                           <span className="tier-card-count">{resultAll.result1?.reservedCoreED || 0}개</span>
                         </div>
@@ -1369,7 +1369,7 @@ export default function OceanGoldPage() {
                       {/* 2성: 방어 오염 결정 */}
                       <div className="dilution-tier-card tier2">
                         <div className="tier-card-header">
-                          <img src="/img/ocean/crystal_defense.png" alt="방어오염결정" style={{ width: 17, height: 20, marginRight: 4 }} />
+                          <img loading="eager" src="/img/ocean/crystal_defense.png" alt="방어오염결정" style={{ width: 17, height: 20, marginRight: 4 }} />
                           <span className="tier-card-title">방어 오염의 결정 ★★</span>
                           <span className="tier-card-count">{resultAll.result2?.reservedCrystalDefense || 0}개</span>
                         </div>
@@ -1396,7 +1396,7 @@ export default function OceanGoldPage() {
                       {/* 3성: 타락 침식 영약 */}
                       <div className="dilution-tier-card tier3">
                         <div className="tier-card-header">
-                          <img src="/img/ocean/potion-corrupt.png" alt="타락침식영약" style={{ width: 20, height: 20, marginRight: 4 }} />
+                          <img loading="eager" src="/img/ocean/potion-corrupt.png" alt="타락침식영약" style={{ width: 20, height: 20, marginRight: 4 }} />
                           <span className="tier-card-title">타락 침식의 영약 ★★★</span>
                           <span className="tier-card-count">{resultAll.result3?.reservedPotionCorrupt || 0}개</span>
                         </div>
