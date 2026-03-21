@@ -102,7 +102,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     isLatest: true,
     details: {
       changes: ["요리 가격 수정", "해양 - 공예품 추가"],
-      fixes: ["코룸, 리프톤, 세렌트 주괴 이미지 수정"],
+      fixes: ["코룸, 리프톤, 세렌트 주괴 이미지 수정", "역계산 다크모드 추가"],
     }
   },
     { 

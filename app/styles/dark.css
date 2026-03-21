@@ -1707,3 +1707,49 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .home-craft-percent.high {
   color: #ef5350;
 }
+
+/* =========================
+   자동완성 드롭다운 다크모드
+   (역계산 탭)
+========================= */
+:root[data-theme="dark"] .autocomplete-dropdown {
+  background: #27272a;
+  border-color: #3f3f46;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="dark"] .autocomplete-item {
+  color: var(--color-text);
+}
+
+:root[data-theme="dark"] .autocomplete-item:hover {
+  background: #3f3f46;
+}
+
+:root[data-theme="dark"] .autocomplete-item.selected {
+  background: rgba(76, 125, 233, 0.2);
+}
+
+:root[data-theme="dark"] .autocomplete-category {
+  background: #1f1f23;
+  color: var(--color-text-muted);
+}
+
+/* 스크롤바 다크모드 */
+:root[data-theme="dark"] .autocomplete-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+:root[data-theme="dark"] .autocomplete-dropdown::-webkit-scrollbar-track {
+  background: #1f1f23;
+  border-radius: 3px;
+}
+
+:root[data-theme="dark"] .autocomplete-dropdown::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 3px;
+}
+
+:root[data-theme="dark"] .autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
