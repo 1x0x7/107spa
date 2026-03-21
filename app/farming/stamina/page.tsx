@@ -107,7 +107,6 @@ export default function FarmingStaminaPage() {
 
   return (
     <section className="farming-area">
-      <h2 className="content-title">스태미나 계산</h2>
 
       <div className="stamina-container">
         <div className="card">

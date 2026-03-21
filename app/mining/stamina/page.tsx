@@ -131,7 +131,6 @@ export default function MiningStaminaPage() {
 
   return (
     <section className="mining-page">
-      <h2 className="content-title">스태미나 계산</h2>
 
       <div className="stamina-container">
         <div className="card">

@@ -8,9 +8,20 @@ import {
   PRICE_DATES,
   ENCHANT_PRICES,
   ENGRAVE_PRICES,
+  CRAFT_PRICES,
   SOUL_CONTRACTS
 } from '@/data/updates'
 import { getTopEfficiency } from '@/utils/cooking-efficiency'
+
+// 공예품 데이터 (홈용)
+const CRAFT_ITEMS = [
+  { key: 'brooch', name: '브로치', maxPrice: 50000, img: 'yellow_clam.png' },
+  { key: 'perfume', name: '향수병', maxPrice: 150000, img: 'blue_perfume.png' },
+  { key: 'mirror', name: '손거울', maxPrice: 300000, img: 'mirror.png' },
+  { key: 'hairpin', name: '헤어핀', maxPrice: 500000, img: 'hairpin.png' },
+  { key: 'fan', name: '부채', maxPrice: 700000, img: 'fan.png' },
+  { key: 'watch', name: '시계', maxPrice: 1000000, img: 'black_pearl.png' },
+]
 
 export default function HomePage() {
   const [selectedUpdate, setSelectedUpdate] = useState<string | null>(null)
@@ -160,7 +171,7 @@ export default function HomePage() {
               {topCooking.map((item) => (
                 <div key={item.rank} className="home-rank-item">
                   <span className="home-rank-number">{item.rank}.</span>
-                  <img loading="eager" src={item.img} alt={item.name} className="home-rank-img" />
+                  <img src={item.img} alt={item.name} className="home-rank-img" />
                   <span className={`home-rank-name rank-${item.rank}`}>{item.name}</span>
                   <span className={`home-rank-percent ${item.rank === 1 ? 'top' : ''}`}>
                     {item.percent}%
@@ -172,15 +183,26 @@ export default function HomePage() {
           </Link>
 
           {/* 해양 공예품 카드 */}
-          <div className="home-card disabled">
+          <Link href="/ocean/craft" className="home-card">
             <div className="home-card-header">
-              <span className="home-card-title">해양 공예품</span>
-              <span className="home-card-date">{PRICE_DATES.system}</span>
+              <span className="home-card-title">공예품</span>
+              <span className="home-card-date">{PRICE_DATES.craft}</span>
             </div>
-            <div className="home-card-body empty">
-              <span className="home-card-empty-text">준비중</span>
+            <div className="home-card-body home-craft-body">
+              {CRAFT_ITEMS.map((item) => {
+                const price = CRAFT_PRICES[item.key] || 0
+                const percent = Math.round((price / item.maxPrice) * 100)
+                return (
+                  <div key={item.key} className="home-craft-item">
+                    <img src={`/img/ocean/${item.img}`} alt={item.name} className="home-craft-img" />
+                    <span className="home-craft-name">{item.name}</span>
+                    <span className={`home-craft-percent ${percent >= 90 ? 'high' : ''}`}>{percent}%</span>
+                    <span className="home-craft-price">{fmt(price)}G</span>
+                  </div>
+                )
+              })}
             </div>
-          </div>
+          </Link>
 
           {/* 시스템 시세 카드 */}
           <Link href="/system/enchant" className="home-card">
@@ -212,7 +234,7 @@ export default function HomePage() {
                 <div className="home-price-grid">
                   {SOUL_CONTRACTS.map((contract) => (
                     <div key={contract.key} className="home-price-row">
-                      <img loading="eager" src={contract.img} alt={contract.name} className="home-price-img" />
+                      <img src={contract.img} alt={contract.name} className="home-price-img" />
                       <span className="home-price-label">{contract.name}</span>
                       <span className="home-price-value">{fmt(ENGRAVE_PRICES[contract.key as keyof typeof ENGRAVE_PRICES])}</span>
                     </div>

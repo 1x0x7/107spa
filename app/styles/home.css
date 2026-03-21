@@ -496,3 +496,78 @@
     font-size: 0.6rem;
   }
 }
+
+/* =========================
+   해양 공예품 카드 (3행 2열)
+========================= */
+.home-craft-body {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 12px;
+}
+
+.home-craft-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+  gap: 4px;
+  padding: 2px 0;
+}
+
+.home-craft-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.home-craft-name {
+  flex: 1;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-craft-percent {
+  font-size: 0.6rem;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  min-width: 24px;
+  text-align: right;
+}
+
+.home-craft-percent.high {
+  color: #e53935;
+  font-weight: 600;
+}
+
+.home-craft-price {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  min-width: 55px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 공예품 반응형 */
+@media (max-width: 640px) {
+  .home-craft-body {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px 8px;
+  }
+  
+  .home-craft-item {
+    font-size: 0.65rem;
+  }
+  
+  .home-craft-img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .home-craft-price {
+    min-width: 50px;
+  }
+}

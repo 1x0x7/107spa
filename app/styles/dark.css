@@ -1690,3 +1690,20 @@ html.theme-transition *::after {
 :root[data-theme="dark"] .home-price-value {
   color: var(--color-text);
 }
+
+/* 해양 공예품 다크모드 */
+:root[data-theme="dark"] .home-craft-name {
+  color: var(--color-text-secondary);
+}
+
+:root[data-theme="dark"] .home-craft-percent {
+  color: var(--color-text-muted);
+}
+
+:root[data-theme="dark"] .home-craft-price {
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .home-craft-percent.high {
+  color: #ef5350;
+}

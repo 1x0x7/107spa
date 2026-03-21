@@ -140,7 +140,6 @@ export default function FarmingCalculatorPage() {
 
   return (
     <section className="farming-area">
-      <h2 className="content-title">계산</h2>
 
       <div className="stamina-container">
         <div className="card">

@@ -238,7 +238,6 @@ export default function OceanStaminaPage() {
 
   return (
     <section className="ocean-page">
-      <h2 className="content-title">스태미나 계산</h2>
 
       {!isLoaded ? (
         <div className="stamina-container">

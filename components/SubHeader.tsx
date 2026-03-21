@@ -22,7 +22,7 @@ const tabs: Record<string, { href: string; label: string }[]> = {
     { href: '/ocean/info', label: '정보' },
     { href: '/ocean/stamina', label: '스태미나' },
     { href: '/ocean/gold', label: '연금품' },
-    //{ href: '/ocean/craft', label: '공예품' },
+    { href: '/ocean/craft', label: '공예품' },
     //{ href: '/ocean/calculator', label: '역계산' },
   ],
   hunting: [

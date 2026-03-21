@@ -1,0 +1,242 @@
+/* =========================
+   공예품 페이지 스타일
+========================= */
+
+.craft-page {
+  padding: var(--spacing-md);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.craft-page .content-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-text);
+}
+
+/* 카드 스타일 */
+.craft-card {
+  background: var(--color-bg-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.craft-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.craft-card-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.craft-date-badge {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* 그리드 레이아웃 */
+.craft-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px;
+}
+
+@media (max-width: 640px) {
+  .craft-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px;
+  }
+}
+
+/* 개별 아이템 */
+.craft-item {
+  background: var(--color-bg-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  border: 1px solid var(--color-border-light);
+}
+
+.craft-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.craft-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 이름 + 재활용품 아이콘 */
+.craft-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.craft-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.craft-recycle-icons {
+  display: flex;
+  gap: 2px;
+}
+
+.craft-recycle-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.craft-ingredients {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+  word-break: keep-all;
+}
+
+/* 가격 행 */
+.craft-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.craft-current-price {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-primary);
+}
+
+.craft-percent {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.craft-percent.high {
+  color: #e53935;
+  font-weight: 600;
+}
+
+.craft-price-range {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+
+
+/* =========================
+   다크모드
+========================= */
+:root[data-theme="dark"] .craft-card {
+  background: var(--color-bg-card);
+}
+
+:root[data-theme="dark"] .craft-card-header {
+  background: var(--color-bg-secondary);
+  border-bottom-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .craft-item {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+:root[data-theme="dark"] .craft-current-price,
+:root[data-theme="dark"] .craft-percent {
+  color: var(--color-primary);
+}
+
+:root[data-theme="dark"] .craft-percent.high {
+  color: #ef5350;
+}
+
+
+/* =========================
+   반응형 - 480px
+========================= */
+@media (max-width: 480px) {
+  .craft-page {
+    padding: var(--spacing-sm);
+  }
+  
+  .craft-page .content-title {
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+  }
+  
+  .craft-card-header {
+    padding: 12px 14px;
+  }
+  
+  .craft-card-title {
+    font-size: 14px;
+  }
+  
+  .craft-grid {
+    padding: 10px;
+    gap: 8px;
+  }
+  
+  .craft-item {
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .craft-icon {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .craft-name {
+    font-size: 13px;
+  }
+  
+  .craft-recycle-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .craft-ingredients {
+    font-size: 10px;
+  }
+  
+  .craft-current-price {
+    font-size: 14px;
+  }
+  
+  .craft-percent {
+    font-size: 11px;
+  }
+  
+  .craft-note {
+    margin: 0 10px 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+}

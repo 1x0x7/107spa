@@ -611,11 +611,11 @@
 
 .autocomplete-item img,
 .autocomplete-img {
-  width: 24px;
+  width: auto;
   height: 24px;
+  max-width: 32px;
   object-fit: contain;
   flex-shrink: 0;
-
 }
 
 .autocomplete-category {
@@ -635,10 +635,10 @@
 }
 
 .result-title-img {
-  width: 24px;
+  width: auto;
   height: 24px;
+  max-width: 32px;
   object-fit: contain;
-
 }
 
 /* 컴팩트 리스트 스타일 */
@@ -659,11 +659,11 @@
 }
 
 .compact-icon {
-  width: 24px;
+  width: auto;
   height: 24px;
+  max-width: 32px;
   object-fit: contain;
   flex-shrink: 0;
-
 }
 
 .compact-icon-placeholder {

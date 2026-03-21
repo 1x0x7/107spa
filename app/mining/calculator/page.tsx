@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { MINING_PROCESS_RECIPES, MINING_CRAFT_RECIPES } from '@/data/mining'
-import { MINING_IMAGES_BASE64 } from '@/data/mining-images'
 
 interface IngredientRequirement {
   name: string
@@ -17,36 +16,30 @@ interface RecipeData {
   category: string
 }
 
-// 재료 이미지 매핑 (Base64)
+// 재료 이미지 매핑
 const INGREDIENT_IMAGES: Record<string, string> = {
   // 광석
-  '코룸': MINING_IMAGES_BASE64['corum'],
-  '리프톤': MINING_IMAGES_BASE64['lifton'],
-  '세렌트': MINING_IMAGES_BASE64['serent'],
+  '코룸': '/img/mining/corum.png',
+  '리프톤': '/img/mining/lifton.png',
+  '세렌트': '/img/mining/serent.png',
   // 가공품
-  '강화 횃불': MINING_IMAGES_BASE64['toach'],
-  '코룸 주괴': MINING_IMAGES_BASE64['corum2'],
-  '리프톤 주괴': MINING_IMAGES_BASE64['lifton2'],
-  '세렌트 주괴': MINING_IMAGES_BASE64['serent2'],
+  '강화 횃불': '/img/mining/toach.png',
+  '코룸 주괴': '/img/mining/corum2.png',
+  '리프톤 주괴': '/img/mining/lifton2.png',
+  '세렌트 주괴': '/img/mining/serent2.png',
   // 뭉치
-  '조약돌': MINING_IMAGES_BASE64['cobblestone'],
-  '심층암 조약돌': MINING_IMAGES_BASE64['cobbled_deepslate'],
-  '조약돌 뭉치': MINING_IMAGES_BASE64['stone1'],
-  '심층암 조약돌 뭉치': MINING_IMAGES_BASE64['stone2'],
+  '조약돌': '/img/mining/cobblestone.png',
+  '심층암 조약돌': '/img/mining/cobbled_deepslate.png',
+  '조약돌 뭉치': '/img/mining/stone1.png',
+  '심층암 조약돌 뭉치': '/img/mining/stone2.png',
   // 블록
-  '구리 블록': MINING_IMAGES_BASE64['copper_block'],
-  '철 블록': MINING_IMAGES_BASE64['iron_block'],
-  '금 블록': MINING_IMAGES_BASE64['gold_block'],
-  '다이아몬드 블록': MINING_IMAGES_BASE64['diamond_block'],
-  '청금석 블록': MINING_IMAGES_BASE64['lapis_block'],
-  '레드스톤 블록': MINING_IMAGES_BASE64['redstone_block'],
-  '자수정 블록': MINING_IMAGES_BASE64['amethyst_block'],
-}
-
-// 레시피 이미지 이름에서 Base64 가져오기
-function getRecipeImg(imgName: string): string {
-  const key = imgName.replace('.png', '').replace('.webp', '')
-  return MINING_IMAGES_BASE64[key] || `/img/mining/${imgName}`
+  '구리 블록': '/img/mining/copper_block.png',
+  '철 블록': '/img/mining/iron_block.png',
+  '금 블록': '/img/mining/gold_block.png',
+  '다이아몬드 블록': '/img/mining/diamond_block.png',
+  '청금석 블록': '/img/mining/lapis_block.png',
+  '레드스톤 블록': '/img/mining/redstone_block.png',
+  '자수정 블록' : '/img/mining/amethyst_block.png',
 }
 
 // 재료 파싱 함수 (이미지 포함)
@@ -71,13 +64,13 @@ function parseIngredients(ingredientStr: string): IngredientRequirement[] {
 const ALL_RECIPES: RecipeData[] = [
   ...MINING_PROCESS_RECIPES.map(r => ({
     name: r.name,
-    img: getRecipeImg(r.img),
+    img: `/img/mining/${r.img}`,
     ingredients: parseIngredients(r.ingredients),
     category: '가공'
   })),
   ...MINING_CRAFT_RECIPES.map(r => ({
     name: r.name,
-    img: getRecipeImg(r.img),
+    img: `/img/mining/${r.img}`,
     ingredients: parseIngredients(r.ingredients),
     category: '제작'
   }))
@@ -142,7 +135,6 @@ export default function MiningCalculatorPage() {
 
   return (
     <section className="mining-area">
-      <h2 className="content-title">계산</h2>
 
       <div className="stamina-container">
         <div className="card">
@@ -180,8 +172,6 @@ export default function MiningCalculatorPage() {
                             <img 
                               src={recipe.img} 
                               alt={recipe.name} 
-                              width={24} 
-                              height={24}
                               className="autocomplete-img"
                             />
                             <span>{recipe.name}</span>
@@ -215,8 +205,6 @@ export default function MiningCalculatorPage() {
                 <img 
                   src={selectedRecipe.img} 
                   alt={selectedRecipe.name} 
-                  width={24} 
-                  height={24}
                   className="result-title-img"
                 />
                 <span>{selectedRecipe.name}</span>
@@ -230,7 +218,7 @@ export default function MiningCalculatorPage() {
                   return (
                     <div key={i} className="compact-item">
                       {ing.img ? (
-                        <img src={ing.img} alt={ing.name} width={24} height={24} className="compact-icon" />
+                        <img src={ing.img} alt={ing.name} className="compact-icon" />
                       ) : (
                         <div className="compact-icon-placeholder" />
                       )}
