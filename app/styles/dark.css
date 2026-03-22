@@ -1701,7 +1701,7 @@ html.theme-transition *::after {
 }
 
 :root[data-theme="dark"] .home-craft-price {
-  color: var(--color-primary);
+  color: #60a5fa;
 }
 
 :root[data-theme="dark"] .home-craft-percent.high {
