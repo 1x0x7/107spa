@@ -96,10 +96,18 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
     { 
+    title: "요리 및 공예품 업데이트", 
+    desc: "스윗 치킨 햄버거 > 달콤 시리얼 > 딥 크림 빠네", 
+    date: "2025.03.28", 
+    isLatest: true,
+    details: {
+      changes: ["rpg . . .?"],
+    }
+  },
+    { 
     title: "요리 업데이트", 
     desc: "삼색 아이스크림 > 스윗 치킨 햄버거 > 토마토 라자냐", 
     date: "2025.03.24", 
-    isLatest: true,
     details: {
       changes: ["요리 가격 수정",]
     }
