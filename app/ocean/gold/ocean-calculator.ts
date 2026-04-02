@@ -6,7 +6,7 @@ export const GOLD_PRICES = {
   '0star': { DILUTION: 18444 },
   '1star': { A: 5159, K: 5234, L: 5393 },
   '2star': { CORE: 11131, POTION: 11242, WING: 11399 },
-  '3star': { AQUA: 18985, NAUTILUS: 19207, SPINE: 19328 }
+  '3star': { AQUA: 21833, NAUTILUS: 22088, SPINE: 22227 }
 }
 
 // 프리미엄 가격 비율

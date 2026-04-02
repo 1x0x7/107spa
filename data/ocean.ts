@@ -39,7 +39,7 @@ export const PREMIUM_RATE: Record<number, number> = {
 export const GOLD_PRICES = {
   '1star': { A: 5159, K: 5234, L: 5393 },
   '2star': { CORE: 11131, POTION: 11242, WING: 11399 },
-  '3star': { AQUA: 18985, NAUTILUS: 19207, SPINE: 19328 }
+  '3star': { AQUA: 21833, NAUTILUS: 22088, SPINE: 22227 }
 }
 
 export const FISH_DATA: Record<string, { name: string }> = {
@@ -446,9 +446,9 @@ export const RECIPES_CRAFT = [
   { name: "섬유 재활용품 (2개)", ingredients: "신발 2개", minPrice: "", maxPrice: "", img:"fiber.png" },
 
   { name: "조개껍데기 브로치", ingredients: "깨진 조개껍데기 1개 + 노란빛 진주 1개 + 금속 재활용품 1개 + 거미줄 4개", minPrice: "0G", maxPrice: "50,000G", img : "yellow_clam.png" },
-  { name: "푸른 향수병", ingredients: "깨진 조개껍데기 2개 + 푸른빛 진주 1개 + 합성수지 재활용품 1개 + 플라스틱 재활용품 1개 + 양동이 8개", minPrice: "0G", maxPrice: "100,000G", img : "blue_perfume.png" },
-  { name: "자개 손거울", ingredients: "깨진 조개껍데기 3개 + 청록빛 진주 1개 + 합금 재활용품 2개 + 플라스틱 재활용품 2개 + 유리판 16개", minPrice: "0G", maxPrice: "200,000G", img : "mirror.png" },
-  { name: "분홍 헤어핀", ingredients: "깨진 조개껍데기 4개 + 분홍빛 진주 1개 + 합성수지 재활용품 3개 + 섬유 재활용품 3개 + 대나무 64개 + 분홍 꽃잎 16개", minPrice: "0G", maxPrice: "300,000G", img : "hairpin.png" },
-  { name: "자개 부채", ingredients: "깨진 조개껍데기 5개 + 보라빛 진주 1개 + 합금 재활용품 5개 + 합성수지 재활용품 5개 + 막대기 64개 + 자수정 조각 16개", minPrice: "0G", maxPrice: "500,000G", img : "fan.png" },
-  { name: "흑진주 시계", ingredients: "깨진 조개껍데기 7개 + 흑진주 1개 + 금속 재활용품 7개 + 합금 재활용품 7개 + 섬유 재활용품 7개 + 흑요석 16개 + 시계 8개", minPrice: "0G", maxPrice: "700,000G", img : "black_pearl.png" },
+  { name: "푸른 향수병", ingredients: "깨진 조개껍데기 2개 + 푸른빛 진주 1개 + 합성수지 재활용품 1개 + 플라스틱 재활용품 1개 + 양동이 8개", minPrice: "0G", maxPrice: "150,000G", img : "blue_perfume.png" },
+  { name: "자개 손거울", ingredients: "깨진 조개껍데기 3개 + 청록빛 진주 1개 + 합금 재활용품 2개 + 플라스틱 재활용품 2개 + 유리판 16개", minPrice: "0G", maxPrice: "300,000G", img : "mirror.png" },
+  { name: "분홍 헤어핀", ingredients: "깨진 조개껍데기 4개 + 분홍빛 진주 1개 + 합성수지 재활용품 3개 + 섬유 재활용품 3개 + 대나무 64개 + 분홍 꽃잎 16개", minPrice: "0G", maxPrice: "500,000G", img : "hairpin.png" },
+  { name: "자개 부채", ingredients: "깨진 조개껍데기 5개 + 보라빛 진주 1개 + 합금 재활용품 5개 + 합성수지 재활용품 5개 + 막대기 64개 + 자수정 조각 16개", minPrice: "0G", maxPrice: "700,000G", img : "fan.png" },
+  { name: "흑진주 시계", ingredients: "깨진 조개껍데기 7개 + 흑진주 1개 + 금속 재활용품 7개 + 합금 재활용품 7개 + 섬유 재활용품 7개 + 흑요석 16개 + 시계 8개", minPrice: "0G", maxPrice: "1,000,000G", img : "black_pearl.png" },
 ]
