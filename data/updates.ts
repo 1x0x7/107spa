@@ -3,7 +3,7 @@
 // ============================================
 export const PRICE_DATES = {
   // 요리 가격 (3일마다 수정)
-  cooking: "04.01 ~ 04.03 기준",
+  cooking: "04.03 ~ 04.06 기준",
   
   // 시스템 시세
   system: "04.02 23:00 기준",
@@ -101,6 +101,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     date: "2025.04.01", 
     isLatest: true,
     details: {
+      fixes: ["요리 가격 날짜 수정"],
       changes: ["로스트 치킨 파이 > 스윗 치킨 햄버거 > 달콤시리얼"],
     }
   },
