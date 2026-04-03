@@ -41,7 +41,7 @@ export const COOKING_PRICES: Record<string, number> = {
 export const ENCHANT_PRICES = {
   lowStone: 11224,   // 하급
   midStone: 35080,   // 중급
-  highStone: 622308,  // 상급
+  highStone: 62308,  // 상급
 }
 
 // ============================================
@@ -101,7 +101,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     date: "2025.04.01", 
     isLatest: true,
     details: {
-      fixes: ["요리 가격 날짜 수정"],
+      fixes: ["요리 가격 날짜 수정", "상급 라이프스톤 가격 수정"],
       changes: ["로스트 치킨 파이 > 스윗 치킨 햄버거 > 달콤시리얼"],
     }
   },
