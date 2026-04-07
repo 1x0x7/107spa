@@ -229,7 +229,7 @@ export interface CookingRecipe {
 // 요리 레시피 (효율 계산 및 정보 표시 공용)
 export const COOKING_RECIPES: CookingRecipe[] = [
   { name: "토마토 스파게티", bases: { tomato: 1, onion: 0, garlic: 0 }, minPrice: 259, maxPrice: 864, img: "food_tomato_spaghetti.png", ingredients: "토마토 베이스 1개 + 호박 묶음 1개" },
-  { name: "어니언 링", bases: { tomato: 0, onion: 1, garlic: 0 }, minPrice: 307, maxPrice: 1026, img: "food_onion_ring.png", ingredients: "양파 베이스 2개 + 요리용 소금 1개" },
+  { name: "어니언 링", bases: { tomato: 0, onion: 1, garlic: 0 }, minPrice: 307, maxPrice: 1026, img: "food_onion_ring.png", ingredients: "양파 베이스 1개 + 감자 묶음 1개" },
   { name: "갈릭 케이크", bases: { tomato: 0, onion: 0, garlic: 1 }, minPrice: 226, maxPrice: 756, img: "food_garlic_cake.png", ingredients: "마늘 베이스 1개 + 당근 묶음 1개" },
   { name: "삼겹살 토마토 찌개", bases: { tomato: 2, onion: 0, garlic: 0 }, minPrice: 611, maxPrice: 2039, img: "food_pork_tomato_stew.png", ingredients: "토마토 베이스 2개 + 비트 묶음 1개 + 요리용 소금 1개 + 익힌 돼지고기 1개 + 익힌 돼지 삼겹살 1개" },
   { name: "삼색 아이스크림", bases: { tomato: 0, onion: 2, garlic: 0 }, minPrice: 906, maxPrice: 3022, img: "food_icecream_triple.png", ingredients: "양파 베이스 2개 + 수박 묶음 1개 + 코코넛 1개 + 설탕 큐브 1개 + 요리용 우유 1개" },

@@ -100,6 +100,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     date: "2025.04.06", 
     isLatest: true,
     details: {
+      fixes: ["어니언링 레시피 수정"]
     }
   },
             {
