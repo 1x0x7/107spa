@@ -96,8 +96,8 @@ export interface UpdateItem {
 
 export const UPDATE_HISTORY: UpdateItem[] = [
     {title: "요리 및 공예품 가격 변동", 
-    desc: "", 
-    date: "2025.04.9", 
+    desc: "로스트 치킨 파이 > 토마토 라자냐 > 마늘 양갈비 핫도그", 
+    date: "2025.04.09", 
     isLatest: true,
     details: {
     }
