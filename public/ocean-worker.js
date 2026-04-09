@@ -277,7 +277,7 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   const materialNeedProduct = {
     seaweed: Math.ceil(totalEssToMakeProduct / 2) * 6,
     oakLeaves: craftCountProduct.guard * 6, spruceLeaves: craftCountProduct.wave * 6,
-    birchLeaves: craftCountProduct.chaos * 6, acaciaLeaves: craftCountProduct.life * 6, cherryLeaves: craftCountProduct.decay * 6,
+    birchLeaves: craftCountProduct.chaos * 6, cherryLeaves: craftCountProduct.life * 6, DarkOakLeaves: craftCountProduct.decay * 6,
     kelp: totalCrystalToMakeProduct * 8, lapisBlock: crystalToMakeProduct.vital, redstoneBlock: crystalToMakeProduct.erosion,
     ironIngot: crystalToMakeProduct.defense * 3, goldIngot: crystalToMakeProduct.regen * 2, diamond: crystalToMakeProduct.poison
   }
@@ -301,7 +301,7 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   const materialNeedDilution = {
     seaweed: Math.ceil((craftCountDilution.guard + craftCountDilution.chaos)) * 6,
     oakLeaves: craftCountDilution.guard * 6, spruceLeaves: 0, birchLeaves: craftCountDilution.chaos * 6,
-    acaciaLeaves: 0, cherryLeaves: 0, kelp: crystalToMakeDilution * 8, lapisBlock: 0, redstoneBlock: 0,
+    cherryLeaves: 0, DarkOakLeaves: 0, kelp: crystalToMakeDilution * 8, lapisBlock: 0, redstoneBlock: 0,
     ironIngot: crystalToMakeDilution * 3, goldIngot: 0, diamond: 0
   }
 
@@ -339,7 +339,7 @@ function calculate2Star(input, isAdvanced, reservedCrystalDefense = 0) {
   const materialNeed = {
     seaweed: Math.ceil(totalEssToMake / 2) * 6,
     oakLeaves: craftCountTotal.guard * 6, spruceLeaves: craftCountTotal.wave * 6,
-    birchLeaves: craftCountTotal.chaos * 6, acaciaLeaves: craftCountTotal.life * 6, cherryLeaves: craftCountTotal.decay * 6,
+    birchLeaves: craftCountTotal.chaos * 6, cherryLeaves: craftCountTotal.life * 6, DarkOakLeaves: craftCountTotal.decay * 6,
     kelp: totalCrystalToMake * 8, lapisBlock: crystalToMake.vital, redstoneBlock: crystalToMake.erosion,
     ironIngot: crystalToMake.defense * 3, goldIngot: crystalToMake.regen * 2, diamond: crystalToMake.poison
   }

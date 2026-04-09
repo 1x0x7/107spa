@@ -95,10 +95,19 @@ export interface UpdateItem {
 }
 
 export const UPDATE_HISTORY: UpdateItem[] = [
+    {title: "정기 업데이트", 
+    desc: "요리 레시피 변경, 연금 재료 변경, 시스템 가격 수정", 
+    date: "2025.04.09", 
+    isLatest: true,
+    details: {
+      changes: ["토마토 파인애플 피자 조합법 : 마늘베이스 2개 -> 마늘베이스 1개", "토마토 파인애플 피자 가격 하향 조정",
+        "각인석 부여 확률 상향 및 재화 하향", "해양 2성 연금 재료 아카시아나무 잎 -> 벚나무 잎 변경" ,"해양 2성 연금 재료 벚나무 잎 -> 짙은 참나무 잎 변경"]
+, fixes: ["버그 및 건의 많은 제보 부탁드립니다!"]
+     },
+  },
     {title: "요리 및 공예품 가격 변동", 
     desc: "로스트 치킨 파이 > 토마토 라자냐 > 마늘 양갈비 핫도그", 
     date: "2025.04.09", 
-    isLatest: true,
     details: {
     }
   },

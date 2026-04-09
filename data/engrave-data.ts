@@ -1,16 +1,17 @@
 // 각인 레벨별 데이터
 export const ENGRAVING_DATA = [
-  { level: 1, contracts: 3, gold: 200000, ruby: 10 },
-  { level: 2, contracts: 6, gold: 400000, ruby: 20 },
-  { level: 3, contracts: 9, gold: 600000, ruby: 30 },
-  { level: 4, contracts: 12, gold: 600000, ruby: 30 },
+  { level: 1, contracts: 5, gold: 0, ruby: 0 },
+  { level: 2, contracts: 10, gold:0, ruby: 0 },
+  { level: 3, contracts: 15, gold:0, ruby: 0 },
+  { level: 4, contracts: 20, gold:0, ruby: 0 },
+  { level: 5, contracts: 25, gold:0, ruby: 0 },
 ]
 
 // 각인석 종류
 export const STONE_TYPES = {
-  rough: { name: '투박한 각인석', probability: 5, goldCost: 200000, rubyCost: 10 },
-  neat: { name: '단정한 각인석', probability: 10, goldCost: 400000, rubyCost: 20 },
-  precise: { name: '정교한 각인석', probability: 15, goldCost: 600000, rubyCost: 30 },
+  rough: { name: '투박한 각인석', probability: 10, goldCost: 100000, rubyCost: 3 },
+  neat: { name: '단정한 각인석', probability: 20, goldCost: 200000, rubyCost: 5 },
+  precise: { name: '정교한 각인석', probability: 30, goldCost: 300000, rubyCost: 7 },
 }
 
 // 영혼 계약서 종류

@@ -84,8 +84,8 @@ export const RECIPES_2STAR = [
   { name: "수호 에센스 (2개)", ingredients: "굴★★ 2개 + 해초 6개 + 참나무 잎 6개", price: "", img : "essence_guard_2.png" },
   { name: "파동 에센스 (2개)", ingredients: "소라★★ 2개 + 해초 6개 + 가문비나무 잎 6개", price: "", img : "essence_wave_2.png" },
   { name: "혼란 에센스 (2개)", ingredients: "문어★★ 2개 + 해초 6개 + 자작나무 잎 6개", price: "", img : "essence_chaos_2.png" },
-  { name: "생명 에센스 (2개)", ingredients: "미역★★ 2개 + 해초 6개 + 아카시아나무 잎 6개", price: "", img : "essence_life_2.png" },
-  { name: "부식 에센스 (2개)", ingredients: "성게★★ 2개 + 해초 6개 + 벚나무 잎 6개", price: "", img : "essence_decay_2.png" },
+  { name: "생명 에센스 (2개)", ingredients: "미역★★ 2개 + 해초 6개 + 벚나무 잎 6개", price: "", img : "essence_life_2.png" },
+  { name: "부식 에센스 (2개)", ingredients: "성게★★ 2개 + 해초 6개 + 짙은 참나무 잎 6개", price: "", img : "essence_decay_2.png" },
 
   { name: "활기 보존의 결정", ingredients: "수호 에센스 + 생명 에센스 + 켈프 8개 + 청금석 블록 1개", price: "", img : "crystal_vital.png" },
   { name: "파도 침식의 결정", ingredients: "파동 에센스 + 부식 에센스 + 켈프 8개 + 레드스톤 블록 1개", price: "", img : "crystal_erosion.png" },
@@ -246,14 +246,14 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '미역★★ 2', icon: '/img/ocean/seaweed.png' },
       { name: '해초 6' },
-      { name: '아카시아나무 잎 6' }
+      { name: '벚나무 잎 6' }
     ]
   },
   '부식 에센스': {
     ingredients: [
       { name: '성게★★ 2', icon: '/img/ocean/urchin.png' },
       { name: '해초 6' },
-      { name: '벚나무 잎 6' }
+      { name: '짙은 참나무 잎 6' }
     ]
   },
   // === 2성 결정 ===

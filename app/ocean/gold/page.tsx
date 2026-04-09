@@ -1598,8 +1598,8 @@ export default function OceanGoldPage() {
                   { name: '참나무 잎', value: result2.materialNeedProduct.oakLeaves },
                   { name: '가문비 잎', value: result2.materialNeedProduct.spruceLeaves },
                   { name: '자작나무 잎', value: result2.materialNeedProduct.birchLeaves },
-                  { name: '아카시아 잎', value: result2.materialNeedProduct.acaciaLeaves },
-                  { name: '벚나무 잎', value: result2.materialNeedProduct.cherryLeaves }
+                  { name: '벚나무 잎', value: result2.materialNeedProduct.cherryLeaves },
+                  { name: '짙은 참나무 잎', value: result2.materialNeedProduct.DarkOakLeaves }
                 ])}
                 {renderSection('🔹 필요 광물 ', [
                   { name: '청금석 블록', value: result2.materialNeedProduct.lapisBlock },
