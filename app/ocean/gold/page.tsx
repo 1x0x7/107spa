@@ -224,7 +224,7 @@ export default function OceanGoldPage() {
     // 2성 재료
     material2: { seaweed: 0, kelp: 0 },
     // 2성 잎
-    leaf2: { oak: 0, spruce: 0, birch: 0, acacia: 0, cherry: 0, darkOak: 0 },
+    leaf2: { oak: 0, spruce: 0, birch: 0, acacia: 0, cherry: 0, DarkOak: 0 },
     // 2성 광물
     mineral2: { lapis: 0, redstone: 0, iron: 0, gold: 0, diamond: 0 },
     // 3성 재료
