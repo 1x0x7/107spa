@@ -112,9 +112,9 @@ export const RECIPES_3STAR = [
   { name: "생명 광란의 영약", ingredients: "생명의 엘릭서 + 혼란의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 불 산호 블록 2개", price: "", img : "potion-frenzy.png" },
   { name: "맹독 파동의 영약", ingredients: "부식의 엘릭서 + 파동의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 뇌 산호 블록 2개", price: "", img : "potion-venom.png" },
 
-  { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "18,985G", img : "aqua_pulse.png" },
-  { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "19,207G", img : "hand.png" },
-  { name: "무저의 척추", ingredients: "타락 침식의 영약 + 맹독 파동의 영약 + 생명 광란의 영약", price: "19,328G", img : "spine.png" },
+  { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "21,833G", img : "aqua_pulse.png" },
+  { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "22,088G", img : "hand.png" },
+  { name: "무저의 척추", ingredients: "타락 침식의 영약 + 맹독 파동의 영약 + 생명 광란의 영약", price: "22,227G", img : "spine.png" },
 ]
 
 
