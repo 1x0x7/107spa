@@ -1,21 +1,29 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
+import { fmt } from '@/utils/format'
 import { useExpert } from '@/hooks/useExpert'
-import { 
-  FARMING_STAMINA_PER_HARVEST, 
+import {
+  FARMING_STAMINA_PER_HARVEST,
   HOE_DROPS,
-  EXPERT_GIFT, 
-  EXPERT_FIRE_HOE, 
-  CROP_DATA 
+  EXPERT_GIFT,
+  EXPERT_FIRE_HOE,
+  CROP_DATA
 } from '@/data/farming'
+import { StaminaInputRow } from '@/components/StaminaInputRow'
+import { BonusSummary } from '@/components/BonusSummary'
 
 const CROP_IMAGES: Record<string, string> = {
   tomato: '/img/farming/tomato_seed.png',
   onion: '/img/farming/onion_seed.png',
-  garlic: '/img/farming/garlic_seed.png'
+  garlic: '/img/farming/garlic_seed.png',
 }
+
+const CROP_OPTIONS = [
+  { value: 'tomato', label: '토마토' },
+  { value: 'onion', label: '양파' },
+  { value: 'garlic', label: '마늘' },
+]
 
 type CropType = keyof typeof CROP_DATA
 
@@ -29,9 +37,7 @@ interface Result {
   totalSeeds: number
   totalBase: number
   giftRate: number
-  giftCount: number
   fireRate: number
-  fireCount: number
 }
 
 export default function FarmingStaminaPage() {
@@ -41,15 +47,12 @@ export default function FarmingStaminaPage() {
   const [grandTotal, setGrandTotal] = useState(0)
   const [showResult, setShowResult] = useState(false)
 
-  const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', cropType: 'tomato' }])
-  const removeInput = (id: number) => inputs.length > 1 && setInputs(inputs.filter(i => i.id !== id))
-  const updateInput = (id: number, field: 'stamina' | 'cropType', value: string) => {
-    if (field === 'cropType') {
-      setInputs(inputs.map(i => i.id === id ? { ...i, cropType: value as CropType } : i))
-    } else {
-      setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
-    }
-  }
+  const addInput = () => setInputs(prev => [...prev, { id: Date.now(), stamina: '', cropType: 'tomato' }])
+  const removeInput = (id: number) => setInputs(prev => prev.filter(i => i.id !== id))
+  const updateStamina = (id: number, value: string) =>
+    setInputs(prev => prev.map(i => i.id === id ? { ...i, stamina: value } : i))
+  const updateCropType = (id: number, value: string) =>
+    setInputs(prev => prev.map(i => i.id === id ? { ...i, cropType: value as CropType } : i))
 
   const calculate = () => {
     const newResults: Result[] = []
@@ -59,26 +62,19 @@ export default function FarmingStaminaPage() {
       const stamina = parseInt(input.stamina)
       if (!stamina || stamina <= 0) continue
 
-      // 채집 횟수
       const gatherCount = Math.floor(stamina / FARMING_STAMINA_PER_HARVEST)
-      
-      // 괭이 레벨별 기본 씨앗 드롭
       const dropsPerGather = HOE_DROPS[farming.hoeLevel] || 1
       const baseSeeds = gatherCount * dropsPerGather
 
       // 자연이 주는 선물 (씨앗 추가)
       const giftData = EXPERT_GIFT[farming.gift] || { rate: 0, count: 0 }
-      const giftProcs = Math.floor(gatherCount * giftData.rate)
-      const giftSeeds = giftProcs * giftData.count
-      
+      const giftSeeds = Math.floor(gatherCount * giftData.rate) * giftData.count
       const totalSeeds = baseSeeds + giftSeeds
 
       // 불붙은 괭이 (베이스 추가)
       const fireData = EXPERT_FIRE_HOE[farming.fire] || { rate: 0, count: 0 }
-      const fireProcs = Math.floor(gatherCount * fireData.rate)
-      const totalBase = fireProcs * fireData.count
+      const totalBase = Math.floor(gatherCount * fireData.rate) * fireData.count
 
-      // 총합 = 씨앗 + 베이스
       total += totalSeeds + totalBase
 
       const crop = CROP_DATA[input.cropType]
@@ -91,9 +87,7 @@ export default function FarmingStaminaPage() {
         totalSeeds,
         totalBase,
         giftRate: Math.round(giftData.rate * 100),
-        giftCount: giftData.count,
         fireRate: Math.round(fireData.rate * 100),
-        fireCount: fireData.count
       })
     }
 
@@ -103,11 +97,10 @@ export default function FarmingStaminaPage() {
     setShowResult(true)
   }
 
-  const fmt = (n: number) => n.toLocaleString()
+  const r0 = results[0]
 
   return (
     <section className="farming-area">
-
       <div className="stamina-container">
         <div className="card">
           <div className="card-body">
@@ -117,22 +110,19 @@ export default function FarmingStaminaPage() {
 
             <div className="stamina-inputs-container">
               {inputs.map(input => (
-                <div key={input.id} className="stamina-input-row">
-                  <div className="stamina-input-group">
-                    <span className="stamina-label">스태미나</span>
-                    <input type="number" className="stamina-input" placeholder="3000" value={input.stamina}
-                      onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && calculate()} />
-                    <span className="stamina-label">작물</span>
-                    <select className="stamina-select" value={input.cropType}
-                      onChange={(e) => updateInput(input.id, 'cropType', e.target.value)}>
-                      <option value="tomato">토마토</option>
-                      <option value="onion">양파</option>
-                      <option value="garlic">마늘</option>
-                    </select>
-                  </div>
-                  {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
-                </div>
+                <StaminaInputRow
+                  key={input.id}
+                  id={input.id}
+                  stamina={input.stamina}
+                  selectedType={input.cropType}
+                  typeLabel="작물"
+                  options={CROP_OPTIONS}
+                  showRemove={inputs.length > 1}
+                  onStaminaChange={(v) => updateStamina(input.id, v)}
+                  onTypeChange={(v) => updateCropType(input.id, v)}
+                  onRemove={() => removeInput(input.id)}
+                  onEnter={calculate}
+                />
               ))}
             </div>
 
@@ -154,13 +144,7 @@ export default function FarmingStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
-                      <Image
-                        src={CROP_IMAGES[r.cropType]}
-                        alt={r.cropName}
-                        width={20}
-                        height={20}
-                        style={{ marginRight: '6px' }}
-                      />
+                      <img src={CROP_IMAGES[r.cropType]} alt={r.cropName} className="result-icon" />
                       {r.cropName}
                     </div>
                     <div className="result-row">
@@ -186,19 +170,15 @@ export default function FarmingStaminaPage() {
                   </div>
                 ))}
               </div>
-              
-              {/* 보너스 요약 */}
-              {results[0] && (results[0].giftRate > 0 || results[0].fireRate > 0) && (
-                <div className="bonus-summary">
-                  <div className="bonus-summary-title">적용 전문가</div>
-                  {results[0].giftRate > 0 && (
-                    <>씨앗 추가 0% → <strong>{results[0].giftRate}%</strong> (자연이 주는 선물 +{results[0].giftRate}%)</>
-                  )}
-                  {results[0].giftRate > 0 && results[0].fireRate > 0 && ' · '}
-                  {results[0].fireRate > 0 && (
-                    <>베이스 드롭 0% → <strong>{results[0].fireRate}%</strong> (불붙은 괭이 +{results[0].fireRate}%)</>
-                  )}
-                </div>
+
+              {r0 && (
+                <BonusSummary
+                  title="적용 전문가"
+                  items={[
+                    r0.giftRate > 0 && { label: '씨앗 추가', before: 0, after: r0.giftRate, source: `자연이 주는 선물 +${r0.giftRate}%` },
+                    r0.fireRate > 0 && { label: '베이스 드롭', before: 0, after: r0.fireRate, source: `불붙은 괭이 +${r0.fireRate}%` },
+                  ]}
+                />
               )}
             </div>
           </div>

@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { fmt } from '@/utils/format'
 import { useExpert } from '@/hooks/useExpert'
-import { 
-  HUNTING_STAMINA_PER_HUNT, 
-  SWORD_STATS, 
+import {
+  HUNTING_STAMINA_PER_HUNT,
+  SWORD_STATS,
   COMBO_DROP_RATE,
   EXPERT_ALL_THE_WAY,
   EXPERT_EXTRA_PROCESSING,
@@ -13,6 +14,19 @@ import {
   ANIMAL_DATA,
   HUNTING_IMAGES
 } from '@/data/hunting'
+import { StaminaInputRow } from '@/components/StaminaInputRow'
+import { BonusSummary } from '@/components/BonusSummary'
+
+const ANIMAL_OPTIONS = [
+  { value: 'deer', label: '사슴' },
+  { value: 'meerkat', label: '미어캣' },
+  { value: 'giraffe', label: '기린' },
+  { value: 'elephant', label: '코끼리' },
+  { value: 'hippo', label: '하마' },
+  { value: 'flamingo', label: '플라밍고' },
+  { value: 'turkey', label: '칠면조' },
+  { value: 'bear', label: '곰' },
+]
 
 type AnimalType = keyof typeof ANIMAL_DATA
 
@@ -30,7 +44,6 @@ interface Result {
   totalSoul: number
   relicCount: number
   total: number
-  // 보너스 정보
   extraRate: number
   comboBaseRate: number
   comboDifferentRate: number
@@ -47,19 +60,15 @@ export default function HuntingStaminaPage() {
   const [grandTotal, setGrandTotal] = useState(0)
   const [showResult, setShowResult] = useState(false)
 
-  // 콤보 활성화 여부 (끝까지 간다! 1레벨 이상)
   const isComboActive = hunting.allTheWay > 0
   const maxCombo = EXPERT_ALL_THE_WAY[hunting.allTheWay] || 0
 
-  const addInput = () => setInputs([...inputs, { id: Date.now(), stamina: '', animalType: 'deer' }])
-  const removeInput = (id: number) => inputs.length > 1 && setInputs(inputs.filter(i => i.id !== id))
-  const updateInput = (id: number, field: 'stamina' | 'animalType', value: string) => {
-    if (field === 'animalType') {
-      setInputs(inputs.map(i => i.id === id ? { ...i, animalType: value as AnimalType } : i))
-    } else {
-      setInputs(inputs.map(i => i.id === id ? { ...i, [field]: value } : i))
-    }
-  }
+  const addInput = () => setInputs(prev => [...prev, { id: Date.now(), stamina: '', animalType: 'deer' }])
+  const removeInput = (id: number) => setInputs(prev => prev.filter(i => i.id !== id))
+  const updateStamina = (id: number, value: string) =>
+    setInputs(prev => prev.map(i => i.id === id ? { ...i, stamina: value } : i))
+  const updateAnimalType = (id: number, value: string) =>
+    setInputs(prev => prev.map(i => i.id === id ? { ...i, animalType: value as AnimalType } : i))
 
   const calculate = () => {
     const newResults: Result[] = []
@@ -70,46 +79,31 @@ export default function HuntingStaminaPage() {
       if (!stamina || stamina <= 0) continue
 
       const swordStats = SWORD_STATS[hunting.swordLevel] || SWORD_STATS[1]
-      
-      // 사냥 1회 = 스태미나 10 소모
       const killCount = Math.floor(stamina / HUNTING_STAMINA_PER_HUNT)
-      
-      // 기본 전리품 드롭
       const baseLoot = killCount * swordStats.drops
 
-      // 추가 손질 (extraProcessing)
+      // 추가 손질
       const extraData = EXPERT_EXTRA_PROCESSING[hunting.extraProcessing] || { rate: 0, count: 0 }
-      const extraProcs = Math.floor(killCount * extraData.rate)
-      const extraLoot = extraProcs * extraData.count
+      const extraLoot = Math.floor(killCount * extraData.rate) * extraData.count
 
-      // 콤보 보너스 계산
-      let comboLoot = 0
-      let comboBaseRate = 0
-      let comboDifferentRate = 0
-      let comboTotalRate = 0
-
+      // 콤보 보너스
+      let comboLoot = 0, comboBaseRate = 0, comboDifferentRate = 0, comboTotalRate = 0
       if (isComboActive) {
-        // 최대 콤보에 해당하는 기본 드롭 확률
         comboBaseRate = COMBO_DROP_RATE[maxCombo] || 0
-        // 남들과는 다르게 추가 확률
         comboDifferentRate = EXPERT_DIFFERENT[hunting.differentFromOthers] || 0
-        // 총 콤보 드롭 확률
         comboTotalRate = comboBaseRate + comboDifferentRate
-        // 콤보로 인한 추가 전리품 (킬 수 * 확률 * 1개)
         comboLoot = Math.floor(killCount * comboTotalRate)
       }
 
       const totalLoot = baseLoot + extraLoot + comboLoot
 
-      // 변종 개체 (영혼 드롭)
+      // 변종 개체 (영혼)
       const mutantData = EXPERT_MUTANT[hunting.mutantSpecies] || { rate: 0, count: 0 }
-      const mutantProcs = Math.floor(killCount * mutantData.rate)
-      const totalSoul = mutantProcs * mutantData.count
+      const totalSoul = Math.floor(killCount * mutantData.rate) * mutantData.count
 
-      // 각인석 조각 (대검 기본 확률)
-      const relicProcs = Math.floor(killCount * swordStats.relicChance)
+      // 각인석 조각
+      const relicCount = Math.floor(killCount * swordStats.relicChance)
 
-      // 총합 (전리품 + 영혼)
       const itemTotal = totalLoot + totalSoul
       total += itemTotal
 
@@ -125,7 +119,7 @@ export default function HuntingStaminaPage() {
         comboLoot,
         totalLoot,
         totalSoul,
-        relicCount: relicProcs,
+        relicCount,
         total: itemTotal,
         extraRate: Math.round(extraData.rate * 100),
         comboBaseRate: Math.round(comboBaseRate * 100),
@@ -133,7 +127,7 @@ export default function HuntingStaminaPage() {
         comboTotalRate: Math.round(comboTotalRate * 100),
         maxCombo,
         mutantRate: Math.round(mutantData.rate * 100),
-        relicRate: Math.round(swordStats.relicChance * 100)
+        relicRate: Math.round(swordStats.relicChance * 100),
       })
     }
 
@@ -143,50 +137,38 @@ export default function HuntingStaminaPage() {
     setShowResult(true)
   }
 
-  const fmt = (n: number) => n.toLocaleString()
+  const r0 = results[0]
 
   return (
-    <section className="mining-page">
-
+    <section className="hunting-page">
       <div className="stamina-container">
         <div className="card">
           <div className="card-body">
             <div className="expert-info-text">
-              대검 {hunting.swordLevel}강 · 
-              추가 손질 LV{hunting.extraProcessing} · 
-              변종 개체 LV{hunting.mutantSpecies}
+              대검 {hunting.swordLevel}강 · 추가 손질 LV{hunting.extraProcessing} · 변종 개체 LV{hunting.mutantSpecies}
               {isComboActive && (
-                <>
-                  {' · '}끝까지 간다! LV{hunting.allTheWay} ({maxCombo}콤보) · 
-                  남들과는 다르게 LV{hunting.differentFromOthers}
-                  <span className="combo-active-notice">(항상 콤보 적용 기준)</span>
+                <> · 끝까지 간다! LV{hunting.allTheWay} ({maxCombo}콤보) · 남들과는 다르게 LV{hunting.differentFromOthers}
+                  <span className="combo-active-notice"> (항상 콤보 적용 기준)</span>
                 </>
               )}
             </div>
 
             <div className="stamina-inputs-container">
               {inputs.map(input => (
-                <div key={input.id} className="stamina-input-row">
-                  <div className="stamina-input-group">
-                    <span className="stamina-label">스태미나</span>
-                    <input type="number" className="stamina-input" placeholder="3300" value={input.stamina}
-                      onChange={(e) => updateInput(input.id, 'stamina', e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && calculate()} />
-                    <span className="stamina-label">동물</span>
-                    <select className="stamina-select" value={input.animalType}
-                      onChange={(e) => updateInput(input.id, 'animalType', e.target.value)}>
-                      <option value="deer">사슴</option>
-                      <option value="meerkat">미어캣</option>
-                      <option value="giraffe">기린</option>
-                      <option value="elephant">코끼리</option>
-                      <option value="hippo">하마</option>
-                      <option value="flamingo">플라밍고</option>
-                      <option value="turkey">칠면조</option>
-                      <option value="bear">곰</option>
-                    </select>
-                  </div>
-                  {inputs.length > 1 && <button className="btn-remove" onClick={() => removeInput(input.id)}>×</button>}
-                </div>
+                <StaminaInputRow
+                  key={input.id}
+                  id={input.id}
+                  stamina={input.stamina}
+                  selectedType={input.animalType}
+                  typeLabel="동물"
+                  options={ANIMAL_OPTIONS}
+                  showRemove={inputs.length > 1}
+                  staminaPlaceholder="3300"
+                  onStaminaChange={(v) => updateStamina(input.id, v)}
+                  onTypeChange={(v) => updateAnimalType(input.id, v)}
+                  onRemove={() => removeInput(input.id)}
+                  onEnter={calculate}
+                />
               ))}
             </div>
 
@@ -208,11 +190,7 @@ export default function HuntingStaminaPage() {
                 {results.map((r, i) => (
                   <div key={i} className="result-section">
                     <div className="result-section-header">
-                      <img
-                        src={HUNTING_IMAGES[r.animalType]}
-                        alt={r.animalName}
-                        className="result-icon"
-                      />
+                      <img src={HUNTING_IMAGES[r.animalType]} alt={r.animalName} className="result-icon" />
                       {r.animalName}
                     </div>
                     <div className="result-row">
@@ -251,18 +229,19 @@ export default function HuntingStaminaPage() {
                 ))}
               </div>
 
-              {/* 보너스 요약 */}
-              {results[0] && (results[0].extraRate > 0 || results[0].comboTotalRate > 0 || results[0].mutantRate > 0) && (
-                <div className="bonus-summary">
-                  <div className="bonus-summary-title">적용 보너스</div>
-                  {[
-                    results[0].extraRate > 0 && `전리품 추가 0% → <strong>${results[0].extraRate}%</strong> (추가 손질 +${results[0].extraRate}%)`,
-                    results[0].comboTotalRate > 0 && `콤보 보너스 0% → <strong>${results[0].comboTotalRate}%</strong> (${results[0].maxCombo}콤보 +${results[0].comboBaseRate}%${results[0].comboDifferentRate > 0 ? `, 남들과는 다르게 +${results[0].comboDifferentRate}%` : ''})`,
-                    results[0].mutantRate > 0 && `영혼 추가 0% → <strong>${results[0].mutantRate}%</strong> (변종 개체 +${results[0].mutantRate}%)`
-                  ].filter(Boolean).map((text, i, arr) => (
-                    <span key={i} dangerouslySetInnerHTML={{ __html: text + (i < arr.length - 1 ? ' · ' : '') }} />
-                  ))}
-                </div>
+              {r0 && (
+                <BonusSummary
+                  items={[
+                    r0.extraRate > 0 && { label: '전리품 추가', before: 0, after: r0.extraRate, source: `추가 손질 +${r0.extraRate}%` },
+                    r0.comboTotalRate > 0 && {
+                      label: '콤보 보너스',
+                      before: 0,
+                      after: r0.comboTotalRate,
+                      source: `${r0.maxCombo}콤보 +${r0.comboBaseRate}%${r0.comboDifferentRate > 0 ? `, 남들과는 다르게 +${r0.comboDifferentRate}%` : ''}`,
+                    },
+                    r0.mutantRate > 0 && { label: '영혼 추가', before: 0, after: r0.mutantRate, source: `변종 개체 +${r0.mutantRate}%` },
+                  ]}
+                />
               )}
             </div>
           </div>

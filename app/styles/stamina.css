@@ -244,6 +244,28 @@
   color: var(--color-primary, #4a90e2);
 }
 
+/* 결과 아이콘 공통 */
+.result-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* 보조 정보 행 (작은 글씨 환산 표시) */
+.result-row-small {
+  font-size: 11px;
+}
+
+.result-row-top {
+  margin-top: 4px;
+}
+
+/* 흐린 텍스트 */
+.text-muted {
+  color: var(--color-text-muted, #999);
+  font-weight: 400;
+}
+
 /* =========================
    반응형
 ========================= */
