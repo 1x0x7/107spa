@@ -86,8 +86,8 @@ export function calculateEngraving(
   let totalGold = 0
   let totalRuby = 0
 
-  // 각인석 확률 (rough: 5%, neat: 10%, precise: 15%)
-  const stoneProbability = stoneType === 'rough' ? 5 : stoneType === 'neat' ? 10 : 15
+  // 각인석 확률 (rough: 10%, neat: 20%, precise: 30%)
+  const stoneProbability = stoneType === 'rough' ? 10 : stoneType === 'neat' ? 20 : 30
 
   stages.forEach((stage) => {
     const trials = getTrialsForStage(stoneProbability, tier)

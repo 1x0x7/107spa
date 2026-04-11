@@ -42,7 +42,7 @@ export default function EngravingPage() {
   }, [startLevel, targetLevel])
 
   // 각인석 확률
-  const stoneProbability = selectedStone === 'rough' ? 5 : selectedStone === 'neat' ? 10 : 15
+  const stoneProbability = selectedStone === 'rough' ? 10 : selectedStone === 'neat' ? 20 : 30
 
   // 결과 계산
   const result = useMemo(() => {
@@ -138,9 +138,9 @@ export default function EngravingPage() {
                 <h4>각인석</h4>
                 <p>도구에 각인 효과를 부여하는 핵심 아이템입니다. 사냥 전문가 활동으로 얻을 수 있습니다.</p>
                 <ul>
-                  <li>투박한: 5% (200,000G, 10R)</li>
-                  <li>단정한: 10% (400,000G, 20R)</li>
-                  <li>정교한: 15% (600,000G, 30R)</li>
+                  <li>투박한: 10% (100,000G, 3R)</li>
+                  <li>단정한: 20% (200,000G, 5R)</li>
+                  <li>정교한: 30% (300,000G, 7R)</li>
                 </ul>
               </div>
             </div>
@@ -296,9 +296,9 @@ export default function EngravingPage() {
                   value={selectedStone}
                   onChange={(e) => setSelectedStone(e.target.value as StoneType)}
                 >
-                  <option value="rough">투박한 (5%)</option>
-                  <option value="neat">단정한 (10%)</option>
-                  <option value="precise">정교한 (15%)</option>
+                  <option value="rough">투박한 (10%)</option>
+                  <option value="neat">단정한 (20%)</option>
+                  <option value="precise">정교한 (30%)</option>
                 </select>
               </div>
             </div>
