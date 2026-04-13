@@ -6,9 +6,9 @@ export const PRICE_DATES = {
   cooking: "04.12 ~ 04.15 기준",
   
   // 시스템 시세
-  system: "04.11 19:30 기준",
-  enchant: "04.11 19:30기준",   // 라이프스톤
-  engrave: "04.11 19:30 기준",   // 영혼 계약서
+  system: "04.14 01:00 기준",
+  enchant: "04.14 01:00기준",   // 라이프스톤
+  engrave: "04.14 01:00 기준",   // 영혼 계약서
   
   // 공예품 시세 (매일 수정)
   craft: "04.13 03:00 기준",
@@ -39,19 +39,19 @@ export const COOKING_PRICES: Record<string, number> = {
 // 💎 라이프스톤 시세
 // ============================================
 export const ENCHANT_PRICES = {
-  lowStone: 12170,   // 하급
-  midStone: 33888,   // 중급
-  highStone: 71406,  // 상급
+  lowStone: 13559,   // 하급
+  midStone: 35184,   // 중급
+  highStone: 63973,  // 상급
 }
 
 // ============================================
 // 📜 영혼 계약서 시세 (가격만 - 다른 페이지 호환용)
 // ============================================
 export const ENGRAVE_PRICES = {
-  prosperity: 36326, // 번영
-  crushing: 40598,   // 파쇄
-  tide: 40567,       // 만조
-  conquest: 42380,   // 정복
+  tide: 38675,       // 만조
+  prosperity: 40089, // 번영
+  conquest: 41290,   // 정복
+  crushing: 40181,   // 파쇄
   rough: 0,          // 투박한
   neat: 0,           // 단정한
   precise: 0,        // 정교한
