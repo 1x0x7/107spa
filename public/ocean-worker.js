@@ -604,7 +604,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
     frenzy:   Math.max(0, potionNeedProduct.frenzy   - ownedPotion.frenzy),
     venom:    Math.max(0, potionNeedProduct.venom    - ownedPotion.venom)
   }
-  const elixNeedRaw = {
+  const elixNeedProduct = {
     guard: potionToMakeProduct.immortal + potionToMakeProduct.barrier,
     wave:  potionToMakeProduct.barrier  + potionToMakeProduct.venom,
     chaos: potionToMakeProduct.corrupt  + potionToMakeProduct.frenzy,
@@ -612,11 +612,11 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
     decay: potionToMakeProduct.corrupt  + potionToMakeProduct.venom
   }
   const elixToMakeProduct = {
-    guard: Math.max(0, elixNeedRaw.guard - ownedElix.guard),
-    wave:  Math.max(0, elixNeedRaw.wave  - ownedElix.wave),
-    chaos: Math.max(0, elixNeedRaw.chaos - ownedElix.chaos),
-    life:  Math.max(0, elixNeedRaw.life  - ownedElix.life),
-    decay: Math.max(0, elixNeedRaw.decay - ownedElix.decay)
+    guard: Math.max(0, elixNeedProduct.guard - ownedElix.guard),
+    wave:  Math.max(0, elixNeedProduct.wave  - ownedElix.wave),
+    chaos: Math.max(0, elixNeedProduct.chaos - ownedElix.chaos),
+    life:  Math.max(0, elixNeedProduct.life  - ownedElix.life),
+    decay: Math.max(0, elixNeedProduct.decay - ownedElix.decay)
   }
   const totalPotionToMakeProduct = Object.values(potionToMakeProduct).reduce((a, b) => a + b, 0)
   const totalElixToMakeProduct = Object.values(elixToMakeProduct).reduce((a, b) => a + b, 0)
@@ -691,7 +691,7 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
     frenzy:   Math.max(0, potionNeed.frenzy   - ownedPotion.frenzy),
     venom:    Math.max(0, potionNeed.venom    - ownedPotion.venom)
   }
-  const elixNeedTotalRaw = {
+  const elixNeedTotal = {
     guard: potionToMake.immortal + potionToMake.barrier,
     wave:  potionToMake.barrier  + potionToMake.venom,
     chaos: potionToMake.corrupt  + potionToMake.frenzy,
@@ -699,11 +699,11 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
     decay: potionToMake.corrupt  + potionToMake.venom
   }
   const elixToMake = {
-    guard: Math.max(0, elixNeedTotalRaw.guard - ownedElix.guard),
-    wave:  Math.max(0, elixNeedTotalRaw.wave  - ownedElix.wave),
-    chaos: Math.max(0, elixNeedTotalRaw.chaos - ownedElix.chaos),
-    life:  Math.max(0, elixNeedTotalRaw.life  - ownedElix.life),
-    decay: Math.max(0, elixNeedTotalRaw.decay - ownedElix.decay)
+    guard: Math.max(0, elixNeedTotal.guard - ownedElix.guard),
+    wave:  Math.max(0, elixNeedTotal.wave  - ownedElix.wave),
+    chaos: Math.max(0, elixNeedTotal.chaos - ownedElix.chaos),
+    life:  Math.max(0, elixNeedTotal.life  - ownedElix.life),
+    decay: Math.max(0, elixNeedTotal.decay - ownedElix.decay)
   }
   const totalPotionToMake = Object.values(potionToMake).reduce((a, b) => a + b, 0)
   const totalElixToMake = Object.values(elixToMake).reduce((a, b) => a + b, 0)
@@ -727,10 +727,10 @@ function calculate3Star(input, isAdvanced, reservedPotionCorrupt = 0) {
   }
 
   return {
-    best, potionNeedProduct, potionToMakeProduct, elixNeedRaw, elixToMakeProduct,
+    best, potionNeedProduct, potionToMakeProduct, elixNeedProduct, elixToMakeProduct,
     materialNeedProduct, deadCoralNeedProduct,
     reservedPotionCorrupt, elixNeedDilution, materialNeedDilution, deadCoralNeedDilution,
-    potionNeed, potionToMake, elixNeedTotalRaw, elixToMake,
+    potionNeed, potionToMake, elixNeedTotal, elixToMake,
     materialNeed, materialNeedTotal: { ...materialNeed },
     deadCoralNeed, deadCoralNeedTotal: { ...deadCoralNeed }
   }
