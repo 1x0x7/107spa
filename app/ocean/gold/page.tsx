@@ -1071,7 +1071,7 @@ export default function OceanGoldPage() {
                           </div>
                           <div className="tier-material-row">
                             <span className="material-label">영약 재료</span>
-                            <span>말린켈프 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.driedKelp || 0) : resultAll.result3?.materialNeedDilution?.driedKelp || 0}</span>
+                            <span>켈프 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.kelp || 0) : resultAll.result3?.materialNeedDilution?.kelp || 0}</span>
                             <span>발광열매 {setMode ? formatSet(resultAll.result3?.materialNeedDilution?.glowBerry || 0) : resultAll.result3?.materialNeedDilution?.glowBerry || 0}</span>
                           </div>
                           <div className="tier-material-row">
@@ -1337,7 +1337,7 @@ export default function OceanGoldPage() {
                 {renderSection('🔹 필요 재료 ', [
                   { name: '불우렁쉥이', value: result3.materialNeedProduct.seaSquirt },
                   { name: '유리병', value: result3.materialNeedProduct.glassBottle },
-                  { name: '말린 켈프', value: result3.materialNeedProduct.driedKelp },
+                  { name: '켈프', value: result3.materialNeedProduct.kelp },
                   { name: '발광 열매', value: result3.materialNeedProduct.glowBerry }
                 ])}
                 {renderSection('🔹 필요 블록 ', [

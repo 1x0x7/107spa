@@ -796,7 +796,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     seaSquirt: totalElixToMakeProduct * 2, glassBottle: totalElixToMakeProduct * 3,
     netherrack: elixToMakeProduct.guard * 8, magmaBlock: elixToMakeProduct.wave * 4, soulSoil: elixToMakeProduct.chaos * 4, 
     crimsonStem: elixToMakeProduct.life * 4, warpedStem: elixToMakeProduct.decay * 4,
-    driedKelp: totalPotionToMakeProduct * 12, glowBerry: totalPotionToMakeProduct * 4
+    kelp: totalPotionToMakeProduct * 12, glowBerry: totalPotionToMakeProduct * 4
   }
 
   const deadCoralNeedProduct = {
@@ -839,7 +839,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     soulSoil: elixToMakeDilution.chaos * 4,
     crimsonStem: 0,
     warpedStem: elixToMakeDilution.decay * 4,
-    driedKelp: potionToMakeDilution * 12,
+    kelp: potionToMakeDilution * 12,
     glowBerry: potionToMakeDilution * 4
   }
 
@@ -894,7 +894,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     seaSquirt: totalElixToMake * 2, glassBottle: totalElixToMake * 3,
     netherrack: elixToMake.guard * 8, magmaBlock: elixToMake.wave * 4, soulSoil: elixToMake.chaos * 4, 
     crimsonStem: elixToMake.life * 4, warpedStem: elixToMake.decay * 4,
-    driedKelp: totalPotionToMake * 12, glowBerry: totalPotionToMake * 4
+    kelp: totalPotionToMake * 12, glowBerry: totalPotionToMake * 4
   }
 
   const deadCoralNeed = {
@@ -909,7 +909,7 @@ export function calculate3Star(input: Input3Star, isAdvanced: boolean, reservedP
     seaSquirt: totalElixNeed * 2, glassBottle: totalElixNeed * 3,
     netherrack: elixNeedTotal.guard * 8, magmaBlock: elixNeedTotal.wave * 4, soulSoil: elixNeedTotal.chaos * 4, 
     crimsonStem: elixNeedTotal.life * 4, warpedStem: elixNeedTotal.decay * 4,
-    driedKelp: totalPotionNeed * 12, glowBerry: totalPotionNeed * 4
+    kelp: totalPotionNeed * 12, glowBerry: totalPotionNeed * 4
   }
 
   const deadCoralNeedTotal = {

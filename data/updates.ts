@@ -100,7 +100,7 @@ export const UPDATE_HISTORY: UpdateItem[] = [
     date: "2025.04.21", 
     isLatest: true,
     details: {
-      changes: ["해양-연금품 계산기 성능 개선"],
+      changes: ["해양-연금품 계산기 성능 개선", "해양 연금품 재료 수정"],
       fixes: ["해양-연금품 계산기 3성 수정"]
     }
   },

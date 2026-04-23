@@ -106,11 +106,11 @@ export const RECIPES_3STAR = [
   { name: "생명의 엘릭서", ingredients: "미역★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 진홍빛 자루 4개", price: "", img : "elixir-life.png" },
   { name: "부식의 엘릭서", ingredients: "성게★★★ 1개 + 불우렁쉥이 2개 + 유리병 3개 + 뒤틀린 자루 4개", price: "", img : "elixir-decay.png" },
 
-  { name: "불멸 재생의 영약", ingredients: "수호의 엘릭서 + 생명의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 관 산호 블록 2개", price: "", img : "potion-immortal.png" },
-  { name: "파동 장벽의 영약", ingredients: "파동의 엘릭서 + 수호의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 사방산호 블록 2개", price: "", img : "potion-barrier.png" },
-  { name: "타락 침식의 영약", ingredients: "혼란의 엘릭서 + 부식의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 거품 산호 블록 2개", price: "", img : "potion-corrupt.png" },
-  { name: "생명 광란의 영약", ingredients: "생명의 엘릭서 + 혼란의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 불 산호 블록 2개", price: "", img : "potion-frenzy.png" },
-  { name: "맹독 파동의 영약", ingredients: "부식의 엘릭서 + 파동의 엘릭서 + 말린 켈프 12개 + 발광 열매 4개 + 죽은 뇌 산호 블록 2개", price: "", img : "potion-venom.png" },
+  { name: "불멸 재생의 영약", ingredients: "수호의 엘릭서 + 생명의 엘릭서 + 켈프 12개 + 발광 열매 4개 + 죽은 관 산호 블록 2개", price: "", img : "potion-immortal.png" },
+  { name: "파동 장벽의 영약", ingredients: "파동의 엘릭서 + 수호의 엘릭서 + 켈프 12개 + 발광 열매 4개 + 죽은 사방산호 블록 2개", price: "", img : "potion-barrier.png" },
+  { name: "타락 침식의 영약", ingredients: "혼란의 엘릭서 + 부식의 엘릭서 + 켈프 12개 + 발광 열매 4개 + 죽은 거품 산호 블록 2개", price: "", img : "potion-corrupt.png" },
+  { name: "생명 광란의 영약", ingredients: "생명의 엘릭서 + 혼란의 엘릭서 + 켈프 12개 + 발광 열매 4개 + 죽은 불 산호 블록 2개", price: "", img : "potion-frenzy.png" },
+  { name: "맹독 파동의 영약", ingredients: "부식의 엘릭서 + 파동의 엘릭서 + 켈프 12개 + 발광 열매 4개 + 죽은 뇌 산호 블록 2개", price: "", img : "potion-venom.png" },
 
   { name: "아쿠아 펄스 파편", ingredients: "불멸 재생의 영약 + 파동 장벽의 영약 + 맹독 파동의 영약", price: "21,833G", img : "aqua_pulse.png" },
   { name: "나우틸러스의 손", ingredients: "파동 장벽의 영약 + 생명 광란의 영약 + 불멸 재생의 영약", price: "22,088G", img : "hand.png" },
@@ -373,7 +373,7 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '수호 엘릭서', icon: '/img/ocean/elixir-guard.png' },
       { name: '생명 엘릭서', icon: '/img/ocean/elixir-life.png' },
-      { name: '말린 켈프 12' },
+      { name: '켈프 12' },
       { name: '발광 열매 4' },
       { name: '죽은 관 산호 블록 2' }
     ]
@@ -382,7 +382,7 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '파동 엘릭서', icon: '/img/ocean/elixir-wave.png' },
       { name: '수호 엘릭서', icon: '/img/ocean/elixir-guard.png' },
-      { name: '말린 켈프 12' },
+      { name: '켈프 12' },
       { name: '발광 열매 4' },
       { name: '죽은 사방산호 블록 2' }
     ]
@@ -391,7 +391,7 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '혼란 엘릭서', icon: '/img/ocean/elixir-chaos.png' },
       { name: '부식 엘릭서', icon: '/img/ocean/elixir-decay.png' },
-      { name: '말린 켈프 12' },
+      { name: '켈프 12' },
       { name: '발광 열매 4' },
       { name: '죽은 거품 산호 블록 2' }
     ]
@@ -400,7 +400,7 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '생명 엘릭서', icon: '/img/ocean/elixir-life.png' },
       { name: '혼란 엘릭서', icon: '/img/ocean/elixir-chaos.png' },
-      { name: '말린 켈프 12' },
+      { name: '켈프 12' },
       { name: '발광 열매 4' },
       { name: '죽은 불 산호 블록 2' }
     ]
@@ -409,7 +409,7 @@ export const INGREDIENT_TOOLTIPS: Record<string, { ingredients: TooltipItem[] }>
     ingredients: [
       { name: '부식 엘릭서', icon: '/img/ocean/elixir-decay.png' },
       { name: '파동 엘릭서', icon: '/img/ocean/elixir-wave.png' },
-      { name: '말린 켈프 12' },
+      { name: '켈프 12' },
       { name: '발광 열매 4' },
       { name: '죽은 뇌 산호 블록 2' }
     ]
