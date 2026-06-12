@@ -2,7 +2,7 @@
 // 재배 관련 데이터
 // =========================
 
-export const FARMING_STAMINA_PER_HARVEST = 7
+export const FARMING_STAMINA_PER_HARVEST = 5
 
 // 괭이 레벨별 씨앗 드롭 수 (아일랜드 채집용)
 export const HOE_DROPS: Record<number, number> = {
@@ -16,12 +16,12 @@ export const HOE_DROPS: Record<number, number> = {
   7: 4,
   8: 5,
   9: 5,
-  10: 6,
-  11: 8,
-  12: 8,
-  13: 10,
-  14: 10,
-  15: 15
+  10: 8,
+  11: 10,
+  12: 10,
+  13: 12,
+  14: 12,
+  15: 17
 }
 
 // 괭이 강화 스펙 (마을 수확용)

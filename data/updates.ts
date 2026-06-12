@@ -95,6 +95,13 @@ export interface UpdateItem {
 }
 
 export const UPDATE_HISTORY: UpdateItem[] = [
+      {title: "재배 전문가 스태미나 및 씨앗 드랍 수량 변경",
+    date: "2025.06.12", 
+    isLatest: true,
+    details: {
+      changes: ["재배 스태미나 7 -> 5", "괭이 레벨별 씨앗 드랍 수량 변경"],
+    }
+  },
     {title: "요리 및 공예품 가격 변동",
     date: "2025.05.2", 
     isLatest: true,
